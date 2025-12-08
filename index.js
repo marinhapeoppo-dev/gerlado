@@ -194,6 +194,76 @@ async function runSpeedTest() {
   };
 }
 
+app.get('/api/ssweb', async (req, res) => {
+  try {
+    const url = req.query.url;
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    
+    const width = req.query.width || 1280;
+    const height = req.query.height || 720;
+    const full_page = req.query.full_page === 'true';
+    const device_scale = req.query.device_scale || 1;
+    
+    const screenshotUrl = await ssweb(url, { 
+      width: parseInt(width), 
+      height: parseInt(height), 
+      full_page: full_page, 
+      device_scale: parseInt(device_scale) 
+    });
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { 
+        url: screenshotUrl,
+        parameters: {
+          original_url: url,
+          width: width,
+          height: height,
+          full_page: full_page,
+          device_scale: device_scale
+        }
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Fungsi screenshot
+async function ssweb(url, { width = 1280, height = 720, full_page = false, device_scale = 1 } = {}) {
+  try {
+    if (!url.startsWith('http')) throw new Error('Invalid url');
+    if (isNaN(width) || isNaN(height) || isNaN(device_scale)) throw new Error('Width, height, and scale must be a number');
+    if (typeof full_page !== 'boolean') throw new Error('Full page must be a boolean');
+
+    const { data } = await axios.post(
+      'https://gcp.imagy.app/screenshot/createscreenshot',
+      {
+        url: url,
+        browserWidth: parseInt(width),
+        browserHeight: parseInt(height),
+        fullPage: full_page,
+        deviceScaleFactor: parseInt(device_scale),
+        format: 'png'
+      },
+      {
+        headers: {
+          'content-type': 'application/json',
+          referer: 'https://imagy.app/full-page-screenshot-taker/',
+          'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36'
+        }
+      }
+    );
+
+    return data.fileUrl;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
 app.get("/api/gpt", async (req, res) => {
 const text = req.query.text;
 
@@ -227,6 +297,84 @@ console.error(error);
 res.status(500).send("Internal Server Error");
 }
 });
+
+app.get('/api/gptoss', async (req, res) => {
+  try {
+    const message = req.query.message;
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    }
+    
+    const response = await gptOss(message);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { response }
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Fungsi random user ID
+const randomUserId = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+// Fungsi GPT OSS
+async function gptOss(text) {
+  try {
+    if (!text) throw new Error('Pesan tidak boleh kosong');
+    
+    const { data: rawSSE, headers } = await axios.post(
+      'https://api.gpt-oss.com/chatkit',
+      {
+        op: 'threads.create',
+        params: {
+          input: {
+            text,
+            content: [{ type: 'input_text', text }],
+            quoted_text: '',
+            attachments: []
+          }
+        }
+      },
+      {
+        headers: {
+          authority: 'api.gpt-oss.com',
+          accept: 'text/event-stream',
+          'accept-language': 'en-US,en;q=0.9',
+          'content-type': 'application/json',
+          origin: 'https://gpt-oss.com',
+          cookie: `user_id=${randomUserId()}`,
+          referer: 'https://gpt-oss.com/',
+          'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36',
+          'x-selected-model': 'gpt-oss-120b'
+        },
+        responseType: 'text'
+      }
+    );
+
+    let events = rawSSE
+      .split('\n')
+      .filter(line => line.startsWith('data: '))
+      .map(line => line.slice(6).trim())
+      .filter(Boolean)
+      .map(str => {
+        try { return JSON.parse(str); } catch { return null; }
+      })
+      .filter(Boolean);
+
+    let response = events
+      .filter(e => e.type === 'thread.item_done' && e.item?.type === 'assistant_message')
+      .map(e => e.item.content?.[0]?.text)
+      .filter(Boolean)
+      .join('\n\n');
+    
+    return response;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
 
 // Endpoint untuk Download douyin
 app.get('/api/download-douyin', async (req, res) => {
@@ -344,6 +492,50 @@ async function getDownloadToken() {
         console.error('Error fetching download token:', error.message);
         throw error;
     }
+}
+
+app.get('/api/igdl', async (req, res) => {
+  try {
+    const url = req.query.url;
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    
+    const response = await igdl(url);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { response }
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Fungsi Instagram Downloader
+async function igdl(url) {
+  const base_url = 'https://api.instantdp.com/igdl';
+  
+  const options = {
+    method: 'POST',
+    url: base_url,
+    headers: {
+      'Content-Type': 'application/json',
+      'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Mobile Safari/537.36',
+      'Referer': 'https://www.instantdp.com/instagram'
+    },
+    data: {
+      url: url
+    }
+  };
+
+  try {
+    const res = await axios(options);
+    return res.data;
+  } catch (e) {
+    throw new Error(`${e.message}`);
+  }
 }
 
 // endpoint ero
