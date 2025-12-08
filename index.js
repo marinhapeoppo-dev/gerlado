@@ -376,6 +376,108 @@ async function gptOss(text) {
   }
 }
 
+app.get('/api/gpt41', async (req, res) => {
+  try {
+    const message = req.query.message;
+    if (!message) {
+      return res.status(400).json({ 
+        error: 'Parameter "message" tidak ditemukan',
+        example: '/api/gpt41?message=halo, siapa kamu?'
+      });
+    }
+    
+    const response = await sendRequest(message);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { response }
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Fungsi GPT-4.1
+async function sendRequest(msg) {
+  const url = 'https://text.pollinations.ai/openai';
+  const data = {
+    "messages": [
+      {
+        "role": "user",
+        "content": msg
+      }
+    ],
+    "stream": false
+  };
+
+  const headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'text/event-stream',
+    'user-agent': 'Mozilla/5.0 (Linux; Android 14; NX769J Build/UKQ1.230917.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/130.0.6723.107 Mobile Safari/537.36'
+  };
+
+  try {
+    const response = await fetch(url, {
+      headers,
+      body: JSON.stringify(data),  // Perbaiki: body bukan data
+      method: "POST"
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const hasil = await response.json();
+    
+    if (!hasil.choices || !hasil.choices[0] || !hasil.choices[0].message) {
+      throw new Error('Invalid response format from API');
+    }
+    
+    return hasil.choices[0].message.content;
+  } catch (error) {
+    throw new Error(`GPT-4.1 Error: ${error.message}`);
+  }
+}
+
+app.get('/api/cek-kuota-axis', async (req, res) => {
+  try {
+    const nomorhp = req.query.nomor;
+    if (!nomorhp) {
+      return res.status(400).json({ 
+        error: 'Parameter "nomor" tidak ditemukan',
+        example: '/api/cek-kuota-axis?nomor=6281234567890'
+      });
+    }
+    
+    const response = await cekkoutaaxisxl(nomorhp);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: response
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Fungsi cek kuota Axis
+async function cekkoutaaxisxl(nomorhp) {
+  try {
+    const { data } = await axios.get(`https://bendith.my.id/end.php`, {
+      params: {
+        check: "package",
+        number: nomorhp,
+        version: "2 201"
+      }
+    });
+    return data;
+  } catch (e) {
+    throw new Error(`Gagal mengecek kuota: ${e.message}`);
+  }
+}
+
 // Endpoint untuk Download douyin
 app.get('/api/download-douyin', async (req, res) => {
   try {
@@ -492,6 +594,114 @@ async function getDownloadToken() {
         console.error('Error fetching download token:', error.message);
         throw error;
     }
+}
+
+app.get('/api/remove-bg', async (req, res) => {
+  try {
+    const imageUrl = req.query.url;
+    if (!imageUrl) {
+      return res.status(400).json({ 
+        error: 'Parameter "url" tidak ditemukan',
+        example: '/api/remove-bg?url=https://example.com/image.jpg'
+      });
+    }
+    
+    const result = await removeBackground(imageUrl);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: result
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Fungsi remove background tanpa API key
+async function removeBackground(imageUrl) {
+  try {
+    // Scrape dari bgremover.app (no API key needed)
+    const response = await axios.post('https://bgremover.app/api/removebg', 
+      {
+        image_url: imageUrl,
+        output_format: 'png',
+        size: 'auto'
+      },
+      {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          'Content-Type': 'application/json',
+          'Origin': 'https://bgremover.app',
+          'Referer': 'https://bgremover.app/'
+        }
+      }
+    );
+
+    if (response.data && response.data.image_url) {
+      return {
+        success: true,
+        original_image: imageUrl,
+        result_image: response.data.image_url,
+        format: 'png',
+        source: 'bgremover.app'
+      };
+    } else {
+      throw new Error('Gagal menghapus background');
+    }
+    
+  } catch (error) {
+    // Fallback ke API lain
+    try {
+      // Coba dengan remove.bg tanpa API key (via unofficial method)
+      const response2 = await axios.post('https://api.remove.bg/v1.0/removebg',
+        {
+          image_url: imageUrl,
+          size: 'auto',
+          format: 'png'
+        },
+        {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            'Content-Type': 'application/json',
+            'X-API-Key': 'free'  // Try free tier
+          }
+        }
+      );
+      
+      if (response2.data && response2.data.data && response2.data.data.result_b64) {
+        const resultImage = `data:image/png;base64,${response2.data.data.result_b64}`;
+        return {
+          success: true,
+          original_image: imageUrl,
+          result_image: resultImage,
+          format: 'base64',
+          source: 'remove.bg (free)'
+        };
+      } else {
+        // Try another alternative
+        const response3 = await axios.get(`https://api.pxlapi.dev/removebg?image=${encodeURIComponent(imageUrl)}`, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+          }
+        });
+        
+        if (response3.data && response3.data.url) {
+          return {
+            success: true,
+            original_image: imageUrl,
+            result_image: response3.data.url,
+            format: 'png',
+            source: 'pxlapi.dev'
+          };
+        }
+        
+        throw new Error('Semua API remove background gagal');
+      }
+    } catch (error2) {
+      throw new Error(`Gagal menghapus background: ${error2.message}`);
+    }
+  }
 }
 
 app.get('/api/igdl', async (req, res) => {
