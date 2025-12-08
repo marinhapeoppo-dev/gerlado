@@ -221,6 +221,230 @@ async function getDownloadToken() {
     }
 }
 
+// endpoint ero
+const eroApis = [
+  {
+    name: 'Sumber 1',
+    url: 'https://nekobot.xyz/api/image?type=ero',
+    parser: (data) => data.success ? data.message : null
+  },
+  {
+    name: 'Sumber 2',
+    url: 'https://api.waifu.pics/nsfw/waifu',
+    parser: (data) => data.url || null
+  },
+  {
+    name: 'Sumber 3',
+    url: 'https://nekos.life/api/v2/img/ero',
+    parser: (data) => data.url || null
+  },
+  {
+    name: 'Sumber 4',
+    url: 'https://purrbot.site/api/img/nsfw/neko/gif',
+    parser: (data) => data.link || null
+  },
+  {
+    name: 'Sumber 5',
+    url: 'https://hmtai.herokuapp.com/nsfw/waifu',
+    parser: (data) => data.url || null
+  }
+];
+
+// Fungsi untuk mencoba API
+async function tryEroApi(api) {
+  try {
+    const response = await axios.get(api.url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'Accept': 'application/json'
+      },
+      timeout: 10000
+    });
+
+    const url = api.parser(response.data);
+    return {
+      success: !!url,
+      url: url,
+      source: api.name
+    };
+  } catch (error) {
+    return { success: false, url: null, source: api.name };
+  }
+}
+
+// Endpoint utama
+app.get('/api/nswf', async (req, res) => {
+  try {
+    // Peringatan dewasa
+    const warningHeader = '⚠️ KONTEN DEWASA 18+ ⚠️';
+    
+    // Coba dari semua sumber
+    let imageUrl = null;
+    let source = '';
+    
+    for (const api of eroApis) {
+      try {
+        console.log(`[ERO API] Trying source: ${api.name}`);
+        const result = await tryEroApi(api);
+        
+        if (result.success && result.url) {
+          imageUrl = result.url;
+          source = result.source;
+          break;
+        }
+      } catch (error) {
+        continue;
+      }
+    }
+
+    if (!imageUrl) {
+      return res.status(503).json({
+        status: 503,
+        creator: "Geraldo",
+        warning: warningHeader,
+        message: "Tidak dapat menemukan konten saat ini. Semua sumber tidak tersedia.",
+        data: null
+      });
+    }
+
+    // Return hasil
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      warning: warningHeader,
+      disclaimer: "Konten ini hanya untuk usia 18+ dan digunakan atas tanggung jawab pribadi.",
+      source: source,
+      timestamp: new Date().toISOString(),
+      data: {
+        url: imageUrl,
+        type: 'image/jpeg',
+        proxy_url: `/api/ero-proxy?url=${encodeURIComponent(imageUrl)}`
+      }
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      status: 500,
+      creator: "Geraldo",
+      warning: '⚠️ KONTEN DEWASA 18+ ⚠️',
+      error: error.message,
+      data: null
+    });
+  }
+});
+
+// Endpoint proxy untuk menghindari CORS dan melacak penggunaan
+app.get('/api/ero-proxy', async (req, res) => {
+  try {
+    const imageUrl = req.query.url;
+    
+    if (!imageUrl) {
+      return res.status(400).send('URL tidak valid');
+    }
+
+    // Log penggunaan (opsional)
+    console.log(`[ERO PROXY] Accessed from IP: ${req.ip}`);
+    
+    // Get image via proxy
+    const response = await axios({
+      method: 'GET',
+      url: imageUrl,
+      responseType: 'stream',
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'Referer': 'https://google.com/'
+      },
+      timeout: 10000
+    });
+
+    // Set headers untuk cache dan content-type
+    res.set({
+      'Content-Type': response.headers['content-type'] || 'image/jpeg',
+      'Cache-Control': 'public, max-age=3600',
+      'X-Content-Type-Options': 'nosniff',
+      'X-Warning': '⚠️ KONTEN DEWASA 18+ ⚠️'
+    });
+
+    response.data.pipe(res);
+    
+  } catch (error) {
+    console.error('[ERO PROXY] Error:', error.message);
+    res.status(500).send('Gagal memuat gambar');
+  }
+});
+
+// Endpoint untuk random dengan jumlah tertentu
+app.get('/api/ero/random', async (req, res) => {
+  try {
+    const count = Math.min(parseInt(req.query.count) || 1, 5); // Max 5
+    const results = [];
+    
+    for (let i = 0; i < count; i++) {
+      // Acak urutan API
+      const shuffledApis = [...eroApis].sort(() => Math.random() - 0.5);
+      
+      for (const api of shuffledApis) {
+        const result = await tryEroApi(api);
+        if (result.success) {
+          results.push({
+            url: result.url,
+            source: result.source,
+            index: i + 1
+          });
+          break;
+        }
+      }
+      
+      // Delay antar request
+      if (i < count - 1) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+    }
+
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      warning: '⚠️ KONTEN DEWASA 18+ ⚠️',
+      disclaimer: "Konten ini hanya untuk usia 18+ dan digunakan atas tanggung jawab pribadi.",
+      timestamp: new Date().toISOString(),
+      data: {
+        total: results.length,
+        images: results
+      }
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      status: 500,
+      creator: "Geraldo",
+      warning: '⚠️ KONTEN DEWASA 18+ ⚠️',
+      error: error.message,
+      data: null
+    });
+  }
+});
+
+// Endpoint info (tanpa mengungkap sumber)
+app.get('/api/ero/info', (req, res) => {
+  res.status(200).json({
+    status: 200,
+    creator: "Geraldo",
+    warning: '⚠️ KONTEN DEWASA 18+ ⚠️',
+    disclaimer: "Konten ini hanya untuk usia 18+ dan digunakan atas tanggung jawab pribadi.",
+    endpoints: {
+      single: '/api/ero - Dapatkan 1 gambar random',
+      multiple: '/api/ero/random?count=3 - Dapatkan beberapa gambar (max 5)',
+      proxy: '/api/ero-proxy?url=URL - Proxy untuk gambar'
+    },
+    limits: {
+      max_per_request: 5,
+      cache_duration: '1 jam',
+      age_restriction: '18+'
+    },
+    notice: "Sumber API dirahasiakan untuk keamanan dan keberlanjutan layanan."
+  });
+});
+
 app.use((req, res, next) => {
   res.status(404).send("Halaman tidak ditemukan");
 });
