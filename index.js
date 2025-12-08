@@ -50,7 +50,7 @@ app.get('/api/ragbot', async (req, res) => {
     const response = await ptz.ragBot(message);
     res.status(200).json({
       status: 200,
-      creator: "siputzx",
+      creator: "Geraldo",
       data: { response }
     });
   } catch (error) {
@@ -68,7 +68,7 @@ app.get('/api/degreeguru', async (req, res) => {
     const response = await ptz.degreeGuru(message);
     res.status(200).json({
       status: 200,
-      creator: "siputzx",
+      creator: "Geraldo",
       data: { response }
     });
   } catch (error) {
@@ -86,7 +86,7 @@ app.get('/api/smartcontract', async (req, res) => {
     const response = await ptz.smartContract(message);
     res.status(200).json({
       status: 200,
-      creator: "siputzx",
+      creator: "Geraldo",
       data: { response }
     });
   } catch (error) {
@@ -104,7 +104,7 @@ app.get('/api/blackboxAIChat', async (req, res) => {
     const response = await ptz.blackboxAIChat(message);
     res.status(200).json({
       status: 200,
-      creator: "siputzx",
+      creator: "Geraldo",
       data: { response }
     });
   } catch (error) {
@@ -146,6 +146,80 @@ res.status(500).send("Internal Server Error");
 }
 });
 
+// Endpoint untuk Download douyin
+app.get('/api/download-douyin', async (req, res) => {
+  try {
+    const url = req.query.url;
+    if (!url) {
+      return res.status(400).json({ error: 'Parameter "url" tidak ditemukan' });
+    }
+    const response = await downloadDouyinVideo(url);
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { response }
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Fungsi downloadDouyinVideo
+async function downloadDouyinVideo(videoUrl) {
+    try {
+        const token = await getDownloadToken();
+        const hash = calculateHash(videoUrl, 'aio-dl');
+
+        const formData = new URLSearchParams();
+        formData.append('url', videoUrl);
+        formData.append('token', token);
+        formData.append('hash', hash);
+
+        const response = await axios.post('https://snapdouyin.app/wp-json/mx-downloader/video-data/',
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                }
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        console.error('Error downloading Douyin video:', error.message);
+        throw error;
+    }
+}
+
+// Fungsi untuk menghitung hash
+function calculateHash(url, salt) {
+    const urlBase64 = Buffer.from(url, 'utf-8').toString('base64');
+    const saltBase64 = Buffer.from(salt, 'utf-8').toString('base64');
+    return urlBase64 + (url.length + 1000) + saltBase64;
+}
+
+// Fungsi untuk mendapatkan token download
+async function getDownloadToken() {
+    try {
+        const response = await axios.get('https://snapdouyin.app/', {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            }
+        });
+        const $ = cheerio.load(response.data);
+
+        const tokenInput = $('input#token');
+        if (tokenInput.length > 0) {
+            return tokenInput.attr('value');
+        } else {
+            throw new Error('Token tidak ditemukan di halaman web');
+        }
+    } catch (error) {
+        console.error('Error fetching download token:', error.message);
+        throw error;
+    }
+}
 
 app.use((req, res, next) => {
   res.status(404).send("Halaman tidak ditemukan");
