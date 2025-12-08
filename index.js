@@ -115,28 +115,13 @@ app.get('/api/blackboxAIChat', async (req, res) => {
 
 app.get('/api/copilot', async (req, res) => {
   try {
-    const message = req.query.message;
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    const text = req.query.text || req.query.message;
+    if (!text) {
+      return res.status(400).json({ error: 'Parameter "text" atau "message" tidak ditemukan' });
     }
     
-    const response = await getCopilotResponse(message);
-    res.status(200).json({
-      status: 200,
-      creator: "Geraldo",
-      data: { response }
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Fungsi untuk mendapatkan respons dari Copilot/Martin AI
-async function getCopilotResponse(query) {
-  try {
-    const encodedQuery = encodeURIComponent(query);
-    // Parameter yang benar adalah 'message' bukan 'text'
-    const apiUrl = `https://api.nekolabs.web.id/text-generation/copilot?message=${encodedQuery}`;
+    const encodedQuery = encodeURIComponent(text);
+    const apiUrl = `https://api.nekolabs.web.id/text-generation/copilot?text=${encodedQuery}`;
     
     const response = await axios.get(apiUrl, {
       headers: {
@@ -151,22 +136,27 @@ async function getCopilotResponse(query) {
     if (response.data && response.data.success) {
       if (response.data.result && response.data.result.text) {
         answer = response.data.result.text;
-      } else {
-        answer = "Maaf, format response tidak sesuai.";
       }
-    } else {
-      answer = "Maaf, API gagal merespons.";
     }
 
     if (!answer || answer.trim().length === 0) {
-      answer = `Maaf, saya tidak dapat menjawab pertanyaan "${query}" saat ini.`;
+      answer = `Maaf, saya tidak dapat menjawab pertanyaan "${text}" saat ini.`;
     }
 
-    return answer.trim();
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { response: answer.trim() }
+    });
+    
   } catch (error) {
-    throw new Error(`Copilot AI Error: ${error.message}`);
+    console.error('API Error:', error.response?.data || error.message);
+    res.status(500).json({ 
+      error: error.message,
+      details: error.response?.data || 'No additional details'
+    });
   }
-}
+});
 
 app.get("/api/gpt", async (req, res) => {
 const text = req.query.text;
