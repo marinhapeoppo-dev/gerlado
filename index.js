@@ -42,23 +42,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname,  'index.html'));
 });
 
-app.get('/api/ragbot', async (req, res) => {
-  try {
-    const message = req.query.message;
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
-    }
-    const response = await ptz.ragBot(message);
-    res.status(200).json({
-      status: 200,
-      creator: "Geraldo",
-      data: { response }
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
 // Endpoint untuk degreeGuru
 app.get('/api/degreeguru', async (req, res) => {
   try {
@@ -67,42 +50,6 @@ app.get('/api/degreeguru', async (req, res) => {
       return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     const response = await ptz.degreeGuru(message);
-    res.status(200).json({
-      status: 200,
-      creator: "Geraldo",
-      data: { response }
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Endpoint untuk smartContract
-app.get('/api/smartcontract', async (req, res) => {
-  try {
-    const message = req.query.message;
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
-    }
-    const response = await ptz.smartContract(message);
-    res.status(200).json({
-      status: 200,
-      creator: "Geraldo",
-      data: { response }
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Endpoint untuk blackboxAIChat
-app.get('/api/blackboxAIChat', async (req, res) => {
-  try {
-    const message = req.query.message;
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
-    }
-    const response = await ptz.blackboxAIChat(message);
     res.status(200).json({
       status: 200,
       creator: "Geraldo",
@@ -298,11 +245,180 @@ res.status(500).send("Internal Server Error");
 }
 });
 
+app.get('/api/perplexity', async (req, res) => {
+  try {
+    const message = req.query.message;
+    if (!message) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Parameter "message" tidak ditemukan'
+      });
+    }
+    
+    const response = await perplexityAI(message);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { 
+        response: response.answer,
+        related_queries: response.relatedQueries,
+        sources: response.source
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+// Fungsi untuk generate UUID
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+// Fungsi Perplexity AI
+const ANDROID_ID = '0a0000000002f59a';
+
+async function perplexityAI(query) {
+  const data = JSON.stringify({
+    query_str: query,
+    params: {
+      source: 'android',
+      version: '2.17',
+      frontend_uuid: uuidv4(),
+      android_device_id: ANDROID_ID,
+      mode: 'concise',
+      is_related_query: false,
+      is_voice_to_voice: false,
+      timezone: 'Asia/Shanghai',
+      language: 'in',
+      query_source: 'home',
+      is_incognito: false,
+      use_schematized_api: true,
+      send_back_text_in_streaming_api: false,
+      supported_block_use_cases: [
+        'answer_modes', 'finance_widgets', 'knowledge_cards',
+        'media_items', 'place_widgets', 'shopping_widgets',
+        'sports_widgets', 'inline_entity_cards', 'inline_images',
+        'inline_assets', 'search_result_widgets'
+      ],
+      sources: ['web'],
+      model_preference: 'turbo'
+    }
+  });
+
+  const config = {
+    method: 'POST',
+    url: 'https://www.perplexity.ai/rest/sse/perplexity_ask',
+    headers: {
+      'User-Agent': 'Ask/2.51.0/260466 (Android; Version 12; SAMSUNG N900A/SD1A.210817.037.A1 release-keys) SDK 31',
+      'Accept': 'text/event-stream',
+      'Accept-Encoding': 'gzip',
+      'Content-Type': 'application/json',
+      'x-app-version': '2.51.0',
+      'x-client-version': '2.51.0',
+      'x-client-name': 'Perplexity-Android',
+      'x-client-env': 'prod',
+      'x-app-apiclient': 'android',
+      'x-app-apiversion': '2.17',
+      'accept-language': 'id',
+      'x-device-id': `android:${ANDROID_ID}`,
+      'content-type': 'application/json; charset=utf-8'
+    },
+    data,
+    responseType: 'stream'
+  };
+
+  const response = await axios.request(config);
+  const result = await handleSSE(response);
+  return result;
+}
+
+function handleSSE(response) {
+  return new Promise((resolve, reject) => {
+    let finalData = null;
+    let buffer = '';
+
+    response.data.on('data', (chunk) => {
+      buffer += chunk.toString();
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          try {
+            const jsonData = line.substring(6).trim();
+            if (jsonData === '{}') continue;
+            const data = JSON.parse(jsonData);
+            if (data.final === true || data.status === 'COMPLETED') {
+              finalData = data;
+            }
+          } catch (e) {
+            continue;
+          }
+        }
+      }
+    });
+
+    response.data.on('end', () => {
+      let fullAnswer = '';
+      let chunks = [];
+      let parsedSteps = [];
+      let webResults = [];
+
+      if (finalData && finalData.blocks) {
+        const markdownBlock = finalData.blocks.find(
+          block => block.intended_usage === 'ask_text' && block.markdown_block
+        );
+
+        if (markdownBlock && markdownBlock.markdown_block) {
+          if (markdownBlock.markdown_block.answer) {
+            fullAnswer = markdownBlock.markdown_block.answer;
+          } else if (markdownBlock.markdown_block.chunks) {
+            chunks = markdownBlock.markdown_block.chunks;
+            fullAnswer = chunks.join('');
+          }
+        }
+      }
+
+      try {
+        parsedSteps = JSON.parse(finalData.text);
+        const step = parsedSteps.find(step => step.step_type === 'SEARCH_RESULTS');
+        if (step?.content?.web_results) {
+          webResults = step.content.web_results;
+        }
+      } catch (e) {}
+
+      resolve({
+        answer: fullAnswer || 'Tidak ada jawaban dari AI',
+        chunks,
+        relatedQueries: finalData?.related_queries || [],
+        source: webResults
+      });
+    });
+
+    response.data.on('error', reject);
+  });
+}
+
 app.get('/api/gpt-oss', async (req, res) => {
   try {
     const message = req.query.message;
     if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Parameter "message" tidak ditemukan'
+      });
     }
     
     const response = await gptOss(message);
@@ -310,22 +426,24 @@ app.get('/api/gpt-oss', async (req, res) => {
     res.status(200).json({
       status: 200,
       creator: "Geraldo",
-      data: { response }
+      data: { 
+        response: response 
+      }
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
   }
 });
 
-// Fungsi random user ID
 const randomUserId = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-// Fungsi GPT OSS
 async function gptOss(text) {
   try {
-    if (!text) throw new Error('Pesan tidak boleh kosong');
-    
-    const { data: rawSSE, headers } = await axios.post(
+    const { data: rawSSE } = await axios.post(
       'https://api.gpt-oss.com/chatkit',
       {
         op: 'threads.create',
@@ -342,15 +460,15 @@ async function gptOss(text) {
         headers: {
           authority: 'api.gpt-oss.com',
           accept: 'text/event-stream',
-          'accept-language': 'en-US,en;q=0.9',
           'content-type': 'application/json',
           origin: 'https://gpt-oss.com',
           cookie: `user_id=${randomUserId()}`,
           referer: 'https://gpt-oss.com/',
-          'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36',
+          'user-agent': 'Mozilla/5.0',
           'x-selected-model': 'gpt-oss-120b'
         },
-        responseType: 'text'
+        responseType: 'text',
+        timeout: 30000
       }
     );
 
@@ -370,7 +488,8 @@ async function gptOss(text) {
       .filter(Boolean)
       .join('\n\n');
     
-    return response;
+    return response || "Maaf, tidak dapat memproses permintaan Anda.";
+    
   } catch (error) {
     throw new Error(error.message);
   }
@@ -1018,6 +1137,207 @@ app.get('/api/ero/info', (req, res) => {
     notice: "Sumber API dirahasiakan untuk keamanan dan keberlanjutan layanan."
   });
 });
+
+// Endpoint untuk LK21
+app.get('/api/lk21/search', async (req, res) => {
+  try {
+    const query = req.query.query;
+    if (!query) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Parameter "query" tidak ditemukan',
+        example: '/api/lk21/search?query=Avengers'
+      });
+    }
+    
+    const lk21 = new LK21();
+    const response = await lk21.search(query);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { response }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+app.get('/api/lk21/detail', async (req, res) => {
+  try {
+    const url = req.query.url;
+    if (!url) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Parameter "url" tidak ditemukan',
+        example: '/api/lk21/detail?url=https://tv5.lk21official.cc/avengers-endgame-2019'
+      });
+    }
+    
+    const lk21 = new LK21();
+    const response = await lk21.detail(url);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { response }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+app.get('/api/lk21/popular', async (req, res) => {
+  try {
+    const page = req.query.page || 1;
+    
+    const lk21 = new LK21();
+    const response = await lk21.populer(page);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { 
+        page: parseInt(page),
+        response 
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+// Class LK21
+class LK21 {
+  constructor() {
+    this.baseURL = 'https://tv5.lk21official.cc';
+  }
+
+  async getHTML(path) {
+    try {
+      const res = await axios.get(this.baseURL + path);
+      return res.data;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async search(query) {
+    try {
+      const html = await this.getHTML('/search.php?s=' + query);
+      const $ = cheerio.load(html);
+      const result = [];
+
+      $('.search-item').each((i, el) => {
+        result.push({
+          title: $(el).find('a[rel="bookmark"]').attr('title').trim(),
+          link: this.baseURL + $(el).find('a[rel="bookmark"]').attr('href'),
+          thumb: $(el).find('img').eq(1).attr('src'),
+          genre: $(el).find('p').eq(0).text().split(':')[1].trim(),
+          country: $(el).find('p').eq(1).text().split(':')[1].trim(),
+          rating: $(el).find('p').eq(2).text().split(':')[1].trim()
+        })
+      });
+
+      return result;
+
+    } catch (e) {
+      throw e
+    }
+  }
+
+  async detail(url) {
+    try {
+      const html = await this.getHTML(url.replace(this.baseURL, ''));
+      const $ = cheerio.load(html);
+
+      const result = {
+        title: $('.img-thumbnail').attr('alt').trim(),
+        thumb: 'https:' + $('.img-thumbnail').attr('src'),
+        quality: $('.content div:nth-child(1) h3').text(),
+        country: $('.content div:nth-child(2) h3').text(),
+        main_char: [],
+        director: $('.content div:nth-child(4) h3').text(),
+        genre: [],
+        publishedDate: $('.content div:nth-child(7) h3').text(),
+        synopsis: $('blockquote').text().split('Synopsis')[1].trim(),
+        duration: $('.content div:nth-child(11) h3').text(),
+        player: []
+      }
+
+      $('.content div:nth-child(3) h3').each((i, yaw) => result.main_char.push($(yaw).text()))
+      $('.content div:nth-child(5) h3').each((i, yaw) => result.genre.push($(yaw).text()))
+
+      $('#loadProviders li').each((i, yaw) => {
+        let res = {
+          name: $(yaw).find('a').text(),
+          link: decodeURIComponent($(yaw).find('a').attr('href').split('url=')[1]),
+          quality: []
+        }
+
+        $(yaw).find('span').each((my, apala) => {
+          res.quality.push($(apala).text().trim());
+        });
+
+        result.player.push(res);
+
+      })
+
+      return result
+
+    } catch (e) {
+      throw e
+    }
+  }
+  
+  async populer(page = 1) {
+    try {
+      const html = await this.getHTML('/populer/page/' + page)
+      const $ = cheerio.load(html)
+      const result = []
+
+      $('.infscroll-item').each((i, el) => {
+        let anunya = {
+          title: $(el).find('.grid-title a').text().trim(),
+          link: $(el).find('.grid-title a').attr('href'),
+          thumb: 'https:' + $(el).find('img').attr('src'),
+          genre: [],
+          rating: $(el).find('.grid-meta .rating').text() || 'unknown',
+          quality: $(el).find('.quality').text(),
+          duration: $(el).find('.duration').text()
+        }
+
+        $(el).find('.grid-categories a').each((ii, yaw) => {
+          if ($(yaw).attr('href').includes('/genre/')) {
+            anunya.genre.push($(yaw).text())
+          }
+        })
+
+        result.push(anunya);
+
+      })
+
+      return result;
+
+    } catch (e) {
+      throw e;
+    }
+  }
+}
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
