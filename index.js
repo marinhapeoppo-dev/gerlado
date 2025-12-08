@@ -115,15 +115,11 @@ app.get('/api/blackboxAIChat', async (req, res) => {
 
 app.get('/api/copilot', async (req, res) => {
   try {
-    const message = req.query.message;
-    if (!message) {
-      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
+    const text = req.query.text;
+    if (!text) {
+      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
-    
-    const model = req.query.model || 'default';
-    const copilot = new Copilot();
-    const response = await copilot.chat(message, { model });
-    
+    const response = await copilotChat(text);
     res.status(200).json({
       status: 200,
       creator: "Geraldo",
@@ -133,6 +129,30 @@ app.get('/api/copilot', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// Fungsi untuk chat dengan Copilot
+async function copilotChat(text) {
+    try {
+        if (!text) throw new Error('Text is required');
+        
+        // Encode text untuk URL
+        const encodedText = encodeURIComponent(text);
+        const url = `https://api.nekolabs.web.id/text-generation/copilot?text=${encodedText}`;
+        
+        const { data } = await axios.get(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                'Accept': 'application/json',
+                'Accept-Encoding': 'gzip, deflate',
+                'Connection': 'keep-alive'
+            }
+        });
+        
+        return data;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
 
 app.get("/api/gpt", async (req, res) => {
 const text = req.query.text;
