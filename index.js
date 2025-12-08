@@ -298,7 +298,7 @@ res.status(500).send("Internal Server Error");
 }
 });
 
-app.get('/api/gptoss', async (req, res) => {
+app.get('/api/gpt-oss', async (req, res) => {
   try {
     const message = req.query.message;
     if (!message) {
@@ -537,6 +537,113 @@ async function igdl(url) {
     throw new Error(`${e.message}`);
   }
 }
+
+app.get('/api/tiktok', async (req, res) => {
+  try {
+    const url = req.query.url;
+    if (!url) {
+      return res.status(400).json({ 
+        error: 'Parameter "url" tidak ditemukan',
+        example: '/api/tiktok?url=https://vt.tiktok.com/ABC123/'
+      });
+    }
+    
+    const response = await sstikDownload(url);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: response
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+async function sstikDownload(url) {
+  try {
+    const response = await axios.get(`https://ssstik.io/abc?url=${encodeURIComponent(url)}`, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'Accept': 'application/json'
+      }
+    });
+    
+    return response.data;
+  } catch (e) {
+    try {
+      const response = await axios.get(`https://tikwm.com/api?url=${encodeURIComponent(url)}`);
+      const data = response.data;
+      
+      const result = {
+        type: data.images ? 'image' : 'video',
+        author: data.author || null,
+        title: data.title || null,
+        duration: data.duration || 0,
+        created_at: data.createTime || null
+      };
+      
+      if (data.images) {
+        result.media = data.images.map(img => ({
+          url: img,
+          type: 'image'
+        }));
+      } else if (data.play) {
+        result.media = [{
+          url: data.play,
+          type: 'video',
+          quality: 'HD',
+          watermark: false
+        }];
+        
+        if (data.wmplay) {
+          result.media.push({
+            url: data.wmplay,
+            type: 'video',
+            quality: 'HD',
+            watermark: true
+          });
+        }
+      }
+      
+      return result;
+    } catch (err) {
+      try {
+        const response = await axios.get(`https://savetik.co/api/ajaxSearch?q=${encodeURIComponent(url)}`);
+        return response.data;
+      } catch (error2) {
+        throw new Error(`Gagal mendownload konten TikTok: ${err.message}`);
+      }
+    }
+  }
+}
+
+async function tiktokImageDownload(url) {
+  try {
+    const response = await axios.get(`https://www.tikwm.com/api?url=${encodeURIComponent(url)}`);
+    const data = response.data;
+    
+    if (!data.images || data.images.length === 0) {
+      throw new Error('Tidak ditemukan gambar dalam postingan ini');
+    }
+    
+    return {
+      type: 'image',
+      author: data.author,
+      title: data.title,
+      images: data.images.map((img, index) => ({
+        url: img,
+        filename: `tiktok_image_${index + 1}.jpg`,
+        size: null
+      })),
+      count: data.images.length,
+      created_at: data.createTime
+    };
+  } catch (error) {
+    throw new Error(`Gagal mendownload gambar TikTok: ${error.message}`);
+  }
+}
+});
 
 // endpoint ero
 const eroApis = [
