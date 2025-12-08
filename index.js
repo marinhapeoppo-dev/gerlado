@@ -1339,6 +1339,52 @@ class LK21 {
   }
 }
 
+app.get('/api/remove-clothes', async (req, res) => {
+  try {
+    const imageUrl = req.query.imageUrl;
+    if (!imageUrl) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Parameter "imageUrl" tidak ditemukan'
+      });
+    }
+    
+    const response = await removeClothes(imageUrl);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { response }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+async function removeClothes(imageUrl) {
+  try {
+    const encodedUrl = encodeURIComponent(imageUrl);
+    const apiUrl = `https://api.nekolabs.web.id/style-changer/remove-clothes?imageUrl=${encodedUrl}`;
+    
+    const response = await axios.get(apiUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0',
+        'Accept': 'application/json'
+      },
+      timeout: 60000
+    });
+    
+    return response.data;
+  } catch (error) {
+    throw new Error(`Gagal memproses gambar: ${error.message}`);
+  }
+}
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Ada kesalahan pada server');
