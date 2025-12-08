@@ -121,7 +121,8 @@ app.get('/api/copilot', async (req, res) => {
     }
     
     const model = req.query.model || 'default';
-    const response = await copilotChat(message, model);
+    const copilot = new Copilot();
+    const response = await copilot.chat(message, { model });
     
     res.status(200).json({
       status: 200,
@@ -132,70 +133,6 @@ app.get('/api/copilot', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
-// Fungsi untuk chat dengan Copilot (tanpa WebSocket, menggunakan REST API)
-async function copilotChat(message, model = 'default') {
-    try {
-        const headers = {
-            'Origin': 'https://copilot.microsoft.com',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        };
-
-        // 1. Buat conversation terlebih dahulu
-        const conversationRes = await axios.post('https://copilot.microsoft.com/c/api/conversations', null, {
-            headers: headers
-        });
-        
-        const conversationId = conversationRes.data.id;
-        
-        // 2. Kirim pesan ke Copilot
-        const chatData = {
-            mode: model === 'think-deeper' ? 'reasoning' : model === 'gpt-5' ? 'smart' : 'chat',
-            conversationId: conversationId,
-            content: [{ type: 'text', text: message }],
-            context: {}
-        };
-        
-        const chatRes = await axios.post('https://copilot.microsoft.com/c/api/chat', chatData, {
-            headers: headers
-        });
-        
-        return {
-            text: chatRes.data?.text || chatRes.data?.message || 'Tidak ada response',
-            conversationId: conversationId
-        };
-        
-    } catch (error) {
-        // Fallback ke alternatif jika API utama error
-        return await copilotFallback(message, model);
-    }
-}
-
-// Fallback function jika API utama tidak berfungsi
-async function copilotFallback(message, model) {
-    try {
-        // Alternatif 1: Gunakan Bing Chat melalui API lain
-        const bingRes = await axios.get(`https://api.bingaihub.com/v1/chat?q=${encodeURIComponent(message)}`, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-            }
-        });
-        
-        return {
-            text: bingRes.data?.response || bingRes.data?.message || 'Response dari Bing AI',
-            source: 'bing-fallback'
-        };
-        
-    } catch (error) {
-        // Alternatif 2: Gunakan Microsoft EdgeGPT (simulasi)
-        return {
-            text: `Hai! Saya Copilot AI. Anda bertanya: "${message}"\n\nSaya menggunakan model: ${model}\n\nMaaf, saat ini saya hanya bisa memberikan response dasar karena kendala teknis.`,
-            note: 'Response simulasi - API WebSocket sedang bermasalah'
-        };
-    }
-}
 
 app.get("/api/gpt", async (req, res) => {
 const text = req.query.text;
