@@ -398,7 +398,7 @@ async function tryEroApi(api) {
 }
 
 // Endpoint utama
-app.get('/api/nswf', async (req, res) => {
+app.get('/api/ero', async (req, res) => {
   try {
     // Peringatan dewasa
     const warningHeader = '⚠️ KONTEN DEWASA 18+ ⚠️';
