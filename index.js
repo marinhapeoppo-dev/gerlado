@@ -1350,13 +1350,21 @@ app.get('/api/remove-clothes', async (req, res) => {
       });
     }
     
-    const response = await removeClothes(imageUrl);
+    // Proses remove clothes
+    const result = await removeClothes(imageUrl);
+    
+    // Upload ke telegra.ph
+    const telegraphUrl = await uploadToTelegraph(result.result);
     
     res.status(200).json({
       status: 200,
       creator: "Geraldo",
-      data: { response }
+      data: {
+        result: telegraphUrl,
+        timestamp: new Date().toISOString()
+      }
     });
+    
   } catch (error) {
     res.status(500).json({ 
       status: 500,
@@ -1382,6 +1390,26 @@ async function removeClothes(imageUrl) {
     return response.data;
   } catch (error) {
     throw new Error(`Gagal memproses gambar: ${error.message}`);
+  }
+}
+
+async function uploadToTelegraph(imageUrl) {
+  try {
+    const response = await axios.post('https://telegra.ph/upload', 
+      { url: imageUrl }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    
+    if (response.data && response.data[0] && response.data[0].src) {
+      return `https://telegra.ph${response.data[0].src}`;
+    }
+    throw new Error('Gagal mendapatkan URL dari telegra.ph');
+    
+  } catch (error) {
+    throw new Error(`Gagal upload ke telegra.ph: ${error.message}`);
   }
 }
 
