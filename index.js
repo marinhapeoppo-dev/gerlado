@@ -113,50 +113,86 @@ app.get('/api/blackboxAIChat', async (req, res) => {
   }
 });
 
-app.get('/api/copilot', async (req, res) => {
+app.get('/api/speedtest', async (req, res) => {
   try {
-    const text = req.query.text || req.query.message;
-    if (!text) {
-      return res.status(400).json({ error: 'Parameter "text" atau "message" tidak ditemukan' });
-    }
-    
-    const encodedQuery = encodeURIComponent(text);
-    const apiUrl = `https://api.nekolabs.web.id/text-generation/copilot?text=${encodedQuery}`;
-    
-    const response = await axios.get(apiUrl, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Accept': 'application/json'
-      },
-      timeout: 45000
-    });
-
-    let answer = "";
-    
-    if (response.data && response.data.success) {
-      if (response.data.result && response.data.result.text) {
-        answer = response.data.result.text;
-      }
-    }
-
-    if (!answer || answer.trim().length === 0) {
-      answer = `Maaf, saya tidak dapat menjawab pertanyaan "${text}" saat ini.`;
-    }
-
+    const result = await runSpeedTest();
     res.status(200).json({
       status: 200,
       creator: "Geraldo",
-      data: { response: answer.trim() }
+      data: result
     });
-    
   } catch (error) {
-    console.error('API Error:', error.response?.data || error.message);
-    res.status(500).json({ 
-      error: error.message,
-      details: error.response?.data || 'No additional details'
-    });
+    res.status(500).json({ error: error.message });
   }
 });
+
+// Fungsi speed test
+async function runSpeedTest() {
+  const startTime = performance.now();
+  let uploadSpeed = 0;
+  let ping = 0;
+  let networkInfo = { location: 'N/A', org: 'N/A' };
+
+  // upload test
+  try {
+    const url = 'https://speed.cloudflare.com/__up';
+    const data = '0'.repeat(10 * 1024 * 1024);
+    const response = await axios.post(url, data, {
+      headers: { 'Content-Length': data.length },
+      timeout: 30000
+    });
+    const duration = (performance.now() - startTime) / 1000;
+    if (response.status === 200) {
+      uploadSpeed = data.length / (duration || 1);
+    }
+  } catch (e) {
+    throw new Error(`Upload test failed: ${e.message}`);
+  }
+
+  // ping test
+  try {
+    const start = performance.now();
+    await axios.get('https://www.google.com', { timeout: 10000 });
+    ping = Math.round(performance.now() - start);
+  } catch (e) {
+    ping = 0;
+  }
+
+  // network info
+  try {
+    const response = await axios.get('https://ipinfo.io/json', { timeout: 10000 });
+    if (response.status === 200) {
+      const data = response.data;
+      networkInfo.location = `${data.city || 'N/A'}, ${data.country || 'N/A'}`;
+      networkInfo.org = (data.org || 'N/A').replace('AS', '');
+    }
+  } catch (e) {
+    networkInfo = { location: 'N/A', org: 'N/A' };
+  }
+
+  // format speed
+  const formatSpeed = (bytesPerSec) => {
+    if (bytesPerSec <= 0) return '0 Mbps';
+    const mbits = (bytesPerSec * 8) / (1024 * 1024);
+    return mbits >= 1 ? `${mbits.toFixed(1)} Mbps` : `${(mbits * 1000).toFixed(1)} Kbps`;
+  };
+
+  return {
+    upload: formatSpeed(uploadSpeed),
+    ping: `${ping}ms`,
+    server: networkInfo.location,
+    provider: networkInfo.org,
+    test_duration: `${((performance.now() - startTime) / 1000).toFixed(1)} sec`,
+    timestamp: new Date().toLocaleString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    }).replace(',', '')
+  };
+}
 
 app.get("/api/gpt", async (req, res) => {
 const text = req.query.text;
