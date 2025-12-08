@@ -115,12 +115,12 @@ app.get('/api/blackboxAIChat', async (req, res) => {
 
 app.get('/api/copilot', async (req, res) => {
   try {
-    const text = req.query.text;
-    if (!text) {
-      return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
+    const message = req.query.message;
+    if (!message) {
+      return res.status(400).json({ error: 'Parameter "message" tidak ditemukan' });
     }
     
-    const response = await getCopilotResponse(text);
+    const response = await getCopilotResponse(message);
     res.status(200).json({
       status: 200,
       creator: "Geraldo",
@@ -135,7 +135,8 @@ app.get('/api/copilot', async (req, res) => {
 async function getCopilotResponse(query) {
   try {
     const encodedQuery = encodeURIComponent(query);
-    const apiUrl = `https://api.nekolabs.web.id/text-generation/copilot?text=${encodedQuery}`;
+    // Parameter yang benar adalah 'message' bukan 'text'
+    const apiUrl = `https://api.nekolabs.web.id/text-generation/copilot?message=${encodedQuery}`;
     
     const response = await axios.get(apiUrl, {
       headers: {
@@ -158,8 +159,7 @@ async function getCopilotResponse(query) {
     }
 
     if (!answer || answer.trim().length === 0) {
-      answer = `Maaf, saya tidak dapat menjawab pertanyaan "${query}" saat ini. ` +
-              `Silakan coba dengan pertanyaan lain tentang Matematika, IPA, atau Coding.`;
+      answer = `Maaf, saya tidak dapat menjawab pertanyaan "${query}" saat ini.`;
     }
 
     return answer.trim();
