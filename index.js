@@ -4,6 +4,7 @@ const os = require('os');
 const fs = require('fs');
 const ptz = require('./function/index') 
 const axios = require('axios')
+const FormData = require('form-data');
 
 var app = express();
 app.enable("trust proxy");
@@ -487,6 +488,81 @@ app.get('/api/ero/info', (req, res) => {
     notice: "Sumber API dirahasiakan untuk keamanan dan keberlanjutan layanan."
   });
 });
+
+// endpoint up to top4top
+
+const axios = require('axios');
+const FormData = require('form-data');
+const fs = require('fs');
+
+app.post('/api/upload-top4top', async (req, res) => {
+  try {
+    // Pastikan file ada dalam request
+    if (!req.files || !req.files.file) {
+      return res.status(400).json({ 
+        error: 'File tidak ditemukan. Silakan upload file menggunakan form-data' 
+      });
+    }
+
+    const file = req.files.file;
+    const filePath = file.tempFilePath || file.path;
+    
+    const response = await top4top(filePath);
+    
+    // Hapus file temporary jika ada
+    if (fs.existsSync(filePath) && filePath.includes('tmp')) {
+      fs.unlinkSync(filePath);
+    }
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { response }
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Fungsi upload ke top4top
+async function top4top(filePath) {
+  try {
+    const f = new FormData();
+    f.append('file_0_', fs.createReadStream(filePath), filePath.split('/').pop());
+    f.append('submitr', '[ رفع الملفات ]');
+
+    const html = await axios.post(
+      'https://top4top.io/index.php',
+      f,
+      {
+        headers: {
+          ...f.getHeaders(),
+          'User-Agent': 'Mozilla/5.0 (Linux; Android 10)',
+          'Accept': 'text/html'
+        }
+      }
+    ).then(x => x.data).catch(() => null);
+
+    if (!html) return { status: 'error', message: 'Gagal mengupload file' };
+
+    // Fungsi untuk mencari regex
+    const get = re => {
+      const m = html.match(re);
+      return m ? m[1] || m[0] : null;
+    };
+
+    const result = get(/value="(https:\/\/[a-z]\.top4top\.io\/[a-zA-Z0-9]+_[a-zA-Z0-9]+\.[a-zA-Z0-9]{2,5})"/)
+                || get(/https:\/\/[a-z]\.top4top\.io\/[a-zA-Z0-9]+_[a-zA-Z0-9]+\.[a-zA-Z0-9]{2,5}/)
+
+    return {
+      status: 'success',
+      download_url: result,
+      message: result ? 'File berhasil diupload' : 'Gagal mendapatkan URL download'
+    };
+  } catch (error) {
+    throw new Error(`Upload gagal: ${error.message}`);
+  }
+}
 
 app.use((req, res, next) => {
   res.status(404).send("Halaman tidak ditemukan");
