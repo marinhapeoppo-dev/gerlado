@@ -715,11 +715,152 @@ async function getDownloadToken() {
     }
 }
 
+app.get('/api/zonerai', async (req, res) => {
+  try {
+    const prompt = req.query.prompt;
+    if (!prompt) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Parameter "prompt" tidak ditemukan',
+        example: '/api/zonerai?prompt=futuristic anime girl&resolution=square'
+      });
+    }
+    
+    const resolution = req.query.resolution || 'portrait';
+    const upscale = req.query.upscale || 2;
+    
+    const images = await zonerAITextToImage(prompt, resolution, upscale);
+    
+    // Upload semua gambar ke catbox
+    const uploadedImages = [];
+    for (const buffer of images) {
+      const imageUrl = await uploadToCatbox(buffer);
+      uploadedImages.push(imageUrl);
+    }
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { 
+        prompt: prompt,
+        resolution: resolution,
+        upscale: upscale,
+        images: uploadedImages,
+        count: uploadedImages.length,
+        dimensions: getResolutionDimensions(resolution)
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+// Resolusi yang tersedia
+const resolutions = {
+  portrait: { width: 768, height: 1344 },
+  landscape: { width: 1344, height: 768 },
+  square: { width: 1024, height: 1024 },
+  ultra: { width: 1536, height: 1536 },
+  tall: { width: 832, height: 1344 },
+  wide: { width: 1344, height: 832 },
+};
+
+// Fungsi Zoner AI Text to Image
+async function zonerAITextToImage(prompt, resolution = 'portrait', upscale = 2) {
+  const selected = resolutions[resolution] || resolutions.portrait;
+  const { width, height } = selected;
+
+  // Buat 3 gambar secara paralel
+  const promises = Array.from({ length: 3 }, (_, idx) => {
+    const form = new FormData();
+    form.append('Prompt', prompt);
+    form.append('Language', 'eng_Latn');
+    form.append('Size', `${width}x${height}`);
+    form.append('Upscale', upscale.toString());
+    form.append('Batch_Index', idx.toString());
+
+    const https = require('https');
+    const agent = new https.Agent({ rejectUnauthorized: false });
+
+    return axios.post(
+      'https://api.zonerai.com/zoner-ai/txt2img',
+      form,
+      {
+        httpsAgent: agent,
+        headers: {
+          ...form.getHeaders(),
+          'Origin': 'https://zonerai.com',
+          'Referer': 'https://zonerai.com/',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        },
+        responseType: 'arraybuffer'
+      }
+    ).then(res => {
+      return Buffer.from(res.data);
+    });
+  });
+
+  return Promise.all(promises);
+}
+
+// Fungsi upload buffer ke catbox
+async function uploadToCatbox(buffer) {
+  try {
+    const base64Data = buffer.toString('base64');
+    const response = await axios.post('https://catbox.moe/user/api.php', 
+      `reqtype=base64&userhash=&file=${encodeURIComponent(base64Data)}`,
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }
+    );
+    
+    return response.data;
+  } catch (error) {
+    // Jika gagal, return data URI
+    return `data:image/png;base64,${buffer.toString('base64')}`;
+  }
+}
+
+// Fungsi untuk mendapatkan dimensi resolusi
+function getResolutionDimensions(resolution) {
+  const res = resolutions[resolution] || resolutions.portrait;
+  return `${res.width}x${res.height}`;
+}
+
+// Endpoint untuk list resolusi yang tersedia
+app.get('/api/zonerai/resolutions', (req, res) => {
+  const availableResolutions = Object.keys(resolutions).map(key => ({
+    name: key,
+    dimensions: `${resolutions[key].width}x${resolutions[key].height}`,
+    width: resolutions[key].width,
+    height: resolutions[key].height
+  }));
+  
+  res.json({
+    status: 200,
+    creator: "Geraldo",
+    data: {
+      resolutions: availableResolutions,
+      default: 'portrait',
+      example: '/api/zonerai?prompt=futuristic anime girl&resolution=square&upscale=2'
+    }
+  });
+});
+
 app.get('/api/remove-bg', async (req, res) => {
   try {
     const imageUrl = req.query.url;
     if (!imageUrl) {
       return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
         error: 'Parameter "url" tidak ditemukan',
         example: '/api/remove-bg?url=https://example.com/image.jpg'
       });
@@ -730,96 +871,98 @@ app.get('/api/remove-bg', async (req, res) => {
     res.status(200).json({
       status: 200,
       creator: "Geraldo",
-      data: result
+      data: { 
+        response: result
+      }
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
   }
 });
 
-// Fungsi remove background tanpa API key
 async function removeBackground(imageUrl) {
   try {
-    // Scrape dari bgremover.app (no API key needed)
-    const response = await axios.post('https://bgremover.app/api/removebg', 
-      {
-        image_url: imageUrl,
-        output_format: 'png',
-        size: 'auto'
+    // Download gambar dari URL
+    const response = await axios.get(imageUrl, {
+      responseType: 'arraybuffer'
+    });
+    
+    const imgBuffer = Buffer.from(response.data);
+    const imgPath = path.join(tmpdir(), `ori_${Date.now()}_${path.basename(imageUrl)}`);
+    fs.writeFileSync(imgPath, imgBuffer);
+    
+    // Convert ke base64 data URI
+    const b64img = imgBuffer.toString('base64');
+    const mimtype = getImageType(imageUrl);
+    const datauri = `data:${mimtype};base64,${b64img}`;
+    
+    // Kirim ke API
+    const apiResponse = await axios({
+      method: 'post',
+      url: 'https://background-remover.com/removeImageBackground',
+      headers: {
+        'accept': '*/*',
+        'content-type': 'application/json',
+        'origin': 'https://background-remover.com',
+        'referer': 'https://background-remover.com/upload',
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
       },
-      {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-          'Content-Type': 'application/json',
-          'Origin': 'https://bgremover.app',
-          'Referer': 'https://bgremover.app/'
-        }
+      data: {
+        encodedImage: datauri
       }
-    );
-
-    if (response.data && response.data.image_url) {
-      return {
-        success: true,
-        original_image: imageUrl,
-        result_image: response.data.image_url,
-        format: 'png',
-        source: 'bgremover.app'
-      };
+    });
+    
+    const hasil = apiResponse.data;
+    if (hasil?.encodedImageWithoutBackground) {
+      // Ekstrak base64 dari data URI
+      const b64data = hasil.encodedImageWithoutBackground.replace(/^data:image\/\w+;base64,/, '');
+      const resultBuffer = Buffer.from(b64data, 'base64');
+      
+      // Upload ke catbox
+      const catboxUrl = await uploadToCatboxBase64(b64data);
+      
+      // Hapus file temporary
+      fs.unlinkSync(imgPath);
+      
+      return catboxUrl;
     } else {
       throw new Error('Gagal menghapus background');
     }
-    
   } catch (error) {
-    // Fallback ke API lain
-    try {
-      // Coba dengan remove.bg tanpa API key (via unofficial method)
-      const response2 = await axios.post('https://api.remove.bg/v1.0/removebg',
-        {
-          image_url: imageUrl,
-          size: 'auto',
-          format: 'png'
-        },
-        {
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-            'Content-Type': 'application/json',
-            'X-API-Key': 'free'  // Try free tier
-          }
+    throw new Error(error.message || 'Terjadi kesalahan saat menghapus background');
+  }
+}
+
+// Fungsi untuk menentukan tipe gambar dari URL
+function getImageType(imageUrl) {
+  const url = imageUrl.toLowerCase();
+  if (url.includes('.jpg') || url.includes('.jpeg')) return 'image/jpeg';
+  if (url.includes('.png')) return 'image/png';
+  if (url.includes('.gif')) return 'image/gif';
+  if (url.includes('.webp')) return 'image/webp';
+  return 'image/jpeg'; // default
+}
+
+// Fungsi upload base64 ke catbox
+async function uploadToCatboxBase64(base64Data) {
+  try {
+    const response = await axios.post('https://catbox.moe/user/api.php', 
+      `reqtype=base64&userhash=&file=${encodeURIComponent(base64Data)}`,
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
         }
-      );
-      
-      if (response2.data && response2.data.data && response2.data.data.result_b64) {
-        const resultImage = `data:image/png;base64,${response2.data.data.result_b64}`;
-        return {
-          success: true,
-          original_image: imageUrl,
-          result_image: resultImage,
-          format: 'base64',
-          source: 'remove.bg (free)'
-        };
-      } else {
-        // Try another alternative
-        const response3 = await axios.get(`https://api.pxlapi.dev/removebg?image=${encodeURIComponent(imageUrl)}`, {
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-          }
-        });
-        
-        if (response3.data && response3.data.url) {
-          return {
-            success: true,
-            original_image: imageUrl,
-            result_image: response3.data.url,
-            format: 'png',
-            source: 'pxlapi.dev'
-          };
-        }
-        
-        throw new Error('Semua API remove background gagal');
       }
-    } catch (error2) {
-      throw new Error(`Gagal menghapus background: ${error2.message}`);
-    }
+    );
+    
+    return response.data;
+  } catch (error) {
+    // Jika gagal, convert base64 ke data URI
+    return `data:image/png;base64,${base64Data}`;
   }
 }
 
@@ -1350,21 +1493,18 @@ app.get('/api/remove-clothes', async (req, res) => {
       });
     }
     
-    // Proses remove clothes
-    const result = await removeClothes(imageUrl);
+    const response = await removeClothes(imageUrl);
     
-    // Upload ke telegra.ph
-    const telegraphUrl = await uploadToTelegraph(result.result);
+    // Upload ke catbox
+    const catboxUrl = await uploadToCatbox(response.result);
     
     res.status(200).json({
       status: 200,
       creator: "Geraldo",
-      data: {
-        result: telegraphUrl,
-        timestamp: new Date().toISOString()
+      data: { 
+        response: catboxUrl
       }
     });
-    
   } catch (error) {
     res.status(500).json({ 
       status: 500,
@@ -1393,23 +1533,146 @@ async function removeClothes(imageUrl) {
   }
 }
 
-async function uploadToTelegraph(imageUrl) {
+async function uploadToCatbox(imageUrl) {
   try {
-    const response = await axios.post('https://telegra.ph/upload', 
-      { url: imageUrl }, {
+    // Upload langsung dari URL ke catbox
+    const response = await axios.post('https://catbox.moe/user/api.php', 
+      `reqtype=urlupload&url=${encodeURIComponent(imageUrl)}`,
+      {
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/x-www-form-urlencoded'
         }
       }
     );
     
-    if (response.data && response.data[0] && response.data[0].src) {
-      return `https://telegra.ph${response.data[0].src}`;
-    }
-    throw new Error('Gagal mendapatkan URL dari telegra.ph');
-    
+    return response.data;
   } catch (error) {
-    throw new Error(`Gagal upload ke telegra.ph: ${error.message}`);
+    // Jika gagal, return URL asli
+    console.error('Gagal upload ke catbox:', error.message);
+    return imageUrl;
+  }
+}
+
+// Endpoint untuk pencarian komik
+app.get('/api/komik/search', async (req, res) => {
+  try {
+    const query = req.query.query;
+    if (!query) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Parameter "query" tidak ditemukan'
+      });
+    }
+    
+    const response = await komikSearch(query);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { response }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+// Endpoint untuk detail komik
+app.get('/api/komik/detail', async (req, res) => {
+  try {
+    const url = req.query.url;
+    if (!url) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Parameter "url" tidak ditemukan'
+      });
+    }
+    
+    const response = await komikDetail(url);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { response }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+// Endpoint untuk download komik - return direct image URLs
+app.get('/api/komik/download', async (req, res) => {
+  try {
+    const url = req.query.url;
+    if (!url) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Parameter "url" tidak ditemukan'
+      });
+    }
+    
+    const response = await komikDownload(url);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { response }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+// Fungsi pencarian komik
+async function komikSearch(query) {
+  try {
+    const response = await axios.get(
+      `https://api.siputzx.my.id/api/anime/komikindo-search?query=${encodeURIComponent(query)}`
+    );
+    
+    return response.data;
+  } catch (error) {
+    throw new Error(`Gagal mencari komik: ${error.message}`);
+  }
+}
+
+// Fungsi detail komik
+async function komikDetail(url) {
+  try {
+    const response = await axios.get(
+      `https://api.siputzx.my.id/api/anime/komikindo-detail?url=${encodeURIComponent(url)}`
+    );
+    
+    return response.data;
+  } catch (error) {
+    throw new Error(`Gagal mengambil detail komik: ${error.message}`);
+  }
+}
+
+// Fungsi download komik - return direct image URLs
+async function komikDownload(url) {
+  try {
+    const response = await axios.get(
+      `https://api.siputzx.my.id/api/anime/komikindo-download?url=${encodeURIComponent(url)}`
+    );
+    
+    return response.data;
+  } catch (error) {
+    throw new Error(`Gagal download komik: ${error.message}`);
   }
 }
 
