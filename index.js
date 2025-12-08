@@ -376,7 +376,7 @@ async function gptOss(text) {
   }
 }
 
-app.get('/api/gpt41', async (req, res) => {
+app.get('/api/gpt-empat', async (req, res) => {
   try {
     const message = req.query.message;
     if (!message) {
