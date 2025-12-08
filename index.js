@@ -119,7 +119,8 @@ app.get('/api/copilot', async (req, res) => {
     if (!text) {
       return res.status(400).json({ error: 'Parameter "text" tidak ditemukan' });
     }
-    const response = await copilotChat(text);
+    
+    const response = await getCopilotResponse(text);
     res.status(200).json({
       status: 200,
       creator: "Geraldo",
@@ -130,28 +131,41 @@ app.get('/api/copilot', async (req, res) => {
   }
 });
 
-// Fungsi untuk chat dengan Copilot
-async function copilotChat(text) {
-    try {
-        if (!text) throw new Error('Text is required');
-        
-        // Encode text untuk URL
-        const encodedText = encodeURIComponent(text);
-        const url = `https://api.nekolabs.web.id/text-generation/copilot?text=${encodedText}`;
-        
-        const { data } = await axios.get(url, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-                'Accept': 'application/json',
-                'Accept-Encoding': 'gzip, deflate',
-                'Connection': 'keep-alive'
-            }
-        });
-        
-        return data;
-    } catch (error) {
-        throw new Error(error.message);
+// Fungsi untuk mendapatkan respons dari Copilot/Martin AI
+async function getCopilotResponse(query) {
+  try {
+    const encodedQuery = encodeURIComponent(query);
+    const apiUrl = `https://api.nekolabs.web.id/text-generation/copilot?text=${encodedQuery}`;
+    
+    const response = await axios.get(apiUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'Accept': 'application/json'
+      },
+      timeout: 45000
+    });
+
+    let answer = "";
+    
+    if (response.data && response.data.success) {
+      if (response.data.result && response.data.result.text) {
+        answer = response.data.result.text;
+      } else {
+        answer = "Maaf, format response tidak sesuai.";
+      }
+    } else {
+      answer = "Maaf, API gagal merespons.";
     }
+
+    if (!answer || answer.trim().length === 0) {
+      answer = `Maaf, saya tidak dapat menjawab pertanyaan "${query}" saat ini. ` +
+              `Silakan coba dengan pertanyaan lain tentang Matematika, IPA, atau Coding.`;
+    }
+
+    return answer.trim();
+  } catch (error) {
+    throw new Error(`Copilot AI Error: ${error.message}`);
+  }
 }
 
 app.get("/api/gpt", async (req, res) => {
