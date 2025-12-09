@@ -20,8 +20,7 @@
     <div id="wrapper">
         <!-- Sidebar -->
         <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-                <!-- Logo dari URL -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#home">
                 <img src="https://files.catbox.moe/240t0t.jpg" 
                      alt="Geraldo APIs Logo" 
                      class="sidebar-brand-icon"
@@ -29,114 +28,24 @@
                 <div class="sidebar-brand-text mx-3">Geraldo APIs</div>
             </a>
             <hr class="sidebar-divider my-0">
-            <li class="nav-item active">
-                <a class="nav-link" href="/stats">
-                    <i class="fas fa-fw fa-thermometer-three-quarters"></i>
-                    <span>Statistic</span>
-                </a>
-            </li>
-            <hr class="sidebar-divider">
-            <div class="sidebar-heading">
-                Features
-            </div>
-            
-            <!-- Artificial Intelligence Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSticker"
-                    aria-expanded="true" aria-controls="collapseSticker">
-                    <i class="fas fa-robot"></i>
-                    <span>Artificial Intelligence</span>
+                <a class="nav-link" href="#home">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
                 </a>
-                <div id="collapseSticker" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-                    <div class="py-2 collapse-inner rounded">
-                        <a class="collapse-item" target="_blank" href="/api/gpt?text=hai">Chat Gpt Ai</a>
-                        <a class="collapse-item" target="_blank" href="/api/degreeguru?message=hai">DegreeGuru Ai</a>
-                        <a class="collapse-item" target="_blank" href="/api/gpt-oss?message=hai">GPT-OSS Ai</a>
-                        <a class="collapse-item" target="_blank" href="/api/gpt-empat?message=hai">GPT-4.1 Ai</a>
-                        <a class="collapse-item" target="_blank" href="/api/perplexity?message=hai">PERPLEXITY Ai</a>
-                        <a class="collapse-item" target="_blank" href="/api/claude?message=Halo">Claude AI</a>
-                    </div>
-                </div>
             </li>
-            
-            <!-- Kategori Image -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseImage"
-                    aria-expanded="true" aria-controls="collapseImage">
-                    <i class="fas fa-image"></i>
-                    <span>Image</span>
+                <a class="nav-link" href="#docs">
+                    <i class="fas fa-book"></i>
+                    <span>Documentation</span>
                 </a>
-                <div id="collapseImage" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-                    <div class="py-2 collapse-inner rounded">
-                        <a class="collapse-item" target="_blank" href="/api/image-generate?prompt=beautiful anime girl&model=dalle3">Image Generator</a>
-                        <a class="collapse-item" target="_blank" href="/api/image-models">List AI Models</a>
-                    </div>
-                </div>
             </li>
-
-            <!-- Downloader Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDownloader"
-                    aria-expanded="true" aria-controls="collapseDownloader">
-                    <i class="fas fa-download"></i>
-                    <span>Downloader</span>
+                <a class="nav-link" href="#stats">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Statistics</span>
                 </a>
-                <div id="collapseDownloader" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-                    <div class="py-2 collapse-inner rounded">
-                        <a class="collapse-item" target="_blank" href="/api/download-douyin?url=">Douyin Downloader</a>
-                        <a class="collapse-item" target="_blank" href="/api/aio-downloader?url=https://open.spotify.com/track/3rPtS4nfpy7PsARctAWpzd">All-in-One</a>
-                        <a class="collapse-item" target="_blank" href="/api/igdl?url=">IG Downloader</a>
-                        <a class="collapse-item" target="_blank" href="/api/tiktok?url=https://vt.tiktok.com/ZSS74ynBL/">TikTok Downloader</a>
-                        <a class="collapse-item" target="_blank" href="/api/yt-play?query=">YTPLAY</a>
-                    </div>
-                </div>
             </li>
-            
-            <!-- Kategori Tools -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTools"
-                    aria-expanded="true" aria-controls="collapseTools">
-                    <i class="fas fa-tools"></i>
-                    <span>Tools</span>
-                </a>
-                <div id="collapseTools" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-                    <div class="py-2 collapse-inner rounded">
-                        <a class="collapse-item" target="_blank" href="/api/speedtest">Internet Speed Test</a>
-                        <a class="collapse-item" target="_blank" href="/api/ssweb?url=https://google.com">Ssweb</a>
-                        <a class="collapse-item" target="_blank" href="/api/cek-kuota-axis?nomor=6281234567890">Cek Kuota Axis</a>
-                        <a class="collapse-item" target="_blank" href="/api/remove-bg?url=">Remove Background</a>
-                        <a class="collapse-item" target="_blank" href="/api/remove-clothes?imageUrl=">Remove Clothes</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Kategori Hiburan -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseHiburan"
-                    aria-expanded="true" aria-controls="collapseHiburan">
-                    <i class="fas fa-film"></i>
-                    <span>Hiburan</span>
-                </a>
-                <div id="collapseHiburan" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-                    <div class="py-2 collapse-inner rounded">
-                    </div>
-                </div>
-            </li>
-            
-            <!-- NSFW Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNsfw"
-                    aria-expanded="true" aria-controls="collapseNsfw">
-                    <i class="fas fa-eye-slash"></i>
-                    <span>NSFW</span>
-                </a>
-                <div id="collapseNsfw" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-                    <div class="py-2 collapse-inner rounded">
-                        <a class="collapse-item" target="_blank" href="/api/ero">Random Image</a>
-                    </div>
-                </div>
-            </li>
-            
             <hr class="sidebar-divider">
             <div class="sidebar-heading">
                 Contact
@@ -181,214 +90,450 @@
                                 </div>
                             </div>
                         </li>
-                        
-                        <div class="topbar-divider d-none d-sm-block"></div>
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown">
-                                <form class="navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                            aria-label="Search" aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw"></i>
-                                <span class="badge badge-success badge-counter">2</span>
-                            </a>
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header bg-info-gradient">
-                                    INFO CENTER
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-danger">
-                                            <i class="fas fa-info-circle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500"></div>
-                                        <span style="font-size:12px;">Welcome to my rest apis</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-danger">
-                                            <i class="fas fa-file-alt text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 8, 2025</div>
-                                        <span style="font-size:14px;">Didirikan Rest Api</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </li>
                     </ul>
                 </nav>
                 <!-- End of Topbar -->
 
                 <!-- Container Fluid-->
                 <div class="container-fluid" id="container-wrapper">
-                    <!-- S&K Card -->
-                    <div class="card mb-4 border-left-primary shadow-sm">
-                        <div class="card-body p-4">
-                            <div class="row align-items-center">
-                                <div class="col-md-11">
-                                    <h4 class="mb-3 text-gray-800">
-                                        <i class="fas fa-ruler mr-2 text-danger"></i>Syarat & Ketentuan
-                                    </h4>
-                                    <div class="card bg-light border-0 p-3">
-                                        <ol class="mb-0 pl-3">
-                                            <li class="mb-2">
-                                                <strong>Jangan flooding requests.</strong>
-                                                <p class="mb-0 text-gray-600">Mohon untuk tidak melakukan request secara berlebihan dalam waktu singkat.</p>
-                                            </li>
-                                            <li class="mb-2">
-                                                <strong>Owner dapat sewaktu-waktu mengubah ketentuan</strong>
-                                                <p class="mb-0 text-gray-600">Perubahan mungkin dilakukan untuk menjaga kualitas dan stabilitas website.</p>
-                                            </li>
-                                            <li class="mb-2">
-                                                <strong>Semua fitur free dan unlimited request</strong>
-                                                <p class="mb-0 text-gray-600">Nikmati semua layanan kami secara gratis tanpa batasan request.</p>
-                                            </li>
-                                            <li class="mb-2">
-                                                <strong>Gunakan dengan bijak</strong>
-                                                <p class="mb-0 text-gray-600">Website ini dibuat untuk membantu, mohon digunakan dengan tanggung jawab.</p>
-                                            </li>
-                                            <li class="mb-0">
-                                                <strong>Disclaimer</strong>
-                                                <p class="mb-0 text-gray-600">Owner tidak bertanggung jawab atas penggunaan website oleh pengguna.</p>
-                                            </li>
-                                        </ol>
-                                    </div>
-                                </div>
-                                <div class="col-md-1 text-center d-none d-md-block">
-                                    <i class="fas fa-file-contract fa-3x text-gray-400"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row mb-3">
-                        <!-- Stats Card: Baterai -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card h-100 border-left-primary shadow-sm">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-uppercase mb-1">Baterai</div>
-                                            <div class="h5 mb-0 font-weight-bold">
-                                                <span id="battery-level">Loading...</span>% 
-                                                <br>
-                                                <span id="charging-status" class="text-sm"></span>
+                    <!-- Home Section -->
+                    <section id="home" class="mb-5">
+                        <!-- Hero Section -->
+                        <div class="row mb-5">
+                            <div class="col-lg-12">
+                                <div class="card border-0 shadow-lg">
+                                    <div class="card-body text-center p-5">
+                                        <h1 class="display-4 mb-3 text-primary">Geraldo APIs</h1>
+                                        <p class="lead mb-4">Welcome to our comprehensive REST API platform. We provide powerful, reliable, and easy-to-use APIs for various purposes.</p>
+                                        
+                                        <div class="row mt-5">
+                                            <div class="col-md-4 mb-4">
+                                                <div class="card border-left-primary h-100">
+                                                    <div class="card-body">
+                                                        <i class="fas fa-bolt fa-3x text-primary mb-3"></i>
+                                                        <h5 class="card-title">Fast & Reliable</h5>
+                                                        <p class="card-text">Our APIs are optimized for speed and reliability with 99.9% uptime.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-4">
+                                                <div class="card border-left-success h-100">
+                                                    <div class="card-body">
+                                                        <i class="fas fa-unlock-alt fa-3x text-success mb-3"></i>
+                                                        <h5 class="card-title">Free to Use</h5>
+                                                        <p class="card-text">All APIs are completely free with no rate limits or hidden charges.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-4">
+                                                <div class="card border-left-info h-100">
+                                                    <div class="card-body">
+                                                        <i class="fas fa-code fa-3x text-info mb-3"></i>
+                                                        <h5 class="card-title">Easy Integration</h5>
+                                                        <p class="card-text">Simple RESTful endpoints with clear documentation for easy integration.</p>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-battery-full fa-2x text-primary"></i>
+                                        
+                                        <div class="mt-4">
+                                            <a href="#docs" class="btn btn-primary btn-lg px-5">
+                                                <i class="fas fa-book mr-2"></i>View Documentation
+                                            </a>
+                                            <a href="#try-api" class="btn btn-outline-primary btn-lg px-5 ml-3">
+                                                <i class="fas fa-play-circle mr-2"></i>Try API Now
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Stats Card: IP Address -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card h-100 border-left-info shadow-sm">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-uppercase mb-1">IP Address</div>
-                                            <div class="h5 mb-0 font-weight-bold">
-                                                <span id="ip-address">Loading...</span>
+
+                        <!-- Stats Section -->
+                            
+                            <!-- Stats Card: IP Address -->
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card h-100 border-left-info shadow-sm">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-uppercase mb-1">IP Address</div>
+                                                <div class="h5 mb-0 font-weight-bold">
+                                                    <span id="ip-address">Loading...</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-network-wired fa-2x text-info"></i>
                                             </div>
                                         </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-network-wired fa-2x text-info"></i>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <!-- Stats Card: Waktu -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card h-100 border-left-success shadow-sm">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-uppercase mb-1">Waktu Server</div>
-                                            <div class="h5 mb-0 font-weight-bold">
-                                                <span id="server-time">Loading...</span>
+                            
+                            <!-- Stats Card: Waktu -->
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card h-100 border-left-success shadow-sm">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-uppercase mb-1">Waktu Server</div>
+                                                <div class="h5 mb-0 font-weight-bold">
+                                                    <span id="server-time">Loading...</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-clock fa-2x text-success"></i>
                                             </div>
                                         </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-clock fa-2x text-success"></i>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <!-- Stats Card: Status -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card h-100 border-left-warning shadow-sm">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-uppercase mb-1">Status API</div>
-                                            <div class="h5 mb-0 font-weight-bold text-success">
-                                                <i class="fas fa-circle fa-sm"></i> Online
+                            
+                            <!-- Stats Card: Status -->
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card h-100 border-left-warning shadow-sm">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-uppercase mb-1">Status API</div>
+                                                <div class="h5 mb-0 font-weight-bold text-success">
+                                                    <i class="fas fa-circle fa-sm"></i> Online
+                                                </div>
+                                                <div class="text-xs text-muted mt-1">All systems operational</div>
                                             </div>
-                                            <div class="text-xs text-muted mt-1">All systems operational</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-server fa-2x text-warning"></i>
+                                            <div class="col-auto">
+                                                <i class="fas fa-server fa-2x text-warning"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- Donation Section -->
-                    <div class="row mb-4">
-                        <div class="col-lg-12">
-                            <div class="card shadow-sm">
-                                <div class="card-body text-center py-4">
-                                    <h5 class="card-title mb-3">
-                                        <i class="fas fa-heart text-danger mr-2"></i>Support Development
-                                    </h5>
-                                    <p class="card-text mb-4">Ingin mendukung pengembangan website ini?</p>
-                                    <div class="d-flex justify-content-center flex-wrap">
-                                        <a href="https://saweria.co/putuofc" class="btn btn-primary btn-sm mr-2 mb-2" target="_blank">
-                                            <i class="fas fa-wallet mr-1"></i> Saweria
-                                        </a>
-                                        <a href="https://github.com/siputzx" class="btn btn-dark btn-sm mr-2 mb-2" target="_blank">
-                                            <i class="fab fa-github mr-1"></i> GitHub
-                                        </a>
-                                        <a href="https://wa.me/6281916807680" class="btn btn-success btn-sm mb-2" target="_blank">
-                                            <i class="fab fa-whatsapp mr-1"></i> Contact
-                                        </a>
+
+                        <!-- S&K Section -->
+                        <div class="row mb-5">
+                            <div class="col-lg-12">
+                                <div class="card border-left-danger shadow-sm">
+                                    <div class="card-body p-4">
+                                        <h4 class="mb-3 text-gray-800">
+                                            <i class="fas fa-exclamation-triangle mr-2 text-danger"></i>Syarat & Ketentuan
+                                        </h4>
+                                        <div class="card bg-light border-0 p-3">
+                                            <ol class="mb-0 pl-3">
+                                                <li class="mb-2">
+                                                    <strong>Jangan flooding requests.</strong>
+                                                    <p class="mb-0 text-gray-600">Mohon untuk tidak melakukan request secara berlebihan dalam waktu singkat.</p>
+                                                </li>
+                                                <li class="mb-2">
+                                                    <strong>Owner dapat sewaktu-waktu mengubah ketentuan</strong>
+                                                    <p class="mb-0 text-gray-600">Perubahan mungkin dilakukan untuk menjaga kualitas dan stabilitas website.</p>
+                                                </li>
+                                                <li class="mb-2">
+                                                    <strong>Semua fitur free dan unlimited request</strong>
+                                                    <p class="mb-0 text-gray-600">Nikmati semua layanan kami secara gratis tanpa batasan request.</p>
+                                                </li>
+                                                <li class="mb-2">
+                                                    <strong>Gunakan dengan bijak</strong>
+                                                    <p class="mb-0 text-gray-600">Website ini dibuat untuk membantu, mohon digunakan dengan tanggung jawab.</p>
+                                                </li>
+                                                <li class="mb-0">
+                                                    <strong>Disclaimer</strong>
+                                                    <p class="mb-0 text-gray-600">Owner tidak bertanggung jawab atas penggunaan website oleh pengguna.</p>
+                                                </li>
+                                            </ol>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </section>
+
+                    <!-- Documentation Section -->
+                    <section id="docs" class="mb-5">
+                        <div class="row mb-4">
+                            <div class="col-lg-12">
+                                <div class="card border-0 shadow">
+                                    <div class="card-header bg-primary text-white">
+                                        <h4 class="mb-0">
+                                            <i class="fas fa-book mr-2"></i>API Documentation
+                                        </h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <!-- API Categories -->
+                                            <div class="col-lg-3">
+                                                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                                    <a class="nav-link active" id="v-pills-ai-tab" data-toggle="pill" href="#v-pills-ai" role="tab">
+                                                        <i class="fas fa-robot mr-2"></i>AI APIs
+                                                    </a>
+                                                    <a class="nav-link" id="v-pills-image-tab" data-toggle="pill" href="#v-pills-image" role="tab">
+                                                        <i class="fas fa-image mr-2"></i>Image APIs
+                                                    </a>
+                                                    <a class="nav-link" id="v-pills-downloader-tab" data-toggle="pill" href="#v-pills-downloader" role="tab">
+                                                        <i class="fas fa-download mr-2"></i>Downloader APIs
+                                                    </a>
+                                                    <a class="nav-link" id="v-pills-tools-tab" data-toggle="pill" href="#v-pills-tools" role="tab">
+                                                        <i class="fas fa-tools mr-2"></i>Tools APIs
+                                                    </a>
+                                                    <a class="nav-link" id="v-pills-nsfw-tab" data-toggle="pill" href="#v-pills-nsfw" role="tab">
+                                                        <i class="fas fa-eye-slash mr-2"></i>NSFW APIs
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- API Endpoints -->
+                                            <div class="col-lg-9">
+                                                <div class="tab-content" id="v-pills-tabContent">
+                                                    <!-- AI APIs -->
+                                                    <div class="tab-pane fade show active" id="v-pills-ai" role="tabpanel">
+                                                        <div class="api-endpoints">
+                                                            <h5 class="mb-3">Artificial Intelligence APIs</h5>
+                                                            <div class="list-group">
+                                                                <a href="#" class="list-group-item list-group-item-action api-item" data-endpoint="/api/gpt" data-method="GET" data-param="text">
+                                                                    <div class="d-flex w-100 justify-content-between">
+                                                                        <h6 class="mb-1">Chat GPT AI</h6>
+                                                                        <small class="badge badge-primary">GET</small>
+                                                                    </div>
+                                                                    <p class="mb-1">/api/gpt?text=your_message</p>
+                                                                    <small>AI-powered chat completion using GPT model</small>
+                                                                </a>
+                                                                <a href="#" class="list-group-item list-group-item-action api-item" data-endpoint="/api/degreeguru" data-method="GET" data-param="message">
+                                                                    <div class="d-flex w-100 justify-content-between">
+                                                                        <h6 class="mb-1">DegreeGuru AI</h6>
+                                                                        <small class="badge badge-primary">GET</small>
+                                                                    </div>
+                                                                    <p class="mb-1">/api/degreeguru?message=your_query</p>
+                                                                    <small>Educational AI assistant for learning</small>
+                                                                </a>
+                                                                <a href="#" class="list-group-item list-group-item-action api-item" data-endpoint="/api/gpt-empat" data-method="GET" data-param="message">
+                                                                    <div class="d-flex w-100 justify-content-between">
+                                                                        <h6 class="mb-1">GPT-4.1 AI</h6>
+                                                                        <small class="badge badge-primary">GET</small>
+                                                                    </div>
+                                                                    <p class="mb-1">/api/gpt-empat?message=your_prompt</p>
+                                                                    <small>Advanced GPT-4.1 model for complex tasks</small>
+                                                                </a>
+                                                                <a href="#" class="list-group-item list-group-item-action api-item" data-endpoint="/api/claude" data-method="GET" data-param="message">
+                                                                    <div class="d-flex w-100 justify-content-between">
+                                                                        <h6 class="mb-1">Claude AI</h6>
+                                                                        <small class="badge badge-primary">GET</small>
+                                                                    </div>
+                                                                    <p class="mb-1">/api/claude?message=your_query</p>
+                                                                    <small>Anthropic's Claude AI assistant</small>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Image APIs -->
+                                                    <div class="tab-pane fade" id="v-pills-image" role="tabpanel">
+                                                        <div class="api-endpoints">
+                                                            <h5 class="mb-3">Image Processing APIs</h5>
+                                                            <div class="list-group">
+                                                                <a href="#" class="list-group-item list-group-item-action api-item" data-endpoint="/api/image-generate" data-method="GET" data-param="prompt" data-extra='{"model": "dalle3"}'>
+                                                                    <div class="d-flex w-100 justify-content-between">
+                                                                        <h6 class="mb-1">Image Generator</h6>
+                                                                        <small class="badge badge-primary">GET</small>
+                                                                    </div>
+                                                                    <p class="mb-1">/api/image-generate?prompt=description&model=dalle3</p>
+                                                                    <small>Generate images from text descriptions using AI</small>
+                                                                </a>
+                                                                <a href="#" class="list-group-item list-group-item-action" onclick="window.open('/api/image-models', '_blank')">
+                                                                    <div class="d-flex w-100 justify-content-between">
+                                                                        <h6 class="mb-1">List AI Models</h6>
+                                                                        <small class="badge badge-info">GET</small>
+                                                                    </div>
+                                                                    <p class="mb-1">/api/image-models</p>
+                                                                    <small>Get list of available AI image generation models</small>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Downloader APIs -->
+                                                    <div class="tab-pane fade" id="v-pills-downloader" role="tabpanel">
+                                                        <div class="api-endpoints">
+                                                            <h5 class="mb-3">Downloader APIs</h5>
+                                                            <div class="list-group">
+                                                                <a href="#" class="list-group-item list-group-item-action api-item" data-endpoint="/api/tiktok" data-method="GET" data-param="url">
+                                                                    <div class="d-flex w-100 justify-content-between">
+                                                                        <h6 class="mb-1">TikTok Downloader</h6>
+                                                                        <small class="badge badge-primary">GET</small>
+                                                                    </div>
+                                                                    <p class="mb-1">/api/tiktok?url=tiktok_video_url</p>
+                                                                    <small>Download TikTok videos without watermark</small>
+                                                                </a>
+                                                                <a href="#" class="list-group-item list-group-item-action api-item" data-endpoint="/api/igdl" data-method="GET" data-param="url">
+                                                                    <div class="d-flex w-100 justify-content-between">
+                                                                        <h6 class="mb-1">Instagram Downloader</h6>
+                                                                        <small class="badge badge-primary">GET</small>
+                                                                    </div>
+                                                                    <p class="mb-1">/api/igdl?url=instagram_post_url</p>
+                                                                    <small>Download Instagram posts, reels, and stories</small>
+                                                                </a>
+                                                                <a href="#" class="list-group-item list-group-item-action api-item" data-endpoint="/api/yt-play" data-method="GET" data-param="query">
+                                                                    <div class="d-flex w-100 justify-content-between">
+                                                                        <h6 class="mb-1">YouTube Player</h6>
+                                                                        <small class="badge badge-primary">GET</small>
+                                                                    </div>
+                                                                    <p class="mb-1">/api/yt-play?query=search_query</p>
+                                                                    <small>Search and play YouTube videos</small>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Tools APIs -->
+                                                    <div class="tab-pane fade" id="v-pills-tools" role="tabpanel">
+                                                        <div class="api-endpoints">
+                                                            <h5 class="mb-3">Tools APIs</h5>
+                                                            <div class="list-group">
+                                                                <a href="#" class="list-group-item list-group-item-action api-item" data-endpoint="/api/ssweb" data-method="GET" data-param="url">
+                                                                    <div class="d-flex w-100 justify-content-between">
+                                                                        <h6 class="mb-1">Website Screenshot</h6>
+                                                                        <small class="badge badge-primary">GET</small>
+                                                                    </div>
+                                                                    <p class="mb-1">/api/ssweb?url=website_url</p>
+                                                                    <small>Take screenshots of any website</small>
+                                                                </a>
+                                                                <a href="#" class="list-group-item list-group-item-action" onclick="window.open('/api/speedtest', '_blank')">
+                                                                    <div class="d-flex w-100 justify-content-between">
+                                                                        <h6 class="mb-1">Internet Speed Test</h6>
+                                                                        <small class="badge badge-info">GET</small>
+                                                                    </div>
+                                                                    <p class="mb-1">/api/speedtest</p>
+                                                                    <small>Test your internet connection speed</small>
+                                                                </a>
+                                                                <a href="#" class="list-group-item list-group-item-action api-item" data-endpoint="/api/remove-bg" data-method="GET" data-param="url">
+                                                                    <div class="d-flex w-100 justify-content-between">
+                                                                        <h6 class="mb-1">Remove Background</h6>
+                                                                        <small class="badge badge-primary">GET</small>
+                                                                    </div>
+                                                                    <p class="mb-1">/api/remove-bg?url=image_url</p>
+                                                                    <small>Remove background from images automatically</small>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- NSFW APIs -->
+                                                    <div class="tab-pane fade" id="v-pills-nsfw" role="tabpanel">
+                                                        <div class="api-endpoints">
+                                                            <h5 class="mb-3">NSFW APIs</h5>
+                                                            <div class="list-group">
+                                                                <a href="#" class="list-group-item list-group-item-action" onclick="window.open('/api/ero', '_blank')">
+                                                                    <div class="d-flex w-100 justify-content-between">
+                                                                        <h6 class="mb-1">Random Image</h6>
+                                                                        <small class="badge badge-danger">GET</small>
+                                                                    </div>
+                                                                    <p class="mb-1">/api/ero</p>
+                                                                    <small>Get random NSFW images (18+)</small>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Try API Section -->
+                    <section id="try-api" class="mb-5">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card border-0 shadow">
+                                    <div class="card-header bg-success text-white">
+                                        <h4 class="mb-0">
+                                            <i class="fas fa-play-circle mr-2"></i>Try API
+                                        </h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- API Input Form -->
+                                        <div class="row mb-4">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label for="apiEndpoint">Endpoint URL</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text bg-light border-right-0">
+                                                                <i class="fas fa-link"></i>
+                                                            </span>
+                                                        </div>
+                                                        <input type="text" class="form-control border-left-0" id="apiEndpoint" placeholder="Select an endpoint from documentation" readonly>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div id="paramContainer">
+                                                    <!-- Dynamic parameters will be added here -->
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <button id="testApiBtn" class="btn btn-primary btn-lg" disabled>
+                                                        <i class="fas fa-rocket mr-2"></i>Test API
+                                                    </button>
+                                                    <button id="copyUrlBtn" class="btn btn-outline-secondary btn-lg ml-2">
+                                                        <i class="fas fa-copy mr-2"></i>Copy URL
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- JSON Response Display -->
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="card">
+                                                    <div class="card-header bg-dark text-white">
+                                                        <h5 class="mb-0">
+                                                            <i class="fas fa-code mr-2"></i>JSON Response
+                                                        </h5>
+                                                    </div>
+                                                    <div class="card-body bg-light">
+                                                        <pre id="jsonResponse" class="mb-0" style="min-height: 300px; max-height: 500px; overflow: auto; background: #f8f9fa; padding: 15px; border-radius: 5px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;">
+{
+  "status": "Ready",
+  "message": "Select an API endpoint to test",
+  "timestamp": null
+}</pre>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Support Section -->
+                    <section class="mb-5">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card shadow-sm">
+                                    <div class="card-body text-center py-4">
+                                        <h5 class="card-title mb-3">
+                                            <i class="fas fa-heart text-danger mr-2"></i>Support Development
+                                        </h5>
+                                        <p class="card-text mb-4">Ingin mendukung pengembangan website ini?</p>
+                                        <div class="d-flex justify-content-center flex-wrap">
+                                            <a href="https://saweria.co/putuofc" class="btn btn-primary btn-sm mr-2 mb-2" target="_blank">
+                                                <i class="fas fa-wallet mr-1"></i> Saweria
+                                            </a>
+                                            <a href="https://github.com/siputzx" class="btn btn-dark btn-sm mr-2 mb-2" target="_blank">
+                                                <i class="fab fa-github mr-1"></i> GitHub
+                                            </a>
+                                            <a href="https://wa.me/6281916807680" class="btn btn-success btn-sm mb-2" target="_blank">
+                                                <i class="fab fa-whatsapp mr-1"></i> Contact
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 </div>
                 <!-- End Container Fluid-->
                 
@@ -417,7 +562,6 @@
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="js/ruang-admin.min.js"></script>
-    <script src="js/tampilan.js"></script>
     
     <script>
         // ========== DARK MODE FUNCTIONALITY ==========
@@ -559,6 +703,221 @@
         }
         // ========== END DARK MODE ==========
         
+        // ========== API TESTER FUNCTIONALITY ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle API item clicks
+            document.querySelectorAll('.api-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const endpoint = this.getAttribute('data-endpoint');
+                    const method = this.getAttribute('data-method');
+                    const param = this.getAttribute('data-param');
+                    const extra = this.getAttribute('data-extra');
+                    
+                    // Update endpoint display
+                    document.getElementById('apiEndpoint').value = endpoint;
+                    
+                    // Create parameter input
+                    const paramContainer = document.getElementById('paramContainer');
+                    paramContainer.innerHTML = '';
+                    
+                    if (param) {
+                        const paramGroup = document.createElement('div');
+                        paramGroup.className = 'form-group';
+                        
+                        const label = document.createElement('label');
+                        label.textContent = `Parameter: ${param}`;
+                        label.htmlFor = 'apiParam';
+                        
+                        const inputGroup = document.createElement('div');
+                        inputGroup.className = 'input-group';
+                        
+                        const prepend = document.createElement('div');
+                        prepend.className = 'input-group-prepend';
+                        prepend.innerHTML = '<span class="input-group-text bg-light border-right-0"><i class="fas fa-edit"></i></span>';
+                        
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.className = 'form-control border-left-0';
+                        input.id = 'apiParam';
+                        input.placeholder = `Enter ${param} value...`;
+                        
+                        // Set default value based on param name
+                        if (param === 'text' || param === 'message') {
+                            input.value = 'Hello, how are you?';
+                        } else if (param === 'url') {
+                            input.value = 'https://example.com';
+                        } else if (param === 'prompt') {
+                            input.value = 'beautiful anime girl';
+                        } else if (param === 'query') {
+                            input.value = 'music video';
+                        }
+                        
+                        inputGroup.appendChild(prepend);
+                        inputGroup.appendChild(input);
+                        
+                        // Add extra parameters if exists
+                        if (extra) {
+                            try {
+                                const extraParams = JSON.parse(extra);
+                                Object.keys(extraParams).forEach(key => {
+                                    const extraParamGroup = document.createElement('div');
+                                    extraParamGroup.className = 'form-group mt-2';
+                                    
+                                    const extraLabel = document.createElement('label');
+                                    extraLabel.textContent = `Parameter: ${key}`;
+                                    
+                                    const extraInputGroup = document.createElement('div');
+                                    extraInputGroup.className = 'input-group';
+                                    
+                                    const extraPrepend = document.createElement('div');
+                                    extraPrepend.className = 'input-group-prepend';
+                                    extraPrepend.innerHTML = '<span class="input-group-text bg-light border-right-0"><i class="fas fa-cog"></i></span>';
+                                    
+                                    const extraInput = document.createElement('input');
+                                    extraInput.type = 'text';
+                                    extraInput.className = 'form-control border-left-0';
+                                    extraInput.id = `apiParam_${key}`;
+                                    extraInput.value = extraParams[key];
+                                    extraInput.readOnly = true;
+                                    
+                                    extraInputGroup.appendChild(extraPrepend);
+                                    extraInputGroup.appendChild(extraInput);
+                                    
+                                    extraParamGroup.appendChild(extraLabel);
+                                    extraParamGroup.appendChild(extraInputGroup);
+                                    paramContainer.appendChild(extraParamGroup);
+                                });
+                            } catch (e) {
+                                console.error('Error parsing extra parameters:', e);
+                            }
+                        }
+                        
+                        paramGroup.appendChild(label);
+                        paramGroup.appendChild(inputGroup);
+                        paramContainer.appendChild(paramGroup);
+                    }
+                    
+                    // Enable test button
+                    document.getElementById('testApiBtn').disabled = false;
+                    
+                    // Scroll to try API section
+                    document.getElementById('try-api').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+            
+            // Handle test API button
+            document.getElementById('testApiBtn').addEventListener('click', async function() {
+                const endpoint = document.getElementById('apiEndpoint').value;
+                const paramInput = document.getElementById('apiParam');
+                
+                if (!endpoint) {
+                    showNotification('Please select an API endpoint first', 'warning');
+                    return;
+                }
+                
+                // Build URL with parameters
+                let url = endpoint;
+                const params = new URLSearchParams();
+                
+                if (paramInput && paramInput.value) {
+                    params.append(paramInput.id.replace('apiParam', '').replace('_', '') || 'text', paramInput.value);
+                }
+                
+                // Add extra parameters
+                document.querySelectorAll('#paramContainer input[type="text"]').forEach(input => {
+                    if (input.id.startsWith('apiParam_') && input.value) {
+                        const paramName = input.id.replace('apiParam_', '');
+                        params.append(paramName, input.value);
+                    }
+                });
+                
+                const queryString = params.toString();
+                if (queryString) {
+                    url += '?' + queryString;
+                }
+                
+                // Show loading state
+                this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Testing...';
+                this.disabled = true;
+                
+                // Update JSON response with loading state
+                document.getElementById('jsonResponse').textContent = JSON.stringify({
+                    status: "loading",
+                    message: "Testing API endpoint...",
+                    endpoint: url,
+                    timestamp: new Date().toISOString()
+                }, null, 2);
+                
+                try {
+                    // Make API request
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    
+                    // Update JSON response
+                    document.getElementById('jsonResponse').textContent = JSON.stringify(data, null, 2);
+                    
+                    // Show success notification
+                    showNotification('API test successful!', 'success');
+                } catch (error) {
+                    // Update JSON response with error
+                    document.getElementById('jsonResponse').textContent = JSON.stringify({
+                        status: "error",
+                        message: error.message,
+                        endpoint: url,
+                        timestamp: new Date().toISOString()
+                    }, null, 2);
+                    
+                    // Show error notification
+                    showNotification('API test failed: ' + error.message, 'danger');
+                } finally {
+                    // Reset button state
+                    this.innerHTML = '<i class="fas fa-rocket mr-2"></i>Test API';
+                    this.disabled = false;
+                }
+            });
+            
+            // Handle copy URL button
+            document.getElementById('copyUrlBtn').addEventListener('click', function() {
+                const endpoint = document.getElementById('apiEndpoint').value;
+                const paramInput = document.getElementById('apiParam');
+                
+                if (!endpoint) {
+                    showNotification('Please select an API endpoint first', 'warning');
+                    return;
+                }
+                
+                // Build URL
+                let url = endpoint;
+                const params = new URLSearchParams();
+                
+                if (paramInput && paramInput.value) {
+                    params.append(paramInput.id.replace('apiParam', '').replace('_', '') || 'text', paramInput.value);
+                }
+                
+                // Add extra parameters
+                document.querySelectorAll('#paramContainer input[type="text"]').forEach(input => {
+                    if (input.id.startsWith('apiParam_') && input.value) {
+                        const paramName = input.id.replace('apiParam_', '');
+                        params.append(paramName, input.value);
+                    }
+                });
+                
+                const queryString = params.toString();
+                if (queryString) {
+                    url += '?' + queryString;
+                }
+                
+                // Copy to clipboard
+                navigator.clipboard.writeText(url).then(() => {
+                    showNotification('URL copied to clipboard!', 'success');
+                }).catch(err => {
+                    showNotification('Failed to copy URL: ' + err, 'danger');
+                });
+            });
+        });
+        // ========== END API TESTER ==========
+        
         // ========== UTILITY FUNCTIONS ==========
         // Script untuk mendapatkan IP Address
         async function getIPAddress() {
@@ -571,6 +930,38 @@
             }
         }
         
+        // Script untuk mendapatkan status baterai
+        function getBatteryStatus() {
+            if ('getBattery' in navigator) {
+                navigator.getBattery().then(function(battery) {
+                    updateBatteryInfo(battery);
+                    
+                    battery.addEventListener('levelchange', function() {
+                        updateBatteryInfo(battery);
+                    });
+                    
+                    battery.addEventListener('chargingchange', function() {
+                        updateBatteryInfo(battery);
+                    });
+                });
+            } else {
+                document.getElementById('battery-level').textContent = 'N/A';
+                document.getElementById('charging-status').textContent = '';
+            }
+        }
+        
+        function updateBatteryInfo(battery) {
+            const level = Math.round(battery.level * 100);
+            document.getElementById('battery-level').textContent = level;
+            
+            if (battery.charging) {
+                document.getElementById('charging-status').textContent = '(Charging)';
+                document.getElementById('charging-status').className = 'text-sm text-success';
+            } else {
+                document.getElementById('charging-status').textContent = '(Not Charging)';
+                document.getElementById('charging-status').className = 'text-sm text-secondary';
+            }
+        }
         
         // Update server time
         function updateServerTime() {
@@ -611,6 +1002,23 @@
             
             // Update battery every minute
             setInterval(getBatteryStatus, 60000);
+            
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
         }
         
         // Run initialization when page loads
@@ -760,6 +1168,34 @@
             border-left-color: #ffc107 !important;
         }
         
+        body.dark-mode .border-left-danger {
+            border-left-color: #dc3545 !important;
+        }
+        
+        /* API Documentation Styles */
+        .nav-pills .nav-link.active {
+            background-color: #3f51b5;
+            color: white;
+        }
+        
+        .api-endpoints .list-group-item {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .api-endpoints .list-group-item:hover {
+            transform: translateX(5px);
+            background-color: #f8f9fa;
+        }
+        
+        body.dark-mode .api-endpoints .list-group-item:hover {
+            background-color: #252525;
+        }
+        
+        .api-endpoints .badge {
+            font-size: 0.7em;
+        }
+        
         /* Notification animation */
         .mode-notification {
             animation: slideInRight 0.3s ease;
@@ -783,6 +1219,15 @@
                 right: 10px;
                 left: 10px;
                 width: calc(100% - 20px);
+            }
+            
+            .display-4 {
+                font-size: 2.5rem;
+            }
+            
+            .btn-lg {
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
             }
         }
         
@@ -811,6 +1256,32 @@
         /* Text utilities */
         .text-sm {
             font-size: 0.875rem;
+        }
+        
+        /* Hero section styling */
+        .display-4 {
+            font-weight: 700;
+            background: linear-gradient(45deg, #3f51b5, #2196f3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* JSON response styling */
+        #jsonResponse {
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Section spacing */
+        section {
+            padding-top: 80px;
+            margin-top: -80px;
         }
     </style>
 </body>
