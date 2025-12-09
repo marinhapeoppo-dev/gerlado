@@ -245,6 +245,356 @@ res.status(500).send("Internal Server Error");
 }
 });
 
+// Endpoint untuk Image Generation
+app.get('/api/image-generate', async (req, res) => {
+  try {
+    const prompt = req.query.prompt;
+    const model = req.query.model || 'dalle3';
+    const ratio = req.query.ratio || '1:1';
+    
+    if (!prompt) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Parameter "prompt" tidak ditemukan',
+        example: '/api/image-generate?prompt=beautiful anime girl&model=dalle3&ratio=1:1'
+      });
+    }
+    
+    const response = await generateImage(prompt, model, ratio);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { 
+        response: response
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+// Endpoint untuk list model yang tersedia
+app.get('/api/image-models', (req, res) => {
+  const models = {
+    'ai4chat': 'AI4Chat',
+    'animaginexl31': 'Animagine XL 3.1',
+    'animaginexl40': 'Animagine XL 4.0',
+    'cartoony': 'Cartoony Anime',
+    'dalle2': 'DALL-E 2',
+    'dalle3': 'DALL-E 3',
+    'dreamshaperxl': 'Dreamshaper XL',
+    'epicrealism': 'Epic Realism',
+    'fluxdev': 'Flux Dev',
+    'fluxschnell': 'Flux Schnell',
+    'holymix': 'Holymix',
+    'illumiyume': 'Illumiyume XL',
+    'illustriousme': 'Illustrious ME v6',
+    'illustriousxl': 'Illustrious XL 1.0',
+    'imagen3': 'Imagen 3.0 Fast',
+    'imagen4': 'Imagen 4.0 Fast',
+    'juggernautxl': 'Juggernaut XL',
+    'majicmix': 'Majicmix Realistic',
+    'newreality': 'New Reality',
+    'noobaixl': 'NoobAI XL',
+    'noobai': 'NoobAI',
+    'pixarcartoon': 'Pixar Cartoon',
+    'ponyrealism': 'Pony Realism',
+    'seaartinfinity': 'SeaArt Infinity',
+    'seaartrealism': 'SeaArt Realism',
+    'stablediffusion': 'Stable Diffusion 3.5',
+    'waianime': 'WAI Anime',
+    'writecream': 'Writecream',
+    'yayoimix': 'Yayoimix',
+    'yiffymix': 'Yiffymix'
+  };
+  
+  const apiUrls = {
+    'ai4chat': 'https://api.nekolabs.web.id/image-generation/ai4chat',
+    'animaginexl31': 'https://api.nekolabs.web.id/image-generation/animagine/xl-3.1',
+    'animaginexl40': 'https://api.nekolabs.web.id/image-generation/animagine/xl-4.0',
+    'cartoony': 'https://api.nekolabs.web.id/image-generation/cartoony-anime',
+    'dalle2': 'https://api.nekolabs.web.id/image-generation/dall-e/2',
+    'dalle3': 'https://api.nekolabs.web.id/image-generation/dall-e/3',
+    'dreamshaperxl': 'https://api.nekolabs.web.id/image-generation/dreamshaper-xl',
+    'epicrealism': 'https://api.nekolabs.web.id/image-generation/epic-realism',
+    'fluxdev': 'https://api.nekolabs.web.id/image-generation/flux/dev',
+    'fluxschnell': 'https://api.nekolabs.web.id/image-generation/flux/schnell',
+    'holymix': 'https://api.nekolabs.web.id/image-generation/holymix',
+    'illumiyume': 'https://api.nekolabs.web.id/image-generation/illumiyume-xl',
+    'illustriousme': 'https://api.nekolabs.web.id/image-generation/illustrious/me-v6',
+    'illustriousxl': 'https://api.nekolabs.web.id/image-generation/illustrious/xl-1.0',
+    'imagen3': 'https://api.nekolabs.web.id/image-generation/imagen/3.0-fast',
+    'imagen4': 'https://api.nekolabs.web.id/image-generation/imagen/4.0-fast',
+    'juggernautxl': 'https://api.nekolabs.web.id/image-generation/juggernaut-xl',
+    'majicmix': 'https://api.nekolabs.web.id/image-generation/majicmix-realistic',
+    'newreality': 'https://api.nekolabs.web.id/image-generation/newreality',
+    'noobaixl': 'https://api.nekolabs.web.id/image-generation/noobai-xl',
+    'noobai': 'https://api.nekolabs.web.id/image-generation/noobai',
+    'pixarcartoon': 'https://api.nekolabs.web.id/image-generation/pixar-cartoon',
+    'ponyrealism': 'https://api.nekolabs.web.id/image-generation/pony-realism',
+    'seaartinfinity': 'https://api.nekolabs.web.id/image-generation/seaart/infinity',
+    'seaartrealism': 'https://api.nekolabs.web.id/image-generation/seaart/realism',
+    'stablediffusion': 'https://api.nekolabs.web.id/image-generation/stable-diffusion/3.5',
+    'waianime': 'https://api.nekolabs.web.id/image-generation/wai-anime-nsfw',
+    'writecream': 'https://api.nekolabs.web.id/image-generation/writecream',
+    'yayoimix': 'https://api.nekolabs.web.id/image-generation/yayoimix',
+    'yiffymix': 'https://api.nekolabs.web.id/image-generation/yiffymix'
+  };
+  
+  const modelList = Object.keys(models).map(key => ({
+    id: key,
+    name: models[key],
+    api_url: apiUrls[key]
+  }));
+  
+  res.json({
+    status: 200,
+    creator: "Geraldo",
+    data: {
+      models: modelList,
+      ratios: ['1:1', '16:9', '9:16'],
+      example: '/api/image-generate?prompt=beautiful anime girl&model=dalle3&ratio=1:1'
+    }
+  });
+});
+
+// Fungsi Generate Image
+async function generateImage(prompt, model = 'dalle3', ratio = '1:1') {
+  const apiMap = {
+    'ai4chat': 'https://api.nekolabs.web.id/image-generation/ai4chat',
+    'animaginexl31': 'https://api.nekolabs.web.id/image-generation/animagine/xl-3.1',
+    'animaginexl40': 'https://api.nekolabs.web.id/image-generation/animagine/xl-4.0',
+    'cartoony': 'https://api.nekolabs.web.id/image-generation/cartoony-anime',
+    'dalle2': 'https://api.nekolabs.web.id/image-generation/dall-e/2',
+    'dalle3': 'https://api.nekolabs.web.id/image-generation/dall-e/3',
+    'dreamshaperxl': 'https://api.nekolabs.web.id/image-generation/dreamshaper-xl',
+    'epicrealism': 'https://api.nekolabs.web.id/image-generation/epic-realism',
+    'fluxdev': 'https://api.nekolabs.web.id/image-generation/flux/dev',
+    'fluxschnell': 'https://api.nekolabs.web.id/image-generation/flux/schnell',
+    'holymix': 'https://api.nekolabs.web.id/image-generation/holymix',
+    'illumiyume': 'https://api.nekolabs.web.id/image-generation/illumiyume-xl',
+    'illustriousme': 'https://api.nekolabs.web.id/image-generation/illustrious/me-v6',
+    'illustriousxl': 'https://api.nekolabs.web.id/image-generation/illustrious/xl-1.0',
+    'imagen3': 'https://api.nekolabs.web.id/image-generation/imagen/3.0-fast',
+    'imagen4': 'https://api.nekolabs.web.id/image-generation/imagen/4.0-fast',
+    'juggernautxl': 'https://api.nekolabs.web.id/image-generation/juggernaut-xl',
+    'majicmix': 'https://api.nekolabs.web.id/majicmix-realistic',
+    'newreality': 'https://api.nekolabs.web.id/image-generation/newreality',
+    'noobaixl': 'https://api.nekolabs.web.id/image-generation/noobai-xl',
+    'noobai': 'https://api.nekolabs.web.id/image-generation/noobai',
+    'pixarcartoon': 'https://api.nekolabs.web.id/image-generation/pixar-cartoon',
+    'ponyrealism': 'https://api.nekolabs.web.id/image-generation/pony-realism',
+    'seaartinfinity': 'https://api.nekolabs.web.id/image-generation/seaart/infinity',
+    'seaartrealism': 'https://api.nekolabs.web.id/image-generation/seaart/realism',
+    'stablediffusion': 'https://api.nekolabs.web.id/image-generation/stable-diffusion/3.5',
+    'waianime': 'https://api.nekolabs.web.id/image-generation/wai-anime-nsfw',
+    'writecream': 'https://api.nekolabs.web.id/image-generation/writecream',
+    'yayoimix': 'https://api.nekolabs.web.id/image-generation/yayoimix',
+    'yiffymix': 'https://api.nekolabs.web.id/image-generation/yiffymix'
+  };
+  
+  const aiNameMap = {
+    'ai4chat': 'AI4Chat',
+    'animaginexl31': 'Animagine XL 3.1',
+    'animaginexl40': 'Animagine XL 4.0',
+    'cartoony': 'Cartoony Anime',
+    'dalle2': 'DALL-E 2',
+    'dalle3': 'DALL-E 3',
+    'dreamshaperxl': 'Dreamshaper XL',
+    'epicrealism': 'Epic Realism',
+    'fluxdev': 'Flux Dev',
+    'fluxschnell': 'Flux Schnell',
+    'holymix': 'Holymix',
+    'illumiyume': 'Illumiyume XL',
+    'illustriousme': 'Illustrious ME v6',
+    'illustriousxl': 'Illustrious XL 1.0',
+    'imagen3': 'Imagen 3.0 Fast',
+    'imagen4': 'Imagen 4.0 Fast',
+    'juggernautxl': 'Juggernaut XL',
+    'majicmix': 'Majicmix Realistic',
+    'newreality': 'New Reality',
+    'noobaixl': 'NoobAI XL',
+    'noobai': 'NoobAI',
+    'pixarcartoon': 'Pixar Cartoon',
+    'ponyrealism': 'Pony Realism',
+    'seaartinfinity': 'SeaArt Infinity',
+    'seaartrealism': 'SeaArt Realism',
+    'stablediffusion': 'Stable Diffusion 3.5',
+    'waianime': 'WAI Anime',
+    'writecream': 'Writecream',
+    'yayoimix': 'Yayoimix',
+    'yiffymix': 'Yiffymix'
+  };
+  
+  const apiUrl = apiMap[model];
+  if (!apiUrl) {
+    throw new Error(`Model "${model}" tidak tersedia. Gunakan /api/image-models untuk melihat daftar model.`);
+  }
+  
+  const aiName = aiNameMap[model] || model;
+  
+  // Validasi ratio
+  const validRatios = ['1:1', '16:9', '9:16'];
+  if (!validRatios.includes(ratio)) {
+    ratio = '1:1';
+  }
+  
+  const response = await axios.get(apiUrl, {
+    params: {
+      prompt: prompt,
+      ratio: ratio
+    },
+    timeout: 60000,
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+    }
+  });
+  
+  const data = response.data;
+  
+  if (!data.success) {
+    throw new Error(`Gagal menghasilkan gambar: ${data.message || 'Unknown error'}`);
+  }
+  
+  if (!data.result) {
+    throw new Error('Tidak ada gambar yang dihasilkan');
+  }
+  
+  // Upload ke catbox
+  const catboxUrl = await uploadToCatbox(data.result);
+  
+  return {
+    model: aiName,
+    prompt: prompt,
+    ratio: ratio,
+    image_url: catboxUrl,
+    original_url: data.result,
+    response_time: data.responseTime,
+    timestamp: data.timestamp
+  };
+}
+
+// Fungsi upload ke catbox
+async function uploadToCatbox(imageUrl) {
+  try {
+    const response = await axios.post('https://catbox.moe/user/api.php', 
+      `reqtype=urlupload&url=${encodeURIComponent(imageUrl)}`,
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }
+    );
+    
+    return response.data;
+  } catch (error) {
+    // Jika gagal, return URL asli
+    return imageUrl;
+  }
+}
+
+// Endpoint untuk Claude AI
+app.get('/api/claude', async (req, res) => {
+  try {
+    const message = req.query.message;
+    if (!message) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Parameter "message" tidak ditemukan',
+        example: '/api/claude?message=Siapa&penemu&gravitasi?'
+      });
+    }
+    
+    const response = await claudeAI(message);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { 
+        response: response
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+// Fungsi Claude AI
+function getDataAttr(html, attr) {
+  const re = new RegExp(`data-${attr}\\s*=\\s*["']([^"']+)["']`, 'i');
+  const m = html.match(re);
+  return m ? m[1] : '';
+}
+
+async function claudeAI(text) {
+  const baseHeaders = {
+    Accept: '*/*',
+    Referer: 'https://claudeai.one/',
+    Origin: 'https://claudeai.one',
+  };
+
+  try {
+    const { data: html } = await axios.get('https://claudeai.one/', {
+      headers: baseHeaders,
+    });
+    
+    const nonce   = getDataAttr(html, 'nonce');
+    const postId  = getDataAttr(html, 'post-id');
+    const botId   = getDataAttr(html, 'bot-id');
+    
+    const clientIdMatch = html.match(
+      /localStorage\.setItem\(['"]wpaicg_chat_client_id['"],\s*['"]([^'"]+)['"]\)/
+    );
+    
+    const clientId =
+      clientIdMatch?.[1] ??
+      'JHFiony-' + Math.random().toString(36).substring(2, 12);
+
+    const form = new FormData();
+    form.append('_wpnonce', nonce);
+    form.append('post_id', postId);
+    form.append('url', 'https://claudeai.one');
+    form.append('action', 'wpaicg_chat_shortcode_message');
+    form.append('message', text);
+    form.append('bot_id', botId);
+    form.append('chatbot_identity', 'shortcode');
+    form.append('wpaicg_chat_history', '[]');
+    form.append('wpaicg_chat_client_id', clientId);
+    
+    const { data: resp } = await axios.post(
+      'https://claudeai.one/wp-admin/admin-ajax.php',
+      form,
+      {
+        headers: {
+          ...baseHeaders,
+          ...form.getHeaders(),
+        },
+      }
+    );
+    
+    const answer = resp?.data;
+    if (!answer) {
+      throw new Error('Claude AI tidak memberikan respons');
+    }
+
+    return answer;
+    
+  } catch (err) {
+    throw new Error(`Gagal menghubungi Claude AI: ${err.message}`);
+  }
+}
+
 app.get('/api/perplexity', async (req, res) => {
   try {
     const message = req.query.message;
@@ -714,145 +1064,6 @@ async function getDownloadToken() {
         throw error;
     }
 }
-
-app.get('/api/zonerai', async (req, res) => {
-  try {
-    const prompt = req.query.prompt;
-    if (!prompt) {
-      return res.status(400).json({ 
-        status: 400,
-        creator: "Geraldo",
-        error: 'Parameter "prompt" tidak ditemukan',
-        example: '/api/zonerai?prompt=futuristic anime girl&resolution=square'
-      });
-    }
-    
-    const resolution = req.query.resolution || 'portrait';
-    const upscale = req.query.upscale || 2;
-    
-    const images = await zonerAITextToImage(prompt, resolution, upscale);
-    
-    // Upload semua gambar ke catbox
-    const uploadedImages = [];
-    for (const buffer of images) {
-      const imageUrl = await uploadToCatbox(buffer);
-      uploadedImages.push(imageUrl);
-    }
-    
-    res.status(200).json({
-      status: 200,
-      creator: "Geraldo",
-      data: { 
-        prompt: prompt,
-        resolution: resolution,
-        upscale: upscale,
-        images: uploadedImages,
-        count: uploadedImages.length,
-        dimensions: getResolutionDimensions(resolution)
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ 
-      status: 500,
-      creator: "Geraldo",
-      error: error.message 
-    });
-  }
-});
-
-// Resolusi yang tersedia
-const resolutions = {
-  portrait: { width: 768, height: 1344 },
-  landscape: { width: 1344, height: 768 },
-  square: { width: 1024, height: 1024 },
-  ultra: { width: 1536, height: 1536 },
-  tall: { width: 832, height: 1344 },
-  wide: { width: 1344, height: 832 },
-};
-
-// Fungsi Zoner AI Text to Image
-async function zonerAITextToImage(prompt, resolution = 'portrait', upscale = 2) {
-  const selected = resolutions[resolution] || resolutions.portrait;
-  const { width, height } = selected;
-
-  // Buat 3 gambar secara paralel
-  const promises = Array.from({ length: 3 }, (_, idx) => {
-    const form = new FormData();
-    form.append('Prompt', prompt);
-    form.append('Language', 'eng_Latn');
-    form.append('Size', `${width}x${height}`);
-    form.append('Upscale', upscale.toString());
-    form.append('Batch_Index', idx.toString());
-
-    const https = require('https');
-    const agent = new https.Agent({ rejectUnauthorized: false });
-
-    return axios.post(
-      'https://api.zonerai.com/zoner-ai/txt2img',
-      form,
-      {
-        httpsAgent: agent,
-        headers: {
-          ...form.getHeaders(),
-          'Origin': 'https://zonerai.com',
-          'Referer': 'https://zonerai.com/',
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-        },
-        responseType: 'arraybuffer'
-      }
-    ).then(res => {
-      return Buffer.from(res.data);
-    });
-  });
-
-  return Promise.all(promises);
-}
-
-// Fungsi upload buffer ke catbox
-async function uploadToCatbox(buffer) {
-  try {
-    const base64Data = buffer.toString('base64');
-    const response = await axios.post('https://catbox.moe/user/api.php', 
-      `reqtype=base64&userhash=&file=${encodeURIComponent(base64Data)}`,
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }
-    );
-    
-    return response.data;
-  } catch (error) {
-    // Jika gagal, return data URI
-    return `data:image/png;base64,${buffer.toString('base64')}`;
-  }
-}
-
-// Fungsi untuk mendapatkan dimensi resolusi
-function getResolutionDimensions(resolution) {
-  const res = resolutions[resolution] || resolutions.portrait;
-  return `${res.width}x${res.height}`;
-}
-
-// Endpoint untuk list resolusi yang tersedia
-app.get('/api/zonerai/resolutions', (req, res) => {
-  const availableResolutions = Object.keys(resolutions).map(key => ({
-    name: key,
-    dimensions: `${resolutions[key].width}x${resolutions[key].height}`,
-    width: resolutions[key].width,
-    height: resolutions[key].height
-  }));
-  
-  res.json({
-    status: 200,
-    creator: "Geraldo",
-    data: {
-      resolutions: availableResolutions,
-      default: 'portrait',
-      example: '/api/zonerai?prompt=futuristic anime girl&resolution=square&upscale=2'
-    }
-  });
-});
 
 app.get('/api/remove-bg', async (req, res) => {
   try {
@@ -1553,8 +1764,167 @@ async function uploadToCatbox(imageUrl) {
   }
 }
 
-// Endpoint untuk pencarian komik
-app.get('/api/komik/search', async (req, res) => {
+// Endpoint untuk YouTube Music Download
+app.get('/api/yt-play', async (req, res) => {
+  try {
+    const query = req.query.query;
+    if (!query) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Parameter "query" tidak ditemukan',
+        example: '/api/yt-play?query=lovesick&girls&blackpink'
+      });
+    }
+    
+    const format = req.query.format || '128k';
+    const response = await youtubePlay(query, format);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { response }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+// Fungsi YouTube Downloader
+const yt = {
+    url: Object.freeze({
+        audio128: 'https://api.apiapi.lat',
+        video: 'https://api5.apiapi.lat',
+        else: 'https://api3.apiapi.lat',
+        referrer: 'https://ogmp3.pro/'
+    }),
+
+    encUrl: s => s.split('').map(c => c.charCodeAt()).reverse().join(';'),
+    xor: s => s.split('').map(v => String.fromCharCode(v.charCodeAt() ^ 1)).join(''),
+    genRandomHex: () => Array.from({ length: 32 }, _ => "0123456789abcdef"[Math.floor(Math.random()*16)]).join(""),
+
+    init: async function (rpObj) {
+        const { apiOrigin, payload } = rpObj
+        const api = apiOrigin + "/" + this.genRandomHex() + "/init/" + this.encUrl(this.xor(payload.data)) + "/" + this.genRandomHex() + "/"
+        const r = await fetch(api, { method: "post", body: JSON.stringify(payload) })
+        if (!r.ok) throw Error(await r.text())
+        return r.json()
+    },
+
+    genFileUrl: function (i, pk, rpObj) {
+        const { apiOrigin } = rpObj
+        const pkValue = pk ? pk + "/" : ""
+        const downloadUrl = apiOrigin + "/" + this.genRandomHex() + "/download/" + i + "/" + this.genRandomHex() + "/" + pkValue
+        return { downloadUrl }
+    },
+
+    statusCheck: async function (i, pk, rpObj) {
+        const { apiOrigin } = rpObj
+        let json
+        let count = 0
+        do {
+            await new Promise(r => setTimeout(r, 5000))
+            count++
+            const pkVal = pk ? pk + "/" : ""
+            const api = apiOrigin + "/" + this.genRandomHex() + "/status/" + i + "/" + this.genRandomHex() + "/" + pkVal
+            const r = await fetch(api, {
+                method: "post",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ data: i })
+            })
+            if (!r.ok) throw Error(await r.text())
+            json = await r.json()
+            if (count >= 100) throw Error("pooling mencapai 100, dihentikan")
+        } while (json.s === "P")
+        if (json.s === "E") throw Error(JSON.stringify(json))
+        return this.genFileUrl(i, pk, rpObj)
+    },
+
+    resolvePayload: function (ytUrl, userFormat) {
+        const valid = ["64k","96k","128k","192k","256k","320k","240p","360p","480p","720p","1080p"]
+        if (!valid.includes(userFormat)) throw Error(`format salah. tersedia: ${valid.join(", ")}`)
+
+        let apiOrigin = this.url.audio128
+        let data = this.xor(ytUrl)
+        let referer = this.url.referrer
+        let format = "0"
+        let mp3Quality = "128"
+        let mp4Quality = "720"
+
+        if (/^\d+p$/.test(userFormat)) {
+            apiOrigin = this.url.video
+            format = "1"
+            mp4Quality = userFormat.replace("p","")
+        } else if (userFormat !== "128k") {
+            apiOrigin = this.url.else
+            mp3Quality = userFormat.replace("k","")
+        }
+
+        return {
+            apiOrigin,
+            payload: {
+                data,
+                format,
+                referer,
+                mp3Quality,
+                mp4Quality,
+                userTimeZone: "-480"
+            }
+        }
+    },
+
+    download: async function (url, fmt = "128k") {
+        const rpObj = this.resolvePayload(url, fmt)
+        const initObj = await this.init(rpObj)
+        const { i, pk, s } = initObj
+        if (s === "C") return this.genFileUrl(i, pk, rpObj)
+        return this.statusCheck(i, pk, rpObj)
+    }
+};
+
+// Fungsi utama YouTube Play
+async function youtubePlay(query, format = '128k') {
+  try {
+    // Search video
+    const yts = require('yt-search');
+    const searchResult = await yts(query);
+    const video = searchResult.videos[0];
+    
+    if (!video) {
+      throw new Error('Video tidak ditemukan');
+    }
+    
+    // Download audio
+    const downloadResult = await yt.download(video.url, format);
+    
+    return {
+      video_info: {
+        title: video.title,
+        author: video.author.name,
+        views: video.views,
+        duration: video.timestamp,
+        uploaded: video.ago,
+        thumbnail: video.thumbnail,
+        url: video.url
+      },
+      download: {
+        url: downloadResult.downloadUrl,
+        format: format,
+        filename: `${video.title}.${format.includes('k') ? 'mp3' : 'mp4'}`
+      }
+    };
+    
+  } catch (error) {
+    throw new Error(`Gagal memproses: ${error.message}`);
+  }
+}
+
+// Endpoint untuk search YouTube saja
+app.get('/api/yt-search', async (req, res) => {
   try {
     const query = req.query.query;
     if (!query) {
@@ -1565,12 +1935,28 @@ app.get('/api/komik/search', async (req, res) => {
       });
     }
     
-    const response = await komikSearch(query);
+    const limit = req.query.limit || 10;
+    const yts = require('yt-search');
+    const searchResult = await yts(query);
+    
+    const videos = searchResult.videos.slice(0, limit).map(video => ({
+      title: video.title,
+      author: video.author.name,
+      views: video.views,
+      duration: video.timestamp,
+      uploaded: video.ago,
+      thumbnail: video.thumbnail,
+      url: video.url
+    }));
     
     res.status(200).json({
       status: 200,
       creator: "Geraldo",
-      data: { response }
+      data: { 
+        query: query,
+        total_results: searchResult.videos.length,
+        results: videos 
+      }
     });
   } catch (error) {
     res.status(500).json({ 
@@ -1581,10 +1967,12 @@ app.get('/api/komik/search', async (req, res) => {
   }
 });
 
-// Endpoint untuk detail komik
-app.get('/api/komik/detail', async (req, res) => {
+// Endpoint untuk download langsung dari URL YouTube
+app.get('/api/yt-download', async (req, res) => {
   try {
     const url = req.query.url;
+    const format = req.query.format || '128k';
+    
     if (!url) {
       return res.status(400).json({ 
         status: 400,
@@ -1593,12 +1981,16 @@ app.get('/api/komik/detail', async (req, res) => {
       });
     }
     
-    const response = await komikDetail(url);
+    const downloadResult = await yt.download(url, format);
     
     res.status(200).json({
       status: 200,
       creator: "Geraldo",
-      data: { response }
+      data: { 
+        download_url: downloadResult.downloadUrl,
+        format: format,
+        original_url: url
+      }
     });
   } catch (error) {
     res.status(500).json({ 
@@ -1608,73 +2000,6 @@ app.get('/api/komik/detail', async (req, res) => {
     });
   }
 });
-
-// Endpoint untuk download komik - return direct image URLs
-app.get('/api/komik/download', async (req, res) => {
-  try {
-    const url = req.query.url;
-    if (!url) {
-      return res.status(400).json({ 
-        status: 400,
-        creator: "Geraldo",
-        error: 'Parameter "url" tidak ditemukan'
-      });
-    }
-    
-    const response = await komikDownload(url);
-    
-    res.status(200).json({
-      status: 200,
-      creator: "Geraldo",
-      data: { response }
-    });
-  } catch (error) {
-    res.status(500).json({ 
-      status: 500,
-      creator: "Geraldo",
-      error: error.message 
-    });
-  }
-});
-
-// Fungsi pencarian komik
-async function komikSearch(query) {
-  try {
-    const response = await axios.get(
-      `https://api.siputzx.my.id/api/anime/komikindo-search?query=${encodeURIComponent(query)}`
-    );
-    
-    return response.data;
-  } catch (error) {
-    throw new Error(`Gagal mencari komik: ${error.message}`);
-  }
-}
-
-// Fungsi detail komik
-async function komikDetail(url) {
-  try {
-    const response = await axios.get(
-      `https://api.siputzx.my.id/api/anime/komikindo-detail?url=${encodeURIComponent(url)}`
-    );
-    
-    return response.data;
-  } catch (error) {
-    throw new Error(`Gagal mengambil detail komik: ${error.message}`);
-  }
-}
-
-// Fungsi download komik - return direct image URLs
-async function komikDownload(url) {
-  try {
-    const response = await axios.get(
-      `https://api.siputzx.my.id/api/anime/komikindo-download?url=${encodeURIComponent(url)}`
-    );
-    
-    return response.data;
-  } catch (error) {
-    throw new Error(`Gagal download komik: ${error.message}`);
-  }
-}
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
