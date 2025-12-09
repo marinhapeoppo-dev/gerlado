@@ -256,18 +256,17 @@ app.get('/api/image-generate', async (req, res) => {
       return res.status(400).json({ 
         status: 400,
         creator: "Geraldo",
-        error: 'Parameter "prompt" tidak ditemukan',
-        example: '/api/image-generate?prompt=beautiful anime girl&model=dalle3&ratio=1:1'
+        error: 'Parameter "prompt" tidak ditemukan'
       });
     }
     
-    const response = await generateImage(prompt, model, ratio);
+    const imageUrl = await generateImage(prompt, model, ratio);
     
     res.status(200).json({
       status: 200,
       creator: "Geraldo",
       data: { 
-        response: response
+        response: imageUrl
       }
     });
   } catch (error) {
@@ -281,83 +280,42 @@ app.get('/api/image-generate', async (req, res) => {
 
 // Endpoint untuk list model yang tersedia
 app.get('/api/image-models', (req, res) => {
-  const models = {
-    'ai4chat': 'AI4Chat',
-    'animaginexl31': 'Animagine XL 3.1',
-    'animaginexl40': 'Animagine XL 4.0',
-    'cartoony': 'Cartoony Anime',
-    'dalle2': 'DALL-E 2',
-    'dalle3': 'DALL-E 3',
-    'dreamshaperxl': 'Dreamshaper XL',
-    'epicrealism': 'Epic Realism',
-    'fluxdev': 'Flux Dev',
-    'fluxschnell': 'Flux Schnell',
-    'holymix': 'Holymix',
-    'illumiyume': 'Illumiyume XL',
-    'illustriousme': 'Illustrious ME v6',
-    'illustriousxl': 'Illustrious XL 1.0',
-    'imagen3': 'Imagen 3.0 Fast',
-    'imagen4': 'Imagen 4.0 Fast',
-    'juggernautxl': 'Juggernaut XL',
-    'majicmix': 'Majicmix Realistic',
-    'newreality': 'New Reality',
-    'noobaixl': 'NoobAI XL',
-    'noobai': 'NoobAI',
-    'pixarcartoon': 'Pixar Cartoon',
-    'ponyrealism': 'Pony Realism',
-    'seaartinfinity': 'SeaArt Infinity',
-    'seaartrealism': 'SeaArt Realism',
-    'stablediffusion': 'Stable Diffusion 3.5',
-    'waianime': 'WAI Anime',
-    'writecream': 'Writecream',
-    'yayoimix': 'Yayoimix',
-    'yiffymix': 'Yiffymix'
-  };
-  
-  const apiUrls = {
-    'ai4chat': 'https://api.nekolabs.web.id/image-generation/ai4chat',
-    'animaginexl31': 'https://api.nekolabs.web.id/image-generation/animagine/xl-3.1',
-    'animaginexl40': 'https://api.nekolabs.web.id/image-generation/animagine/xl-4.0',
-    'cartoony': 'https://api.nekolabs.web.id/image-generation/cartoony-anime',
-    'dalle2': 'https://api.nekolabs.web.id/image-generation/dall-e/2',
-    'dalle3': 'https://api.nekolabs.web.id/image-generation/dall-e/3',
-    'dreamshaperxl': 'https://api.nekolabs.web.id/image-generation/dreamshaper-xl',
-    'epicrealism': 'https://api.nekolabs.web.id/image-generation/epic-realism',
-    'fluxdev': 'https://api.nekolabs.web.id/image-generation/flux/dev',
-    'fluxschnell': 'https://api.nekolabs.web.id/image-generation/flux/schnell',
-    'holymix': 'https://api.nekolabs.web.id/image-generation/holymix',
-    'illumiyume': 'https://api.nekolabs.web.id/image-generation/illumiyume-xl',
-    'illustriousme': 'https://api.nekolabs.web.id/image-generation/illustrious/me-v6',
-    'illustriousxl': 'https://api.nekolabs.web.id/image-generation/illustrious/xl-1.0',
-    'imagen3': 'https://api.nekolabs.web.id/image-generation/imagen/3.0-fast',
-    'imagen4': 'https://api.nekolabs.web.id/image-generation/imagen/4.0-fast',
-    'juggernautxl': 'https://api.nekolabs.web.id/image-generation/juggernaut-xl',
-    'majicmix': 'https://api.nekolabs.web.id/image-generation/majicmix-realistic',
-    'newreality': 'https://api.nekolabs.web.id/image-generation/newreality',
-    'noobaixl': 'https://api.nekolabs.web.id/image-generation/noobai-xl',
-    'noobai': 'https://api.nekolabs.web.id/image-generation/noobai',
-    'pixarcartoon': 'https://api.nekolabs.web.id/image-generation/pixar-cartoon',
-    'ponyrealism': 'https://api.nekolabs.web.id/image-generation/pony-realism',
-    'seaartinfinity': 'https://api.nekolabs.web.id/image-generation/seaart/infinity',
-    'seaartrealism': 'https://api.nekolabs.web.id/image-generation/seaart/realism',
-    'stablediffusion': 'https://api.nekolabs.web.id/image-generation/stable-diffusion/3.5',
-    'waianime': 'https://api.nekolabs.web.id/image-generation/wai-anime-nsfw',
-    'writecream': 'https://api.nekolabs.web.id/image-generation/writecream',
-    'yayoimix': 'https://api.nekolabs.web.id/image-generation/yayoimix',
-    'yiffymix': 'https://api.nekolabs.web.id/image-generation/yiffymix'
-  };
-  
-  const modelList = Object.keys(models).map(key => ({
-    id: key,
-    name: models[key],
-    api_url: apiUrls[key]
-  }));
+  const models = [
+    { id: 'ai4chat', name: 'AI4Chat' },
+    { id: 'animaginexl31', name: 'Animagine XL 3.1' },
+    { id: 'animaginexl40', name: 'Animagine XL 4.0' },
+    { id: 'cartoony', name: 'Cartoony Anime' },
+    { id: 'dalle2', name: 'DALL-E 2' },
+    { id: 'dalle3', name: 'DALL-E 3' },
+    { id: 'dreamshaperxl', name: 'Dreamshaper XL' },
+    { id: 'epicrealism', name: 'Epic Realism' },
+    { id: 'fluxdev', name: 'Flux Dev' },
+    { id: 'fluxschnell', name: 'Flux Schnell' },
+    { id: 'holymix', name: 'Holymix' },
+    { id: 'illumiyume', name: 'Illumiyume XL' },
+    { id: 'illustriousme', name: 'Illustrious ME v6' },
+    { id: 'illustriousxl', name: 'Illustrious XL 1.0' },
+    { id: 'imagen3', name: 'Imagen 3.0 Fast' },
+    { id: 'imagen4', name: 'Imagen 4.0 Fast' },
+    { id: 'juggernautxl', name: 'Juggernaut XL' },
+    { id: 'majicmix', name: 'Majicmix Realistic' },
+    { id: 'newreality', name: 'New Reality' },
+    { id: 'noobaixl', name: 'NoobAI XL' },
+    { id: 'noobai', name: 'NoobAI' },
+    { id: 'pixarcartoon', name: 'Pixar Cartoon' },
+    { id: 'ponyrealism', name: 'Pony Realism' },
+    { id: 'seaartinfinity', name: 'SeaArt Infinity' },
+    { id: 'seaartrealism', name: 'SeaArt Realism' },
+    { id: 'stablediffusion', name: 'Stable Diffusion 3.5' },
+    { id: 'writecream', name: 'Writecream' },
+    { id: 'yayoimix', name: 'Yayoimix' }
+  ];
   
   res.json({
     status: 200,
     creator: "Geraldo",
     data: {
-      models: modelList,
+      models: models,
       ratios: ['1:1', '16:9', '9:16'],
       example: '/api/image-generate?prompt=beautiful anime girl&model=dalle3&ratio=1:1'
     }
@@ -393,51 +351,14 @@ async function generateImage(prompt, model = 'dalle3', ratio = '1:1') {
     'seaartinfinity': 'https://api.nekolabs.web.id/image-generation/seaart/infinity',
     'seaartrealism': 'https://api.nekolabs.web.id/image-generation/seaart/realism',
     'stablediffusion': 'https://api.nekolabs.web.id/image-generation/stable-diffusion/3.5',
-    'waianime': 'https://api.nekolabs.web.id/image-generation/wai-anime-nsfw',
     'writecream': 'https://api.nekolabs.web.id/image-generation/writecream',
-    'yayoimix': 'https://api.nekolabs.web.id/image-generation/yayoimix',
-    'yiffymix': 'https://api.nekolabs.web.id/image-generation/yiffymix'
-  };
-  
-  const aiNameMap = {
-    'ai4chat': 'AI4Chat',
-    'animaginexl31': 'Animagine XL 3.1',
-    'animaginexl40': 'Animagine XL 4.0',
-    'cartoony': 'Cartoony Anime',
-    'dalle2': 'DALL-E 2',
-    'dalle3': 'DALL-E 3',
-    'dreamshaperxl': 'Dreamshaper XL',
-    'epicrealism': 'Epic Realism',
-    'fluxdev': 'Flux Dev',
-    'fluxschnell': 'Flux Schnell',
-    'holymix': 'Holymix',
-    'illumiyume': 'Illumiyume XL',
-    'illustriousme': 'Illustrious ME v6',
-    'illustriousxl': 'Illustrious XL 1.0',
-    'imagen3': 'Imagen 3.0 Fast',
-    'imagen4': 'Imagen 4.0 Fast',
-    'juggernautxl': 'Juggernaut XL',
-    'majicmix': 'Majicmix Realistic',
-    'newreality': 'New Reality',
-    'noobaixl': 'NoobAI XL',
-    'noobai': 'NoobAI',
-    'pixarcartoon': 'Pixar Cartoon',
-    'ponyrealism': 'Pony Realism',
-    'seaartinfinity': 'SeaArt Infinity',
-    'seaartrealism': 'SeaArt Realism',
-    'stablediffusion': 'Stable Diffusion 3.5',
-    'waianime': 'WAI Anime',
-    'writecream': 'Writecream',
-    'yayoimix': 'Yayoimix',
-    'yiffymix': 'Yiffymix'
+    'yayoimix': 'https://api.nekolabs.web.id/image-generation/yayoimix'
   };
   
   const apiUrl = apiMap[model];
   if (!apiUrl) {
-    throw new Error(`Model "${model}" tidak tersedia. Gunakan /api/image-models untuk melihat daftar model.`);
+    throw new Error(`Model tidak tersedia. Gunakan /api/image-models untuk melihat daftar model.`);
   }
-  
-  const aiName = aiNameMap[model] || model;
   
   // Validasi ratio
   const validRatios = ['1:1', '16:9', '9:16'];
@@ -469,15 +390,7 @@ async function generateImage(prompt, model = 'dalle3', ratio = '1:1') {
   // Upload ke catbox
   const catboxUrl = await uploadToCatbox(data.result);
   
-  return {
-    model: aiName,
-    prompt: prompt,
-    ratio: ratio,
-    image_url: catboxUrl,
-    original_url: data.result,
-    response_time: data.responseTime,
-    timestamp: data.timestamp
-  };
+  return catboxUrl;
 }
 
 // Fungsi upload ke catbox
@@ -494,41 +407,10 @@ async function uploadToCatbox(imageUrl) {
     
     return response.data;
   } catch (error) {
-    // Jika gagal, return URL asli
-    return imageUrl;
+    // Jika gagal, throw error
+    throw new Error('Gagal mengupload gambar ke hosting');
   }
 }
-
-// Endpoint untuk Claude AI
-app.get('/api/claude', async (req, res) => {
-  try {
-    const message = req.query.message;
-    if (!message) {
-      return res.status(400).json({ 
-        status: 400,
-        creator: "Geraldo",
-        error: 'Parameter "message" tidak ditemukan',
-        example: '/api/claude?message=Siapa&penemu&gravitasi?'
-      });
-    }
-    
-    const response = await claudeAI(message);
-    
-    res.status(200).json({
-      status: 200,
-      creator: "Geraldo",
-      data: { 
-        response: response
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ 
-      status: 500,
-      creator: "Geraldo",
-      error: error.message 
-    });
-  }
-});
 
 // Fungsi Claude AI
 function getDataAttr(html, attr) {
