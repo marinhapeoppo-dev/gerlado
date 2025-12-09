@@ -1795,3 +1795,457 @@ a:not(.btn):not(.badge):hover {
         box-shadow: none !important;
     }
 }
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+/* Dark Mode untuk Content Wrapper */
+body.dark-mode #wrapper #content-wrapper {
+    background-color: #1e1e1e;
+}
+
+body.dark-mode #wrapper #content-wrapper #content {
+    background-color: #1e1e1e;
+}
+
+/* Dark Mode untuk Card */
+body.dark-mode .card {
+    background-color: #2d2d2d;
+    border-color: #404040;
+    box-shadow: 0 .15rem 1.75rem 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode .card .card-header {
+    background-color: #252525;
+    border-color: #404040;
+    color: #e0e0e0;
+}
+
+body.dark-mode .card .card-body {
+    color: #e0e0e0;
+    background-color: #2d2d2d;
+}
+
+body.dark-mode .card h1,
+body.dark-mode .card h2,
+body.dark-mode .card h3,
+body.dark-mode .card h4,
+body.dark-mode .card h5,
+body.dark-mode .card h6 {
+    color: #ffffff;
+}
+
+/* Dark Mode untuk Text */
+body.dark-mode .text-dark {
+    color: #ffffff !important;
+}
+
+body.dark-mode .text-muted {
+    color: #a0a0a0 !important;
+}
+
+body.dark-mode .text-gray-600 {
+    color: #b0b0b0 !important;
+}
+
+body.dark-mode .text-gray-700 {
+    color: #c0c0c0 !important;
+}
+
+body.dark-mode .text-gray-800 {
+    color: #d0d0d0 !important;
+}
+
+/* Dark Mode untuk Form Controls */
+body.dark-mode .form-control {
+    background-color: #252525;
+    border-color: #404040;
+    color: #e0e0e0;
+}
+
+body.dark-mode .form-control:focus {
+    background-color: #252525;
+    border-color: #3f51b5;
+    color: #e0e0e0;
+    box-shadow: 0 0 0 0.2rem rgba(63, 81, 181, 0.25);
+}
+
+body.dark-mode .form-control::placeholder {
+    color: #888888;
+}
+
+/* Dark Mode untuk Table */
+body.dark-mode .table {
+    color: #e0e0e0;
+    background-color: #2d2d2d;
+}
+
+body.dark-mode .table th {
+    background-color: #252525;
+    border-color: #404040;
+    color: #ffffff;
+}
+
+body.dark-mode .table td {
+    border-color: #404040;
+    background-color: #2d2d2d;
+}
+
+body.dark-mode .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #252525;
+}
+
+/* Dark Mode untuk Footer */
+body.dark-mode footer.sticky-footer {
+    background-color: #1a1a1a !important;
+    border-top-color: #404040;
+}
+
+body.dark-mode footer.sticky-footer .copyright {
+    color: #a0a0a0 !important;
+}
+
+body.dark-mode footer.sticky-footer .copyright a {
+    color: #ffffff !important;
+}
+
+body.dark-mode footer.sticky-footer .copyright a:hover {
+    color: #3f51b5 !important;
+}
+
+/* Dark Mode untuk Topbar */
+body.dark-mode .topbar {
+    background-color: #1a1a1a;
+    border-bottom-color: #404040;
+    box-shadow: 0 .15rem 1.75rem 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode .topbar.navbar-light .navbar-nav .nav-item .nav-link {
+    color: #e0e0e0;
+}
+
+body.dark-mode .topbar.navbar-light .navbar-nav .nav-item .nav-link:hover {
+    color: #ffffff;
+}
+
+body.dark-mode .topbar #sidebarToggleTop {
+    background-color: #252525;
+    border-color: #404040;
+    color: #e0e0e0;
+}
+
+body.dark-mode .topbar #sidebarToggleTop:hover {
+    background-color: #2d2d2d;
+    border-color: #505050;
+}
+
+/* Dark Mode untuk Sidebar */
+body.dark-mode .sidebar {
+    background-color: #1a1a1a !important;
+    border-right-color: #404040;
+}
+
+body.dark-mode .sidebar .sidebar-brand {
+    background-color: #121212;
+    border-bottom-color: #404040;
+}
+
+body.dark-mode .sidebar .nav-item .nav-link {
+    color: #c0c0c0;
+}
+
+body.dark-mode .sidebar .nav-item .nav-link i {
+    color: #a0a0a0;
+}
+
+body.dark-mode .sidebar .nav-item .nav-link:hover {
+    background-color: #252525;
+    color: #ffffff;
+}
+
+body.dark-mode .sidebar .nav-item .nav-link:hover i {
+    color: #ffffff;
+}
+
+body.dark-mode .sidebar .nav-item.active .nav-link {
+    background-color: #2d2d2d;
+    color: #ffffff;
+    border-left-color: #3f51b5;
+}
+
+body.dark-mode .sidebar .nav-item.active .nav-link i {
+    color: #ffffff;
+}
+
+body.dark-mode .sidebar hr.sidebar-divider {
+    border-top-color: #404040;
+}
+
+body.dark-mode .sidebar .sidebar-heading {
+    color: #888888;
+}
+
+body.dark-mode .sidebar #sidebarToggle {
+    background-color: #252525;
+    border-color: #404040;
+    color: #a0a0a0;
+}
+
+body.dark-mode .sidebar #sidebarToggle:hover {
+    background-color: #2d2d2d;
+    color: #ffffff;
+}
+
+/* Dark Mode untuk Dropdown */
+body.dark-mode .dropdown-menu {
+    background-color: #2d2d2d;
+    border-color: #404040;
+    box-shadow: 0 .15rem 1.75rem 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode .dropdown-item {
+    color: #e0e0e0;
+    background-color: #2d2d2d;
+}
+
+body.dark-mode .dropdown-item:hover,
+body.dark-mode .dropdown-item:focus {
+    background-color: #252525;
+    color: #ffffff;
+}
+
+body.dark-mode .dropdown-header {
+    color: #888888;
+    background-color: #252525;
+}
+
+/* Dark Mode untuk Badges */
+body.dark-mode .badge-primary {
+    background-color: #3f51b5;
+}
+
+body.dark-mode .badge-secondary {
+    background-color: #6c757d;
+}
+
+/* Dark Mode untuk Buttons */
+body.dark-mode .btn-outline-light {
+    color: #e0e0e0;
+    border-color: #505050;
+}
+
+body.dark-mode .btn-outline-light:hover {
+    background-color: #252525;
+    border-color: #606060;
+    color: #ffffff;
+}
+
+/* Dark Mode untuk List */
+body.dark-mode ol,
+body.dark-mode ul {
+    color: #e0e0e0;
+}
+
+body.dark-mode li {
+    color: #e0e0e0;
+}
+
+/* Dark Mode untuk Alerts */
+body.dark-mode .alert-primary {
+    background-color: rgba(63, 81, 181, 0.2);
+    border-color: rgba(63, 81, 181, 0.3);
+    color: #bbdefb;
+}
+
+body.dark-mode .alert-secondary {
+    background-color: rgba(108, 117, 125, 0.2);
+    border-color: rgba(108, 117, 125, 0.3);
+    color: #e2e3e5;
+}
+
+body.dark-mode .alert-success {
+    background-color: rgba(40, 167, 69, 0.2);
+    border-color: rgba(40, 167, 69, 0.3);
+    color: #d4edda;
+}
+
+body.dark-mode .alert-danger {
+    background-color: rgba(220, 53, 69, 0.2);
+    border-color: rgba(220, 53, 69, 0.3);
+    color: #f8d7da;
+}
+
+/* Dark Mode untuk Pagination */
+body.dark-mode .pagination .page-link {
+    background-color: #252525;
+    border-color: #404040;
+    color: #e0e0e0;
+}
+
+body.dark-mode .pagination .page-link:hover {
+    background-color: #2d2d2d;
+    border-color: #505050;
+    color: #ffffff;
+}
+
+body.dark-mode .pagination .page-item.active .page-link {
+    background-color: #3f51b5;
+    border-color: #3f51b5;
+}
+
+/* Dark Mode untuk Custom Scrollbar */
+body.dark-mode ::-webkit-scrollbar {
+    width: 10px;
+}
+
+body.dark-mode ::-webkit-scrollbar-track {
+    background: #252525;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: #404040;
+    border-radius: 5px;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: #505050;
+}
+
+/* Dark Mode Toggle Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+    margin-left: 10px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #3f51b5;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Mode Notification */
+.mode-notification {
+    animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Dark Mode untuk Breadcrumb */
+body.dark-mode .breadcrumb {
+    background-color: transparent;
+    color: #a0a0a0;
+}
+
+body.dark-mode .breadcrumb-item.active {
+    color: #e0e0e0;
+}
+
+body.dark-mode .breadcrumb-item + .breadcrumb-item::before {
+    color: #888888;
+}
+
+/* Dark Mode untuk Progress Bars */
+body.dark-mode .progress {
+    background-color: #252525;
+}
+
+body.dark-mode .progress-bar {
+    background-color: #3f51b5;
+}
+
+/* Dark Mode untuk Modals */
+body.dark-mode .modal-content {
+    background-color: #2d2d2d;
+    border-color: #404040;
+}
+
+body.dark-mode .modal-header {
+    border-bottom-color: #404040;
+    background-color: #252525;
+}
+
+body.dark-mode .modal-footer {
+    border-top-color: #404040;
+    background-color: #252525;
+}
+
+body.dark-mode .close {
+    color: #e0e0e0;
+    text-shadow: 0 1px 0 #000;
+}
+
+body.dark-mode .close:hover {
+    color: #ffffff;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .mode-notification {
+        top: 70px;
+        right: 10px;
+        left: 10px;
+        width: calc(100% - 20px);
+    }
+}
+
+/* Smooth Transitions */
+* {
+    transition: background-color 0.3s ease, 
+                border-color 0.3s ease, 
+                color 0.3s ease,
+                box-shadow 0.3s ease;
+}
