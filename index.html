@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-    <!-- icon animated -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome-animation/0.0.8/font-awesome-animation.min.css" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,13 +13,166 @@
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="css/default.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    
+    <style>
+        /* Reset default dark mode class */
+        body { background-color: #f8f9fc; }
+        
+        /* SPA Container */
+        #spa-content {
+            transition: opacity 0.3s ease;
+        }
+        
+        /* API Categories - HITAM */
+        .api-category {
+            background: #2c3e50 !important;
+            color: white !important;
+            border: none !important;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .api-category:hover {
+            background: #1a252f !important;
+            transform: translateY(-2px);
+        }
+        
+        .api-category .card-header {
+            background: #1a252f !important;
+            color: white !important;
+            border-bottom: 1px solid #34495e;
+        }
+        
+        /* API Endpoints List - HITAM */
+        .api-endpoint-item {
+            background: #34495e !important;
+            color: white !important;
+            border: 1px solid #4a6572 !important;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .api-endpoint-item:hover {
+            background: #3d566e !important;
+            border-color: #5d7a91 !important;
+        }
+        
+        .api-endpoint-item .badge {
+            background: #3f51b5;
+            color: white;
+        }
+        
+        /* Parameter Input Section */
+        #parameter-section {
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            margin-top: 20px;
+            padding: 20px;
+            display: none;
+        }
+        
+        .param-input-group {
+            margin-bottom: 15px;
+        }
+        
+        /* JSON Response */
+        #json-response {
+            background: #2d3748;
+            color: #e2e8f0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+        }
+        
+        body.dark-mode #wrapper #content-wrapper {
+            background-color: #1e1e1e;
+        }
+        
+        body.dark-mode .card {
+            background-color: #2d2d2d;
+            border-color: #404040;
+        }
+        
+        body.dark-mode #parameter-section {
+            background: #252525;
+            border-color: #404040;
+        }
+        
+        /* Button Styles */
+        .btn-api-test {
+            background: linear-gradient(45deg, #3f51b5, #2196f3);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-api-test:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(63, 81, 181, 0.3);
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 50px 30px;
+            margin-bottom: 30px;
+        }
+        
+        /* Stats Cards */
+        .stat-card {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+        
+        /* Navigation */
+        .nav-link-spa {
+            color: #495057;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link-spa.active {
+            background: #3f51b5;
+            color: white;
+        }
+        
+        .nav-link-spa:hover {
+            background: #f8f9fa;
+            color: #3f51b5;
+        }
+        
+        body.dark-mode .nav-link-spa:hover {
+            background: #252525;
+        }
+    </style>
 </head>
 
 <body id="page-top">
     <div id="wrapper">
         <!-- Sidebar -->
         <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#home">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#home" onclick="loadPage('home')">
                 <img src="https://files.catbox.moe/240t0t.jpg" 
                      alt="Geraldo APIs Logo" 
                      class="sidebar-brand-icon"
@@ -28,22 +180,24 @@
                 <div class="sidebar-brand-text mx-3">Geraldo APIs</div>
             </a>
             <hr class="sidebar-divider my-0">
+            
+            <!-- Navigation Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="#home">
+                <a class="nav-link nav-link-spa active" href="#home" onclick="loadPage('home')">
                     <i class="fas fa-home"></i>
                     <span>Home</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#docs">
+                <a class="nav-link nav-link-spa" href="#docs" onclick="loadPage('docs')">
                     <i class="fas fa-book"></i>
                     <span>Documentation</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#stats">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Statistics</span>
+                <a class="nav-link nav-link-spa" href="#try" onclick="loadPage('try')">
+                    <i class="fas fa-code"></i>
+                    <span>Try API</span>
                 </a>
             </li>
             <hr class="sidebar-divider">
@@ -94,343 +248,323 @@
                 </nav>
                 <!-- End of Topbar -->
 
-                <!-- Container Fluid-->
-                <div class="container-fluid" id="container-wrapper">
-                    <!-- Home Section -->
-                    <section id="home" class="mb-5">
+                <!-- SPA Content Container -->
+                <div class="container-fluid" id="spa-content">
+                    <!-- HOME PAGE CONTENT -->
+                    <div id="home-page" class="page-content">
                         <!-- Hero Section -->
-                        <div class="row mb-5">
-                            <div class="col-lg-12">
-                                <div class="card border-0 shadow-lg">
-                                    <div class="card-body text-center p-5">
-                                        <h1 class="display-4 mb-3 text-primary">Geraldo APIs</h1>
-                                        <p class="lead mb-4">Welcome to our comprehensive REST API platform. We provide powerful, reliable, and easy-to-use APIs for various purposes.</p>
-                                        
-                                        <div class="row mt-5">
-                                            <div class="col-md-4 mb-4">
-                                                <div class="card border-left-primary h-100">
-                                                    <div class="card-body">
-                                                        <i class="fas fa-bolt fa-3x text-primary mb-3"></i>
-                                                        <h5 class="card-title">Fast & Reliable</h5>
-                                                        <p class="card-text">Our APIs are optimized for speed and reliability with 99.9% uptime.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 mb-4">
-                                                <div class="card border-left-success h-100">
-                                                    <div class="card-body">
-                                                        <i class="fas fa-unlock-alt fa-3x text-success mb-3"></i>
-                                                        <h5 class="card-title">Free to Use</h5>
-                                                        <p class="card-text">All APIs are completely free with no rate limits or hidden charges.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 mb-4">
-                                                <div class="card border-left-info h-100">
-                                                    <div class="card-body">
-                                                        <i class="fas fa-code fa-3x text-info mb-3"></i>
-                                                        <h5 class="card-title">Easy Integration</h5>
-                                                        <p class="card-text">Simple RESTful endpoints with clear documentation for easy integration.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="mt-4">
-                                            <a href="#docs" class="btn btn-primary btn-lg px-5">
-                                                <i class="fas fa-book mr-2"></i>View Documentation
-                                            </a>
-                                            <a href="#try-api" class="btn btn-outline-primary btn-lg px-5 ml-3">
-                                                <i class="fas fa-play-circle mr-2"></i>Try API Now
-                                            </a>
-                                        </div>
+                        <div class="hero-section">
+                            <div class="row align-items-center">
+                                <div class="col-lg-8">
+                                    <h1 class="display-4 font-weight-bold mb-3">Geraldo APIs</h1>
+                                    <p class="lead mb-4">Powerful REST APIs for AI, Image Processing, Downloaders, and More. Free, Fast, and Easy to Use.</p>
+                                    <div class="mt-4">
+                                        <button class="btn btn-light btn-lg mr-3" onclick="loadPage('docs')">
+                                            <i class="fas fa-book mr-2"></i>View Documentation
+                                        </button>
+                                        <button class="btn btn-outline-light btn-lg" onclick="loadPage('try')">
+                                            <i class="fas fa-play-circle mr-2"></i>Try API Now
+                                        </button>
                                     </div>
+                                </div>
+                                <div class="col-lg-4 text-center">
+                                    <i class="fas fa-server fa-10x text-white opacity-75"></i>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Stats Section -->
-                            
-                            <!-- Stats Card: IP Address -->
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card h-100 border-left-info shadow-sm">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-uppercase mb-1">IP Address</div>
-                                                <div class="h5 mb-0 font-weight-bold">
-                                                    <span id="ip-address">Loading...</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <i class="fas fa-network-wired fa-2x text-info"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Stats Card: Waktu -->
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card h-100 border-left-success shadow-sm">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-uppercase mb-1">Waktu Server</div>
-                                                <div class="h5 mb-0 font-weight-bold">
-                                                    <span id="server-time">Loading...</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <i class="fas fa-clock fa-2x text-success"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Stats Card: Status -->
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <div class="card h-100 border-left-warning shadow-sm">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-uppercase mb-1">Status API</div>
-                                                <div class="h5 mb-0 font-weight-bold text-success">
-                                                    <i class="fas fa-circle fa-sm"></i> Online
-                                                </div>
-                                                <div class="text-xs text-muted mt-1">All systems operational</div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <i class="fas fa-server fa-2x text-warning"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- S&K Section -->
-                        <div class="row mb-5">
-                            <div class="col-lg-12">
-                                <div class="card border-left-danger shadow-sm">
-                                    <div class="card-body p-4">
-                                        <h4 class="mb-3 text-gray-800">
-                                            <i class="fas fa-exclamation-triangle mr-2 text-danger"></i>Syarat & Ketentuan
-                                        </h4>
-                                        <div class="card bg-light border-0 p-3">
-                                            <ol class="mb-0 pl-3">
-                                                <li class="mb-2">
-                                                    <strong>Jangan flooding requests.</strong>
-                                                    <p class="mb-0 text-gray-600">Mohon untuk tidak melakukan request secara berlebihan dalam waktu singkat.</p>
-                                                </li>
-                                                <li class="mb-2">
-                                                    <strong>Owner dapat sewaktu-waktu mengubah ketentuan</strong>
-                                                    <p class="mb-0 text-gray-600">Perubahan mungkin dilakukan untuk menjaga kualitas dan stabilitas website.</p>
-                                                </li>
-                                                <li class="mb-2">
-                                                    <strong>Semua fitur free dan unlimited request</strong>
-                                                    <p class="mb-0 text-gray-600">Nikmati semua layanan kami secara gratis tanpa batasan request.</p>
-                                                </li>
-                                                <li class="mb-2">
-                                                    <strong>Gunakan dengan bijak</strong>
-                                                    <p class="mb-0 text-gray-600">Website ini dibuat untuk membantu, mohon digunakan dengan tanggung jawab.</p>
-                                                </li>
-                                                <li class="mb-0">
-                                                    <strong>Disclaimer</strong>
-                                                    <p class="mb-0 text-gray-600">Owner tidak bertanggung jawab atas penggunaan website oleh pengguna.</p>
-                                                </li>
-                                            </ol>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- Documentation Section -->
-                    <section id="docs" class="mb-5">
+                        <!-- Stats Cards -->
                         <div class="row mb-4">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card stat-card border-left-primary">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-uppercase mb-1">Total APIs</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">15+</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-code fa-2x text-primary"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card stat-card border-left-success">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-uppercase mb-1">Uptime</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">99.9%</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-chart-line fa-2x text-success"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card stat-card border-left-info">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-uppercase mb-1">Free Usage</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">Unlimited</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-unlock-alt fa-2x text-info"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card stat-card border-left-warning">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-uppercase mb-1">Response Time</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">&lt; 500ms</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-bolt fa-2x text-warning"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Features -->
+                        <div class="row mb-5">
                             <div class="col-lg-12">
-                                <div class="card border-0 shadow">
+                                <div class="card shadow-sm">
                                     <div class="card-header bg-primary text-white">
-                                        <h4 class="mb-0">
-                                            <i class="fas fa-book mr-2"></i>API Documentation
-                                        </h4>
+                                        <h4 class="mb-0"><i class="fas fa-star mr-2"></i>Why Choose Geraldo APIs?</h4>
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
-                                            <!-- API Categories -->
-                                            <div class="col-lg-3">
-                                                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                                    <a class="nav-link active" id="v-pills-ai-tab" data-toggle="pill" href="#v-pills-ai" role="tab">
-                                                        <i class="fas fa-robot mr-2"></i>AI APIs
-                                                    </a>
-                                                    <a class="nav-link" id="v-pills-image-tab" data-toggle="pill" href="#v-pills-image" role="tab">
-                                                        <i class="fas fa-image mr-2"></i>Image APIs
-                                                    </a>
-                                                    <a class="nav-link" id="v-pills-downloader-tab" data-toggle="pill" href="#v-pills-downloader" role="tab">
-                                                        <i class="fas fa-download mr-2"></i>Downloader APIs
-                                                    </a>
-                                                    <a class="nav-link" id="v-pills-tools-tab" data-toggle="pill" href="#v-pills-tools" role="tab">
-                                                        <i class="fas fa-tools mr-2"></i>Tools APIs
-                                                    </a>
-                                                    <a class="nav-link" id="v-pills-nsfw-tab" data-toggle="pill" href="#v-pills-nsfw" role="tab">
-                                                        <i class="fas fa-eye-slash mr-2"></i>NSFW APIs
-                                                    </a>
+                                            <div class="col-md-4 mb-4">
+                                                <div class="text-center p-4">
+                                                    <div class="icon-circle bg-primary mx-auto mb-3">
+                                                        <i class="fas fa-bolt text-white fa-2x"></i>
+                                                    </div>
+                                                    <h5>High Performance</h5>
+                                                    <p>Optimized APIs with fast response times and 99.9% uptime guarantee.</p>
                                                 </div>
                                             </div>
-                                            
-                                            <!-- API Endpoints -->
-                                            <div class="col-lg-9">
-                                                <div class="tab-content" id="v-pills-tabContent">
-                                                    <!-- AI APIs -->
-                                                    <div class="tab-pane fade show active" id="v-pills-ai" role="tabpanel">
-                                                        <div class="api-endpoints">
-                                                            <h5 class="mb-3">Artificial Intelligence APIs</h5>
-                                                            <div class="list-group">
-                                                                <a href="#" class="list-group-item list-group-item-action api-item" data-endpoint="/api/gpt" data-method="GET" data-param="text">
-                                                                    <div class="d-flex w-100 justify-content-between">
-                                                                        <h6 class="mb-1">Chat GPT AI</h6>
-                                                                        <small class="badge badge-primary">GET</small>
-                                                                    </div>
-                                                                    <p class="mb-1">/api/gpt?text=your_message</p>
-                                                                    <small>AI-powered chat completion using GPT model</small>
-                                                                </a>
-                                                                <a href="#" class="list-group-item list-group-item-action api-item" data-endpoint="/api/degreeguru" data-method="GET" data-param="message">
-                                                                    <div class="d-flex w-100 justify-content-between">
-                                                                        <h6 class="mb-1">DegreeGuru AI</h6>
-                                                                        <small class="badge badge-primary">GET</small>
-                                                                    </div>
-                                                                    <p class="mb-1">/api/degreeguru?message=your_query</p>
-                                                                    <small>Educational AI assistant for learning</small>
-                                                                </a>
-                                                                <a href="#" class="list-group-item list-group-item-action api-item" data-endpoint="/api/gpt-empat" data-method="GET" data-param="message">
-                                                                    <div class="d-flex w-100 justify-content-between">
-                                                                        <h6 class="mb-1">GPT-4.1 AI</h6>
-                                                                        <small class="badge badge-primary">GET</small>
-                                                                    </div>
-                                                                    <p class="mb-1">/api/gpt-empat?message=your_prompt</p>
-                                                                    <small>Advanced GPT-4.1 model for complex tasks</small>
-                                                                </a>
-                                                                <a href="#" class="list-group-item list-group-item-action api-item" data-endpoint="/api/claude" data-method="GET" data-param="message">
-                                                                    <div class="d-flex w-100 justify-content-between">
-                                                                        <h6 class="mb-1">Claude AI</h6>
-                                                                        <small class="badge badge-primary">GET</small>
-                                                                    </div>
-                                                                    <p class="mb-1">/api/claude?message=your_query</p>
-                                                                    <small>Anthropic's Claude AI assistant</small>
-                                                                </a>
-                                                            </div>
-                                                        </div>
+                                            <div class="col-md-4 mb-4">
+                                                <div class="text-center p-4">
+                                                    <div class="icon-circle bg-success mx-auto mb-3">
+                                                        <i class="fas fa-lock-open text-white fa-2x"></i>
                                                     </div>
-                                                    
-                                                    <!-- Image APIs -->
-                                                    <div class="tab-pane fade" id="v-pills-image" role="tabpanel">
-                                                        <div class="api-endpoints">
-                                                            <h5 class="mb-3">Image Processing APIs</h5>
-                                                            <div class="list-group">
-                                                                <a href="#" class="list-group-item list-group-item-action api-item" data-endpoint="/api/image-generate" data-method="GET" data-param="prompt" data-extra='{"model": "dalle3"}'>
-                                                                    <div class="d-flex w-100 justify-content-between">
-                                                                        <h6 class="mb-1">Image Generator</h6>
-                                                                        <small class="badge badge-primary">GET</small>
-                                                                    </div>
-                                                                    <p class="mb-1">/api/image-generate?prompt=description&model=dalle3</p>
-                                                                    <small>Generate images from text descriptions using AI</small>
-                                                                </a>
-                                                                <a href="#" class="list-group-item list-group-item-action" onclick="window.open('/api/image-models', '_blank')">
-                                                                    <div class="d-flex w-100 justify-content-between">
-                                                                        <h6 class="mb-1">List AI Models</h6>
-                                                                        <small class="badge badge-info">GET</small>
-                                                                    </div>
-                                                                    <p class="mb-1">/api/image-models</p>
-                                                                    <small>Get list of available AI image generation models</small>
-                                                                </a>
-                                                            </div>
-                                                        </div>
+                                                    <h5>Completely Free</h5>
+                                                    <p>No hidden charges, no rate limits, no registration required.</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-4">
+                                                <div class="text-center p-4">
+                                                    <div class="icon-circle bg-info mx-auto mb-3">
+                                                        <i class="fas fa-code text-white fa-2x"></i>
                                                     </div>
-                                                    
-                                                    <!-- Downloader APIs -->
-                                                    <div class="tab-pane fade" id="v-pills-downloader" role="tabpanel">
-                                                        <div class="api-endpoints">
-                                                            <h5 class="mb-3">Downloader APIs</h5>
-                                                            <div class="list-group">
-                                                                <a href="#" class="list-group-item list-group-item-action api-item" data-endpoint="/api/tiktok" data-method="GET" data-param="url">
-                                                                    <div class="d-flex w-100 justify-content-between">
-                                                                        <h6 class="mb-1">TikTok Downloader</h6>
-                                                                        <small class="badge badge-primary">GET</small>
-                                                                    </div>
-                                                                    <p class="mb-1">/api/tiktok?url=tiktok_video_url</p>
-                                                                    <small>Download TikTok videos without watermark</small>
-                                                                </a>
-                                                                <a href="#" class="list-group-item list-group-item-action api-item" data-endpoint="/api/igdl" data-method="GET" data-param="url">
-                                                                    <div class="d-flex w-100 justify-content-between">
-                                                                        <h6 class="mb-1">Instagram Downloader</h6>
-                                                                        <small class="badge badge-primary">GET</small>
-                                                                    </div>
-                                                                    <p class="mb-1">/api/igdl?url=instagram_post_url</p>
-                                                                    <small>Download Instagram posts, reels, and stories</small>
-                                                                </a>
-                                                                <a href="#" class="list-group-item list-group-item-action api-item" data-endpoint="/api/yt-play" data-method="GET" data-param="query">
-                                                                    <div class="d-flex w-100 justify-content-between">
-                                                                        <h6 class="mb-1">YouTube Player</h6>
-                                                                        <small class="badge badge-primary">GET</small>
-                                                                    </div>
-                                                                    <p class="mb-1">/api/yt-play?query=search_query</p>
-                                                                    <small>Search and play YouTube videos</small>
-                                                                </a>
+                                                    <h5>Easy Integration</h5>
+                                                    <p>Simple RESTful endpoints with clear documentation and examples.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- S&K -->
+                        <div class="row mb-4">
+                            <div class="col-lg-12">
+                                <div class="card shadow-sm">
+                                    <div class="card-header bg-danger text-white">
+                                        <h4 class="mb-0"><i class="fas fa-exclamation-triangle mr-2"></i>Terms & Conditions</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="alert alert-warning">
+                                            <i class="fas fa-info-circle mr-2"></i>
+                                            Please read these terms carefully before using our APIs.
+                                        </div>
+                                        <ol class="mb-0">
+                                            <li class="mb-2"><strong>No Flooding:</strong> Do not make excessive requests in short periods.</li>
+                                            <li class="mb-2"><strong>Changes:</strong> We may update terms anytime to maintain service quality.</li>
+                                            <li class="mb-2"><strong>Free Service:</strong> All features are completely free with unlimited requests.</li>
+                                            <li class="mb-2"><strong>Responsible Use:</strong> Use the service responsibly and legally.</li>
+                                            <li class="mb-0"><strong>Disclaimer:</strong> We are not responsible for how you use our APIs.</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DOCS PAGE CONTENT -->
+                    <div id="docs-page" class="page-content" style="display: none;">
+                        <div class="row mb-4">
+                            <div class="col-lg-12">
+                                <div class="card shadow-sm">
+                                    <div class="card-header bg-dark text-white">
+                                        <h4 class="mb-0"><i class="fas fa-book mr-2"></i>API Documentation</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="lead">Browse our API categories and endpoints. Click any endpoint to try it.</p>
+                                        
+                                        <!-- AI Category -->
+                                        <div class="card api-category mb-3">
+                                            <div class="card-header" data-toggle="collapse" data-target="#aiCollapse">
+                                                <h5 class="mb-0">
+                                                    <i class="fas fa-robot mr-2"></i>Artificial Intelligence
+                                                    <i class="fas fa-chevron-down float-right"></i>
+                                                </h5>
+                                            </div>
+                                            <div class="collapse show" id="aiCollapse">
+                                                <div class="card-body">
+                                                    <div class="list-group">
+                                                        <a href="javascript:void(0)" class="list-group-item api-endpoint-item" 
+                                                           onclick="selectEndpoint('/api/gpt', 'GET', 'text', 'Hello, how can I help you?')">
+                                                            <div class="d-flex w-100 justify-content-between">
+                                                                <h6 class="mb-1">Chat GPT AI</h6>
+                                                                <span class="badge">GET</span>
                                                             </div>
-                                                        </div>
+                                                            <p class="mb-1">/api/gpt?text=your_message</p>
+                                                            <small>AI-powered chat completion using GPT model</small>
+                                                        </a>
+                                                        <a href="javascript:void(0)" class="list-group-item api-endpoint-item"
+                                                           onclick="selectEndpoint('/api/degreeguru', 'GET', 'message', 'Explain quantum physics')">
+                                                            <div class="d-flex w-100 justify-content-between">
+                                                                <h6 class="mb-1">DegreeGuru AI</h6>
+                                                                <span class="badge">GET</span>
+                                                            </div>
+                                                            <p class="mb-1">/api/degreeguru?message=your_query</p>
+                                                            <small>Educational AI assistant for learning</small>
+                                                        </a>
+                                                        <a href="javascript:void(0)" class="list-group-item api-endpoint-item"
+                                                           onclick="selectEndpoint('/api/gpt-empat', 'GET', 'message', 'Write a poem about the ocean')">
+                                                            <div class="d-flex w-100 justify-content-between">
+                                                                <h6 class="mb-1">GPT-4.1 AI</h6>
+                                                                <span class="badge">GET</span>
+                                                            </div>
+                                                            <p class="mb-1">/api/gpt-empat?message=your_prompt</p>
+                                                            <small>Advanced GPT-4.1 model for complex tasks</small>
+                                                        </a>
+                                                        <a href="javascript:void(0)" class="list-group-item api-endpoint-item"
+                                                           onclick="selectEndpoint('/api/claude', 'GET', 'message', 'What is artificial intelligence?')">
+                                                            <div class="d-flex w-100 justify-content-between">
+                                                                <h6 class="mb-1">Claude AI</h6>
+                                                                <span class="badge">GET</span>
+                                                            </div>
+                                                            <p class="mb-1">/api/claude?message=your_query</p>
+                                                            <small>Anthropic's Claude AI assistant</small>
+                                                        </a>
                                                     </div>
-                                                    
-                                                    <!-- Tools APIs -->
-                                                    <div class="tab-pane fade" id="v-pills-tools" role="tabpanel">
-                                                        <div class="api-endpoints">
-                                                            <h5 class="mb-3">Tools APIs</h5>
-                                                            <div class="list-group">
-                                                                <a href="#" class="list-group-item list-group-item-action api-item" data-endpoint="/api/ssweb" data-method="GET" data-param="url">
-                                                                    <div class="d-flex w-100 justify-content-between">
-                                                                        <h6 class="mb-1">Website Screenshot</h6>
-                                                                        <small class="badge badge-primary">GET</small>
-                                                                    </div>
-                                                                    <p class="mb-1">/api/ssweb?url=website_url</p>
-                                                                    <small>Take screenshots of any website</small>
-                                                                </a>
-                                                                <a href="#" class="list-group-item list-group-item-action" onclick="window.open('/api/speedtest', '_blank')">
-                                                                    <div class="d-flex w-100 justify-content-between">
-                                                                        <h6 class="mb-1">Internet Speed Test</h6>
-                                                                        <small class="badge badge-info">GET</small>
-                                                                    </div>
-                                                                    <p class="mb-1">/api/speedtest</p>
-                                                                    <small>Test your internet connection speed</small>
-                                                                </a>
-                                                                <a href="#" class="list-group-item list-group-item-action api-item" data-endpoint="/api/remove-bg" data-method="GET" data-param="url">
-                                                                    <div class="d-flex w-100 justify-content-between">
-                                                                        <h6 class="mb-1">Remove Background</h6>
-                                                                        <small class="badge badge-primary">GET</small>
-                                                                    </div>
-                                                                    <p class="mb-1">/api/remove-bg?url=image_url</p>
-                                                                    <small>Remove background from images automatically</small>
-                                                                </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Image Category -->
+                                        <div class="card api-category mb-3">
+                                            <div class="card-header" data-toggle="collapse" data-target="#imageCollapse">
+                                                <h5 class="mb-0">
+                                                    <i class="fas fa-image mr-2"></i>Image Processing
+                                                    <i class="fas fa-chevron-down float-right"></i>
+                                                </h5>
+                                            </div>
+                                            <div class="collapse" id="imageCollapse">
+                                                <div class="card-body">
+                                                    <div class="list-group">
+                                                        <a href="javascript:void(0)" class="list-group-item api-endpoint-item"
+                                                           onclick="selectEndpoint('/api/image-generate', 'GET', 'prompt', 'beautiful anime girl', 'model', 'dalle3')">
+                                                            <div class="d-flex w-100 justify-content-between">
+                                                                <h6 class="mb-1">Image Generator</h6>
+                                                                <span class="badge">GET</span>
                                                             </div>
-                                                        </div>
+                                                            <p class="mb-1">/api/image-generate?prompt=description&model=dalle3</p>
+                                                            <small>Generate images from text descriptions using AI</small>
+                                                        </a>
+                                                        <a href="/api/image-models" target="_blank" class="list-group-item api-endpoint-item">
+                                                            <div class="d-flex w-100 justify-content-between">
+                                                                <h6 class="mb-1">List AI Models</h6>
+                                                                <span class="badge bg-info">GET</span>
+                                                            </div>
+                                                            <p class="mb-1">/api/image-models</p>
+                                                            <small>Get list of available AI image generation models</small>
+                                                        </a>
                                                     </div>
-                                                    
-                                                    <!-- NSFW APIs -->
-                                                    <div class="tab-pane fade" id="v-pills-nsfw" role="tabpanel">
-                                                        <div class="api-endpoints">
-                                                            <h5 class="mb-3">NSFW APIs</h5>
-                                                            <div class="list-group">
-                                                                <a href="#" class="list-group-item list-group-item-action" onclick="window.open('/api/ero', '_blank')">
-                                                                    <div class="d-flex w-100 justify-content-between">
-                                                                        <h6 class="mb-1">Random Image</h6>
-                                                                        <small class="badge badge-danger">GET</small>
-                                                                    </div>
-                                                                    <p class="mb-1">/api/ero</p>
-                                                                    <small>Get random NSFW images (18+)</small>
-                                                                </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Downloader Category -->
+                                        <div class="card api-category mb-3">
+                                            <div class="card-header" data-toggle="collapse" data-target="#downloaderCollapse">
+                                                <h5 class="mb-0">
+                                                    <i class="fas fa-download mr-2"></i>Downloader
+                                                    <i class="fas fa-chevron-down float-right"></i>
+                                                </h5>
+                                            </div>
+                                            <div class="collapse" id="downloaderCollapse">
+                                                <div class="card-body">
+                                                    <div class="list-group">
+                                                        <a href="javascript:void(0)" class="list-group-item api-endpoint-item"
+                                                           onclick="selectEndpoint('/api/tiktok', 'GET', 'url', 'https://vt.tiktok.com/ZSS74ynBL/')">
+                                                            <div class="d-flex w-100 justify-content-between">
+                                                                <h6 class="mb-1">TikTok Downloader</h6>
+                                                                <span class="badge">GET</span>
                                                             </div>
-                                                        </div>
+                                                            <p class="mb-1">/api/tiktok?url=tiktok_video_url</p>
+                                                            <small>Download TikTok videos without watermark</small>
+                                                        </a>
+                                                        <a href="javascript:void(0)" class="list-group-item api-endpoint-item"
+                                                           onclick="selectEndpoint('/api/igdl', 'GET', 'url', 'https://www.instagram.com/p/CvC7_J2PTUz/')">
+                                                            <div class="d-flex w-100 justify-content-between">
+                                                                <h6 class="mb-1">Instagram Downloader</h6>
+                                                                <span class="badge">GET</span>
+                                                            </div>
+                                                            <p class="mb-1">/api/igdl?url=instagram_post_url</p>
+                                                            <small>Download Instagram posts, reels, and stories</small>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Tools Category -->
+                                        <div class="card api-category mb-3">
+                                            <div class="card-header" data-toggle="collapse" data-target="#toolsCollapse">
+                                                <h5 class="mb-0">
+                                                    <i class="fas fa-tools mr-2"></i>Tools
+                                                    <i class="fas fa-chevron-down float-right"></i>
+                                                </h5>
+                                            </div>
+                                            <div class="collapse" id="toolsCollapse">
+                                                <div class="card-body">
+                                                    <div class="list-group">
+                                                        <a href="javascript:void(0)" class="list-group-item api-endpoint-item"
+                                                           onclick="selectEndpoint('/api/ssweb', 'GET', 'url', 'https://google.com')">
+                                                            <div class="d-flex w-100 justify-content-between">
+                                                                <h6 class="mb-1">Website Screenshot</h6>
+                                                                <span class="badge">GET</span>
+                                                            </div>
+                                                            <p class="mb-1">/api/ssweb?url=website_url</p>
+                                                            <small>Take screenshots of any website</small>
+                                                        </a>
+                                                        <a href="/api/speedtest" target="_blank" class="list-group-item api-endpoint-item">
+                                                            <div class="d-flex w-100 justify-content-between">
+                                                                <h6 class="mb-1">Internet Speed Test</h6>
+                                                                <span class="badge bg-info">GET</span>
+                                                            </div>
+                                                            <p class="mb-1">/api/speedtest</p>
+                                                            <small>Test your internet connection speed</small>
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -439,63 +573,81 @@
                                 </div>
                             </div>
                         </div>
-                    </section>
+                    </div>
 
-                    <!-- Try API Section -->
-                    <section id="try-api" class="mb-5">
-                        <div class="row">
+                    <!-- TRY API PAGE CONTENT -->
+                    <div id="try-page" class="page-content" style="display: none;">
+                        <div class="row mb-4">
                             <div class="col-lg-12">
-                                <div class="card border-0 shadow">
+                                <div class="card shadow-sm">
                                     <div class="card-header bg-success text-white">
-                                        <h4 class="mb-0">
-                                            <i class="fas fa-play-circle mr-2"></i>Try API
-                                        </h4>
+                                        <h4 class="mb-0"><i class="fas fa-play-circle mr-2"></i>Try API</h4>
                                     </div>
                                     <div class="card-body">
-                                        <!-- API Input Form -->
+                                        <!-- Selected Endpoint Info -->
+                                        <div class="row mb-4">
+                                            <div class="col-lg-12">
+                                                <div class="alert alert-info">
+                                                    <i class="fas fa-info-circle mr-2"></i>
+                                                    <strong>How to use:</strong> Select an endpoint from Documentation page, then fill parameters below.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Endpoint Display -->
                                         <div class="row mb-4">
                                             <div class="col-lg-12">
                                                 <div class="form-group">
-                                                    <label for="apiEndpoint">Endpoint URL</label>
+                                                    <label class="font-weight-bold">Selected Endpoint</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
-                                                            <span class="input-group-text bg-light border-right-0">
+                                                            <span class="input-group-text bg-dark text-white">
                                                                 <i class="fas fa-link"></i>
                                                             </span>
                                                         </div>
-                                                        <input type="text" class="form-control border-left-0" id="apiEndpoint" placeholder="Select an endpoint from documentation" readonly>
+                                                        <input type="text" id="selected-endpoint" class="form-control" readonly>
                                                     </div>
-                                                </div>
-                                                
-                                                <div id="paramContainer">
-                                                    <!-- Dynamic parameters will be added here -->
-                                                </div>
-                                                
-                                                <div class="form-group">
-                                                    <button id="testApiBtn" class="btn btn-primary btn-lg" disabled>
-                                                        <i class="fas fa-rocket mr-2"></i>Test API
-                                                    </button>
-                                                    <button id="copyUrlBtn" class="btn btn-outline-secondary btn-lg ml-2">
-                                                        <i class="fas fa-copy mr-2"></i>Copy URL
-                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
-                                        
-                                        <!-- JSON Response Display -->
-                                        <div class="row">
+
+                                        <!-- Parameter Input Section -->
+                                        <div id="parameter-section">
+                                            <!-- Parameters will be dynamically inserted here -->
+                                        </div>
+
+                                        <!-- Action Buttons -->
+                                        <div class="row mt-4">
+                                            <div class="col-lg-12">
+                                                <button id="test-api-btn" class="btn btn-api-test mr-2" disabled>
+                                                    <i class="fas fa-rocket mr-2"></i>Test API
+                                                </button>
+                                                <button id="copy-url-btn" class="btn btn-secondary mr-2">
+                                                    <i class="fas fa-copy mr-2"></i>Copy URL
+                                                </button>
+                                                <button id="clear-btn" class="btn btn-outline-danger">
+                                                    <i class="fas fa-trash mr-2"></i>Clear
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- JSON Response -->
+                                        <div class="row mt-4">
                                             <div class="col-lg-12">
                                                 <div class="card">
                                                     <div class="card-header bg-dark text-white">
                                                         <h5 class="mb-0">
                                                             <i class="fas fa-code mr-2"></i>JSON Response
+                                                            <button id="copy-json-btn" class="btn btn-sm btn-outline-light float-right">
+                                                                <i class="fas fa-copy mr-1"></i>Copy
+                                                            </button>
                                                         </h5>
                                                     </div>
-                                                    <div class="card-body bg-light">
-                                                        <pre id="jsonResponse" class="mb-0" style="min-height: 300px; max-height: 500px; overflow: auto; background: #f8f9fa; padding: 15px; border-radius: 5px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;">
+                                                    <div class="card-body p-0">
+                                                        <pre id="json-response" class="p-3 mb-0">
 {
-  "status": "Ready",
-  "message": "Select an API endpoint to test",
+  "status": "ready",
+  "message": "Select an endpoint and click Test API",
   "timestamp": null
 }</pre>
                                                     </div>
@@ -506,43 +658,16 @@
                                 </div>
                             </div>
                         </div>
-                    </section>
-
-                    <!-- Support Section -->
-                    <section class="mb-5">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="card shadow-sm">
-                                    <div class="card-body text-center py-4">
-                                        <h5 class="card-title mb-3">
-                                            <i class="fas fa-heart text-danger mr-2"></i>Support Development
-                                        </h5>
-                                        <p class="card-text mb-4">Ingin mendukung pengembangan website ini?</p>
-                                        <div class="d-flex justify-content-center flex-wrap">
-                                            <a href="https://saweria.co/putuofc" class="btn btn-primary btn-sm mr-2 mb-2" target="_blank">
-                                                <i class="fas fa-wallet mr-1"></i> Saweria
-                                            </a>
-                                            <a href="https://github.com/siputzx" class="btn btn-dark btn-sm mr-2 mb-2" target="_blank">
-                                                <i class="fab fa-github mr-1"></i> GitHub
-                                            </a>
-                                            <a href="https://wa.me/6281916807680" class="btn btn-success btn-sm mb-2" target="_blank">
-                                                <i class="fab fa-whatsapp mr-1"></i> Contact
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
+                    </div>
                 </div>
-                <!-- End Container Fluid-->
+                <!-- End SPA Container -->
                 
                 <!-- Footer -->
                 <footer class="sticky-footer">
                     <div class="container my-auto">
                         <div class="copyright text-center my-auto">
-                            <span>Made with <i class="fa fa-heart faa-flash animated text-danger"></i> by </span>
-                            <a href="https://github.com/siputzx" target="_blank" class="font-weight-bold text-dark">Geraldo Team</a>
+                            <span>Made with <i class="fa fa-heart text-danger"></i> by </span>
+                            <a href="https://github.com/siputzx" target="_blank" class="font-weight-bold">Geraldo Team</a>
                             <span class="mx-2">•</span>
                             <span id="current-year">© 2025</span>
                         </div>
@@ -561,18 +686,51 @@
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="js/ruang-admin.min.js"></script>
     
     <script>
-        // ========== DARK MODE FUNCTIONALITY ==========
+        // ========== SPA ROUTING ==========
+        let currentPage = 'home';
+        
+        function loadPage(page) {
+            // Hide all pages
+            document.querySelectorAll('.page-content').forEach(p => {
+                p.style.display = 'none';
+            });
+            
+            // Show selected page
+            document.getElementById(page + '-page').style.display = 'block';
+            
+            // Update active nav
+            document.querySelectorAll('.nav-link-spa').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update URL hash
+            window.location.hash = page;
+            
+            // Smooth transition
+            document.getElementById('spa-content').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('spa-content').style.opacity = '1';
+            }, 50);
+            
+            currentPage = page;
+        }
+        
+        // Handle URL hash on load
+        window.addEventListener('load', function() {
+            const hash = window.location.hash.substring(1) || 'home';
+            loadPage(hash);
+        });
+        
+        // ========== DARK MODE ==========
         document.addEventListener('DOMContentLoaded', function() {
             const darkModeToggle = document.getElementById('darkModeToggle');
             const body = document.body;
             
-            // Check localStorage for saved preference
             const isDarkMode = localStorage.getItem('darkMode') === 'true';
             
-            // Set initial mode
             if (isDarkMode) {
                 body.classList.add('dark-mode');
                 if (darkModeToggle) {
@@ -581,7 +739,6 @@
                 }
             }
             
-            // Handle toggle
             if (darkModeToggle) {
                 darkModeToggle.addEventListener('change', function() {
                     if (this.checked) {
@@ -592,21 +749,12 @@
                 });
             }
             
-            // Keyboard shortcut (Ctrl+Shift+D)
             document.addEventListener('keydown', function(e) {
                 if (e.ctrlKey && e.shiftKey && e.key === 'D') {
                     e.preventDefault();
                     toggleDarkMode();
                 }
             });
-            
-            // Check system preference
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                if (!localStorage.getItem('darkMode')) {
-                    // Only auto-enable if user hasn't made a choice
-                    enableDarkMode();
-                }
-            }
         });
         
         function toggleDarkMode() {
@@ -651,638 +799,219 @@
             }
         }
         
-        function showNotification(message, type) {
-            // Remove existing notification
-            const existingNotification = document.querySelector('.mode-notification');
-            if (existingNotification) {
-                existingNotification.remove();
+        // ========== API TESTER ==========
+        let selectedEndpoint = '';
+        let selectedMethod = '';
+        let parameters = [];
+        
+        function selectEndpoint(endpoint, method, param1, value1, param2 = null, value2 = null) {
+            selectedEndpoint = endpoint;
+            selectedMethod = method;
+            
+            // Switch to Try API page
+            loadPage('try');
+            
+            // Update endpoint display
+            document.getElementById('selected-endpoint').value = endpoint;
+            
+            // Build parameters array
+            parameters = [];
+            if (param1 && value1 !== undefined) {
+                parameters.push({ name: param1, value: value1 });
+            }
+            if (param2 && value2 !== undefined) {
+                parameters.push({ name: param2, value: value2 });
             }
             
-            // Create notification
+            // Generate parameter inputs
+            const paramSection = document.getElementById('parameter-section');
+            paramSection.innerHTML = '';
+            paramSection.style.display = 'block';
+            
+            if (parameters.length > 0) {
+                const title = document.createElement('h5');
+                title.className = 'mb-3';
+                title.innerHTML = '<i class="fas fa-edit mr-2"></i>Parameters';
+                paramSection.appendChild(title);
+                
+                parameters.forEach((param, index) => {
+                    const paramGroup = document.createElement('div');
+                    paramGroup.className = 'param-input-group';
+                    
+                    const label = document.createElement('label');
+                    label.textContent = param.name;
+                    label.className = 'font-weight-bold';
+                    
+                    const inputGroup = document.createElement('div');
+                    inputGroup.className = 'input-group';
+                    
+                    const prepend = document.createElement('div');
+                    prepend.className = 'input-group-prepend';
+                    prepend.innerHTML = `<span class="input-group-text"><i class="fas fa-key"></i></span>`;
+                    
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'form-control';
+                    input.value = param.value;
+                    input.dataset.param = param.name;
+                    
+                    input.addEventListener('input', function() {
+                        parameters[index].value = this.value;
+                    });
+                    
+                    inputGroup.appendChild(prepend);
+                    inputGroup.appendChild(input);
+                    
+                    paramGroup.appendChild(label);
+                    paramGroup.appendChild(inputGroup);
+                    paramSection.appendChild(paramGroup);
+                });
+            } else {
+                paramSection.innerHTML = '<div class="alert alert-info"><i class="fas fa-info-circle mr-2"></i>This endpoint requires no parameters.</div>';
+            }
+            
+            // Enable test button
+            document.getElementById('test-api-btn').disabled = false;
+            
+            // Scroll to parameters
+            setTimeout(() => {
+                paramSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+        }
+        
+        // Test API button
+        document.getElementById('test-api-btn').addEventListener('click', async function() {
+            if (!selectedEndpoint) return;
+            
+            const btn = this;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Testing...';
+            btn.disabled = true;
+            
+            // Build URL with parameters
+            let url = selectedEndpoint;
+            const params = new URLSearchParams();
+            
+            parameters.forEach(param => {
+                if (param.value.trim()) {
+                    params.append(param.name, param.value);
+                }
+            });
+            
+            const queryString = params.toString();
+            if (queryString) {
+                url += '?' + queryString;
+            }
+            
+            // Show loading in JSON response
+            document.getElementById('json-response').textContent = JSON.stringify({
+                status: "testing",
+                message: "Making request to API...",
+                url: url,
+                timestamp: new Date().toISOString()
+            }, null, 2);
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                // Format JSON response
+                document.getElementById('json-response').textContent = JSON.stringify(data, null, 2);
+                
+                showNotification('API test successful!', 'success');
+            } catch (error) {
+                document.getElementById('json-response').textContent = JSON.stringify({
+                    status: "error",
+                    message: error.toString(),
+                    url: url,
+                    timestamp: new Date().toISOString()
+                }, null, 2);
+                
+                showNotification('API test failed', 'danger');
+            } finally {
+                btn.innerHTML = '<i class="fas fa-rocket mr-2"></i>Test API';
+                btn.disabled = false;
+            }
+        });
+        
+        // Copy URL button
+        document.getElementById('copy-url-btn').addEventListener('click', function() {
+            if (!selectedEndpoint) return;
+            
+            let url = selectedEndpoint;
+            const params = new URLSearchParams();
+            
+            parameters.forEach(param => {
+                if (param.value.trim()) {
+                    params.append(param.name, param.value);
+                }
+            });
+            
+            const queryString = params.toString();
+            if (queryString) {
+                url += '?' + queryString;
+            }
+            
+            navigator.clipboard.writeText(url).then(() => {
+                showNotification('URL copied to clipboard!', 'success');
+            });
+        });
+        
+        // Copy JSON button
+        document.getElementById('copy-json-btn').addEventListener('click', function() {
+            const jsonText = document.getElementById('json-response').textContent;
+            navigator.clipboard.writeText(jsonText).then(() => {
+                showNotification('JSON copied to clipboard!', 'success');
+            });
+        });
+        
+        // Clear button
+        document.getElementById('clear-btn').addEventListener('click', function() {
+            selectedEndpoint = '';
+            selectedMethod = '';
+            parameters = [];
+            
+            document.getElementById('selected-endpoint').value = '';
+            document.getElementById('parameter-section').innerHTML = '';
+            document.getElementById('parameter-section').style.display = 'none';
+            document.getElementById('test-api-btn').disabled = true;
+            
+            document.getElementById('json-response').textContent = JSON.stringify({
+                status: "ready",
+                message: "Select an endpoint and click Test API",
+                timestamp: null
+            }, null, 2);
+            
+            showNotification('Cleared all inputs', 'info');
+        });
+        
+        // ========== UTILITY FUNCTIONS ==========
+        function showNotification(message, type) {
             const notification = document.createElement('div');
-            notification.className = `mode-notification alert alert-${type} animated--grow-in`;
+            notification.className = `alert alert-${type} alert-dismissible fade show`;
             notification.style.cssText = `
                 position: fixed;
                 top: 80px;
                 right: 20px;
                 z-index: 9999;
-                min-width: 200px;
+                min-width: 250px;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                border: none;
-                border-radius: 8px;
             `;
             notification.innerHTML = `
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'} mr-2"></i>
-                    <span>${message}</span>
-                </div>
+                ${message}
+                <button type="button" class="close" data-dismiss="alert">
+                    <span>&times;</span>
+                </button>
             `;
             
             document.body.appendChild(notification);
             
-            // Auto remove after 3 seconds
             setTimeout(() => {
-                notification.style.opacity = '0';
-                notification.style.transform = 'translateX(100px)';
-                setTimeout(() => notification.remove(), 300);
+                notification.remove();
             }, 3000);
         }
         
-        // Listen for system preference changes
-        if (window.matchMedia) {
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-                if (!localStorage.getItem('darkMode')) {
-                    // Only auto-switch if user hasn't made a choice
-                    if (e.matches) {
-                        enableDarkMode();
-                    } else {
-                        disableDarkMode();
-                    }
-                }
-            });
-        }
-        // ========== END DARK MODE ==========
-        
-        // ========== API TESTER FUNCTIONALITY ==========
-        document.addEventListener('DOMContentLoaded', function() {
-            // Handle API item clicks
-            document.querySelectorAll('.api-item').forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const endpoint = this.getAttribute('data-endpoint');
-                    const method = this.getAttribute('data-method');
-                    const param = this.getAttribute('data-param');
-                    const extra = this.getAttribute('data-extra');
-                    
-                    // Update endpoint display
-                    document.getElementById('apiEndpoint').value = endpoint;
-                    
-                    // Create parameter input
-                    const paramContainer = document.getElementById('paramContainer');
-                    paramContainer.innerHTML = '';
-                    
-                    if (param) {
-                        const paramGroup = document.createElement('div');
-                        paramGroup.className = 'form-group';
-                        
-                        const label = document.createElement('label');
-                        label.textContent = `Parameter: ${param}`;
-                        label.htmlFor = 'apiParam';
-                        
-                        const inputGroup = document.createElement('div');
-                        inputGroup.className = 'input-group';
-                        
-                        const prepend = document.createElement('div');
-                        prepend.className = 'input-group-prepend';
-                        prepend.innerHTML = '<span class="input-group-text bg-light border-right-0"><i class="fas fa-edit"></i></span>';
-                        
-                        const input = document.createElement('input');
-                        input.type = 'text';
-                        input.className = 'form-control border-left-0';
-                        input.id = 'apiParam';
-                        input.placeholder = `Enter ${param} value...`;
-                        
-                        // Set default value based on param name
-                        if (param === 'text' || param === 'message') {
-                            input.value = 'Hello, how are you?';
-                        } else if (param === 'url') {
-                            input.value = 'https://example.com';
-                        } else if (param === 'prompt') {
-                            input.value = 'beautiful anime girl';
-                        } else if (param === 'query') {
-                            input.value = 'music video';
-                        }
-                        
-                        inputGroup.appendChild(prepend);
-                        inputGroup.appendChild(input);
-                        
-                        // Add extra parameters if exists
-                        if (extra) {
-                            try {
-                                const extraParams = JSON.parse(extra);
-                                Object.keys(extraParams).forEach(key => {
-                                    const extraParamGroup = document.createElement('div');
-                                    extraParamGroup.className = 'form-group mt-2';
-                                    
-                                    const extraLabel = document.createElement('label');
-                                    extraLabel.textContent = `Parameter: ${key}`;
-                                    
-                                    const extraInputGroup = document.createElement('div');
-                                    extraInputGroup.className = 'input-group';
-                                    
-                                    const extraPrepend = document.createElement('div');
-                                    extraPrepend.className = 'input-group-prepend';
-                                    extraPrepend.innerHTML = '<span class="input-group-text bg-light border-right-0"><i class="fas fa-cog"></i></span>';
-                                    
-                                    const extraInput = document.createElement('input');
-                                    extraInput.type = 'text';
-                                    extraInput.className = 'form-control border-left-0';
-                                    extraInput.id = `apiParam_${key}`;
-                                    extraInput.value = extraParams[key];
-                                    extraInput.readOnly = true;
-                                    
-                                    extraInputGroup.appendChild(extraPrepend);
-                                    extraInputGroup.appendChild(extraInput);
-                                    
-                                    extraParamGroup.appendChild(extraLabel);
-                                    extraParamGroup.appendChild(extraInputGroup);
-                                    paramContainer.appendChild(extraParamGroup);
-                                });
-                            } catch (e) {
-                                console.error('Error parsing extra parameters:', e);
-                            }
-                        }
-                        
-                        paramGroup.appendChild(label);
-                        paramGroup.appendChild(inputGroup);
-                        paramContainer.appendChild(paramGroup);
-                    }
-                    
-                    // Enable test button
-                    document.getElementById('testApiBtn').disabled = false;
-                    
-                    // Scroll to try API section
-                    document.getElementById('try-api').scrollIntoView({ behavior: 'smooth' });
-                });
-            });
-            
-            // Handle test API button
-            document.getElementById('testApiBtn').addEventListener('click', async function() {
-                const endpoint = document.getElementById('apiEndpoint').value;
-                const paramInput = document.getElementById('apiParam');
-                
-                if (!endpoint) {
-                    showNotification('Please select an API endpoint first', 'warning');
-                    return;
-                }
-                
-                // Build URL with parameters
-                let url = endpoint;
-                const params = new URLSearchParams();
-                
-                if (paramInput && paramInput.value) {
-                    params.append(paramInput.id.replace('apiParam', '').replace('_', '') || 'text', paramInput.value);
-                }
-                
-                // Add extra parameters
-                document.querySelectorAll('#paramContainer input[type="text"]').forEach(input => {
-                    if (input.id.startsWith('apiParam_') && input.value) {
-                        const paramName = input.id.replace('apiParam_', '');
-                        params.append(paramName, input.value);
-                    }
-                });
-                
-                const queryString = params.toString();
-                if (queryString) {
-                    url += '?' + queryString;
-                }
-                
-                // Show loading state
-                this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Testing...';
-                this.disabled = true;
-                
-                // Update JSON response with loading state
-                document.getElementById('jsonResponse').textContent = JSON.stringify({
-                    status: "loading",
-                    message: "Testing API endpoint...",
-                    endpoint: url,
-                    timestamp: new Date().toISOString()
-                }, null, 2);
-                
-                try {
-                    // Make API request
-                    const response = await fetch(url);
-                    const data = await response.json();
-                    
-                    // Update JSON response
-                    document.getElementById('jsonResponse').textContent = JSON.stringify(data, null, 2);
-                    
-                    // Show success notification
-                    showNotification('API test successful!', 'success');
-                } catch (error) {
-                    // Update JSON response with error
-                    document.getElementById('jsonResponse').textContent = JSON.stringify({
-                        status: "error",
-                        message: error.message,
-                        endpoint: url,
-                        timestamp: new Date().toISOString()
-                    }, null, 2);
-                    
-                    // Show error notification
-                    showNotification('API test failed: ' + error.message, 'danger');
-                } finally {
-                    // Reset button state
-                    this.innerHTML = '<i class="fas fa-rocket mr-2"></i>Test API';
-                    this.disabled = false;
-                }
-            });
-            
-            // Handle copy URL button
-            document.getElementById('copyUrlBtn').addEventListener('click', function() {
-                const endpoint = document.getElementById('apiEndpoint').value;
-                const paramInput = document.getElementById('apiParam');
-                
-                if (!endpoint) {
-                    showNotification('Please select an API endpoint first', 'warning');
-                    return;
-                }
-                
-                // Build URL
-                let url = endpoint;
-                const params = new URLSearchParams();
-                
-                if (paramInput && paramInput.value) {
-                    params.append(paramInput.id.replace('apiParam', '').replace('_', '') || 'text', paramInput.value);
-                }
-                
-                // Add extra parameters
-                document.querySelectorAll('#paramContainer input[type="text"]').forEach(input => {
-                    if (input.id.startsWith('apiParam_') && input.value) {
-                        const paramName = input.id.replace('apiParam_', '');
-                        params.append(paramName, input.value);
-                    }
-                });
-                
-                const queryString = params.toString();
-                if (queryString) {
-                    url += '?' + queryString;
-                }
-                
-                // Copy to clipboard
-                navigator.clipboard.writeText(url).then(() => {
-                    showNotification('URL copied to clipboard!', 'success');
-                }).catch(err => {
-                    showNotification('Failed to copy URL: ' + err, 'danger');
-                });
-            });
-        });
-        // ========== END API TESTER ==========
-        
-        // ========== UTILITY FUNCTIONS ==========
-        // Script untuk mendapatkan IP Address
-        async function getIPAddress() {
-            try {
-                const response = await fetch('https://api.ipify.org?format=json');
-                const data = await response.json();
-                document.getElementById('ip-address').textContent = data.ip;
-            } catch (error) {
-                document.getElementById('ip-address').textContent = 'Not Available';
-            }
-        }
-        
-        // Script untuk mendapatkan status baterai
-        function getBatteryStatus() {
-            if ('getBattery' in navigator) {
-                navigator.getBattery().then(function(battery) {
-                    updateBatteryInfo(battery);
-                    
-                    battery.addEventListener('levelchange', function() {
-                        updateBatteryInfo(battery);
-                    });
-                    
-                    battery.addEventListener('chargingchange', function() {
-                        updateBatteryInfo(battery);
-                    });
-                });
-            } else {
-                document.getElementById('battery-level').textContent = 'N/A';
-                document.getElementById('charging-status').textContent = '';
-            }
-        }
-        
-        function updateBatteryInfo(battery) {
-            const level = Math.round(battery.level * 100);
-            document.getElementById('battery-level').textContent = level;
-            
-            if (battery.charging) {
-                document.getElementById('charging-status').textContent = '(Charging)';
-                document.getElementById('charging-status').className = 'text-sm text-success';
-            } else {
-                document.getElementById('charging-status').textContent = '(Not Charging)';
-                document.getElementById('charging-status').className = 'text-sm text-secondary';
-            }
-        }
-        
-        // Update server time
-        function updateServerTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('id-ID', {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
-            const dateString = now.toLocaleDateString('id-ID', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-            
-            document.getElementById('server-time').innerHTML = `
-                ${timeString}<br>
-                <small class="text-muted">${dateString}</small>
-            `;
-        }
-        
-        // Update current year in footer
-        function updateCurrentYear() {
-            const year = new Date().getFullYear();
-            document.getElementById('current-year').textContent = `© ${year}`;
-        }
-        
-        // Initialize everything
-        function initialize() {
-            getIPAddress();
-            getBatteryStatus();
-            updateServerTime();
-            updateCurrentYear();
-            
-            // Update time every second
-            setInterval(updateServerTime, 1000);
-            
-            // Update battery every minute
-            setInterval(getBatteryStatus, 60000);
-            
-            // Smooth scroll for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                });
-            });
-        }
-        
-        // Run initialization when page loads
-        document.addEventListener('DOMContentLoaded', initialize);
+        // Update year in footer
+        document.getElementById('current-year').textContent = `© ${new Date().getFullYear()}`;
     </script>
-    
-    <!-- CSS untuk Dark Mode dan Switch Toggle -->
-    <style>
-        /* Dark Mode Toggle Switch */
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-            margin-left: 10px;
-        }
-        
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-        }
-        
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-        }
-        
-        input:checked + .slider {
-            background-color: #3f51b5;
-        }
-        
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
-        
-        .slider.round {
-            border-radius: 34px;
-        }
-        
-        .slider.round:before {
-            border-radius: 50%;
-        }
-        
-        /* Dark Mode Styles */
-        body.dark-mode {
-            background-color: #121212;
-            color: #e0e0e0;
-            transition: all 0.3s ease;
-        }
-        
-        body.dark-mode #wrapper #content-wrapper {
-            background-color: #1e1e1e;
-        }
-        
-        body.dark-mode .card {
-            background-color: #2d2d2d;
-            border-color: #404040;
-            color: #e0e0e0;
-        }
-        
-        body.dark-mode .card .card-header {
-            background-color: #252525;
-            border-color: #404040;
-            color: #e0e0e0;
-        }
-        
-        body.dark-mode .card .card-body {
-            color: #e0e0e0;
-        }
-        
-        body.dark-mode .card.bg-light {
-            background-color: #252525 !important;
-        }
-        
-        body.dark-mode .text-gray-800,
-        body.dark-mode .text-gray-600 {
-            color: #e0e0e0 !important;
-        }
-        
-        body.dark-mode footer.sticky-footer {
-            background-color: #1a1a1a !important;
-            border-top-color: #404040;
-        }
-        
-        body.dark-mode footer.sticky-footer .copyright {
-            color: #e0e0e0 !important;
-        }
-        
-        body.dark-mode footer.sticky-footer .copyright a {
-            color: #ffffff !important;
-        }
-        
-        body.dark-mode footer.sticky-footer .copyright a:hover {
-            color: #3f51b5 !important;
-        }
-        
-        body.dark-mode .topbar {
-            background-color: #1a1a1a;
-            border-bottom-color: #404040;
-        }
-        
-        body.dark-mode .sidebar {
-            background-color: #1a1a1a !important;
-            border-right-color: #404040;
-        }
-        
-        body.dark-mode .sidebar .sidebar-brand {
-            background-color: #121212;
-            border-bottom-color: #404040;
-        }
-        
-        body.dark-mode .text-dark {
-            color: #ffffff !important;
-        }
-        
-        body.dark-mode .border-left-primary {
-            border-left-color: #3f51b5 !important;
-        }
-        
-        body.dark-mode .border-left-info {
-            border-left-color: #17a2b8 !important;
-        }
-        
-        body.dark-mode .border-left-success {
-            border-left-color: #28a745 !important;
-        }
-        
-        body.dark-mode .border-left-warning {
-            border-left-color: #ffc107 !important;
-        }
-        
-        body.dark-mode .border-left-danger {
-            border-left-color: #dc3545 !important;
-        }
-        
-        /* API Documentation Styles */
-        .nav-pills .nav-link.active {
-            background-color: #3f51b5;
-            color: white;
-        }
-        
-        .api-endpoints .list-group-item {
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .api-endpoints .list-group-item:hover {
-            transform: translateX(5px);
-            background-color: #f8f9fa;
-        }
-        
-        body.dark-mode .api-endpoints .list-group-item:hover {
-            background-color: #252525;
-        }
-        
-        .api-endpoints .badge {
-            font-size: 0.7em;
-        }
-        
-        /* Notification animation */
-        .mode-notification {
-            animation: slideInRight 0.3s ease;
-        }
-        
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .mode-notification {
-                top: 70px;
-                right: 10px;
-                left: 10px;
-                width: calc(100% - 20px);
-            }
-            
-            .display-4 {
-                font-size: 2.5rem;
-            }
-            
-            .btn-lg {
-                padding: 0.5rem 1rem;
-                font-size: 1rem;
-            }
-        }
-        
-        /* Smooth transitions for dark mode */
-        * {
-            transition: background-color 0.3s ease, 
-                        border-color 0.3s ease, 
-                        color 0.3s ease,
-                        box-shadow 0.3s ease;
-        }
-        
-        /* Additional card styling */
-        .card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
-        }
-        
-        body.dark-mode .card:hover {
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
-        }
-        
-        /* Text utilities */
-        .text-sm {
-            font-size: 0.875rem;
-        }
-        
-        /* Hero section styling */
-        .display-4 {
-            font-weight: 700;
-            background: linear-gradient(45deg, #3f51b5, #2196f3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        /* JSON response styling */
-        #jsonResponse {
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-        
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        /* Section spacing */
-        section {
-            padding-top: 80px;
-            margin-top: -80px;
-        }
-    </style>
 </body>
 </html>
