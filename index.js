@@ -2718,11 +2718,6 @@ app.get('/api/feedback/all', async (req, res) => {
   }
 });
 
-// Helper functions untuk database
-const fs = require('fs').promises;
-const path = require('path');
-const DB_FILE = path.join(__dirname, 'feedback-database.json');
-
 async function readDatabase() {
   try {
     const data = await fs.readFile(DB_FILE, 'utf8');
