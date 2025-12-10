@@ -501,7 +501,7 @@ async function uploadToCatbox(imageUrl) {
 }
 
 // Endpoint untuk Remove Background HD
-app.get('/api/remove-bg-hd', async (req, res) => {
+app.get('/api/remove-bg', async (req, res) => {
   try {
     const imageUrl = req.query.url;
     if (!imageUrl) {
