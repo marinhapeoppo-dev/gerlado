@@ -2249,3 +2249,108 @@ body.dark-mode .close:hover {
                 color 0.3s ease,
                 box-shadow 0.3s ease;
 }
+
+/* Star Rating Styles */
+.star-rating .stars {
+    font-size: 2rem;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.star-rating .star {
+    color: #6c757d;
+    transition: color 0.2s ease, transform 0.2s ease;
+    margin-right: 5px;
+}
+
+.star-rating .star:hover {
+    transform: scale(1.2);
+}
+
+.star-rating .star.active {
+    color: #ffc107;
+}
+
+/* Feedback Cards */
+.feedback-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feedback-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Form Styles */
+.form-control:focus {
+    border-color: #3f51b5;
+    box-shadow: 0 0 0 0.2rem rgba(63, 81, 181, 0.25);
+}
+
+/* Tab Styles */
+.nav-tabs .nav-link {
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: #6c757d;
+    font-weight: 500;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover {
+    color: #3f51b5;
+    border-bottom-color: #dee2e6;
+}
+
+.nav-tabs .nav-link.active {
+    color: #3f51b5;
+    border-bottom-color: #3f51b5;
+    background-color: transparent;
+}
+
+/* Dark Mode for Feedback */
+body.dark-mode .star-rating .star {
+    color: #adb5bd;
+}
+
+body.dark-mode .star-rating .star:hover {
+    color: #ffc107;
+}
+
+body.dark-mode .form-control {
+    background-color: #252525;
+    border-color: #404040;
+    color: #e0e0e0;
+}
+
+body.dark-mode .form-control:focus {
+    background-color: #252525;
+    border-color: #3f51b5;
+    color: #e0e0e0;
+}
+
+body.dark-mode .nav-tabs .nav-link {
+    color: #adb5bd;
+    background-color: transparent;
+}
+
+body.dark-mode .nav-tabs .nav-link:hover {
+    color: #ffffff;
+}
+
+body.dark-mode .nav-tabs .nav-link.active {
+    color: #ffffff;
+    border-bottom-color: #3f51b5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .star-rating .stars {
+        font-size: 1.5rem;
+    }
+    
+    .nav-tabs .nav-link {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+}
