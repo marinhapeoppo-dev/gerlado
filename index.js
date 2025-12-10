@@ -1293,9 +1293,6 @@ app.get('/api/remove-bg', async (req, res) => {
   }
 });
 
-// Fungsi Remove Background HD
-const FormData = require('form-data');
-
 async function removeBackgroundHD(imageUrl) {
   try {
     // Download gambar dari URL
