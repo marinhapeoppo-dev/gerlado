@@ -7,8 +7,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="Geraldo APIs - Free REST API Services for Developers">
+    <meta name="author" content="Geraldo Team">
     <title>Geraldo || APIs</title>
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -20,8 +20,7 @@
     <div id="wrapper">
         <!-- Sidebar -->
         <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-                <!-- Logo dari URL -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="javascript:void(0)" onclick="navigateTo('welcome')">
                 <img src="https://files.catbox.moe/240t0t.jpg" 
                      alt="Geraldo APIs Logo" 
                      class="sidebar-brand-icon"
@@ -29,15 +28,32 @@
                 <div class="sidebar-brand-text mx-3">Geraldo APIs</div>
             </a>
             <hr class="sidebar-divider my-0">
-            <li class="nav-item active">
-                <a class="nav-link" href="/stats">
-                    <i class="fas fa-fw fa-thermometer-three-quarters"></i>
-                    <span>Statistic</span>
+            
+            <!-- Navigation Menu -->
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)" onclick="navigateTo('welcome')">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
                 </a>
             </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)" onclick="navigateTo('apis')">
+                    <i class="fas fa-code"></i>
+                    <span>API Testing</span>
+                </a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)" onclick="navigateTo('stats')">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Statistics</span>
+                </a>
+            </li>
+            
             <hr class="sidebar-divider">
             <div class="sidebar-heading">
-                Features
+                API Categories
             </div>
             
             <!-- Artificial Intelligence Menu -->
@@ -49,14 +65,14 @@
                 </a>
                 <div id="collapseSticker" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
                     <div class="py-2 collapse-inner rounded">
-                        <a class="collapse-item" target="_blank" href="/api/gpt?text=hai">Chat Gpt Ai</a>
-                        <a class="collapse-item" target="_blank" href="/api/degreeguru?message=hai">DegreeGuru Ai</a>
-                        <a class="collapse-item" target="_blank" href="/api/gpt-oss?message=hai">GPT-OSS Ai</a>
-                        <a class="collapse-item" target="_blank" href="/api/gpt-empat?message=hai">GPT-4.1 Ai</a>
-                        <a class="collapse-item" target="_blank" href="/api/perplexity?message=hai">PERPLEXITY Ai</a>
-                        <a class="collapse-item" target="_blank" href="/api/claude?message=Halo">Claude AI</a>
-                        <a class="collapse-item" target="_blank" href="/api/gemini?message=Halo">Gemini AI</a>
-                        <a class="collapse-item" target="_blank" href="/api/webpilot?message=Kabar&Sumatra&hari&ini">Webpilot AI</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('GPT Chat', '/api/gpt', 'text', 'Enter your message')">Chat Gpt Ai</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('DegreeGuru AI', '/api/degreeguru', 'message', 'Enter your message')">DegreeGuru Ai</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('GPT-OSS AI', '/api/gpt-oss', 'message', 'Enter your message')">GPT-OSS Ai</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('GPT-4.1 AI', '/api/gpt-empat', 'message', 'Enter your message')">GPT-4.1 Ai</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('PERPLEXITY AI', '/api/perplexity', 'message', 'Enter your message')">PERPLEXITY Ai</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Claude AI', '/api/claude', 'message', 'Enter your query')">Claude AI</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Gemini AI', '/api/gemini', 'message', 'Enter your query')">Gemini AI</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Webpilot AI', '/api/webpilot', 'query', 'Enter your query')">Webpilot AI</a>
                     </div>
                 </div>
             </li>
@@ -70,8 +86,8 @@
                 </a>
                 <div id="collapseImage" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
                     <div class="py-2 collapse-inner rounded">
-                        <a class="collapse-item" target="_blank" href="/api/image-generate?prompt=beautiful anime girl&model=dalle3">Image Generator</a>
-                        <a class="collapse-item" target="_blank" href="/api/image-models">List AI Models</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Image Generator', '/api/image-generate', 'prompt', 'Enter image prompt')">Image Generator</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('List AI Models', '/api/image-models', null, null, true)">List AI Models</a>
                     </div>
                 </div>
             </li>
@@ -85,11 +101,11 @@
                 </a>
                 <div id="collapseDownloader" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
                     <div class="py-2 collapse-inner rounded">
-                        <a class="collapse-item" target="_blank" href="/api/download-douyin?url=">Douyin Downloader</a>
-                        <a class="collapse-item" target="_blank" href="/api/aio-downloader?url=https://open.spotify.com/track/3rPtS4nfpy7PsARctAWpzd">All-in-One</a>
-                        <a class="collapse-item" target="_blank" href="/api/igdl?url=">IG Downloader</a>
-                        <a class="collapse-item" target="_blank" href="/api/tiktok?url=https://vt.tiktok.com/ZSS74ynBL/">TikTok Downloader</a>
-                        <a class="collapse-item" target="_blank" href="/api/yt-play?query=">YTPLAY</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Douyin Downloader', '/api/download-douyin', 'url', 'Enter Douyin video URL')">Douyin Downloader</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('All-in-One Downloader', '/api/aio-downloader', 'url', 'Enter content URL')">All-in-One</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Instagram Downloader', '/api/igdl', 'url', 'Enter Instagram URL')">IG Downloader</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('TikTok Downloader', '/api/tiktok', 'url', 'Enter TikTok URL')">TikTok Downloader</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('YTPLAY', '/api/yt-play', 'query', 'Enter search query')">YTPLAY</a>
                     </div>
                 </div>
             </li>
@@ -103,12 +119,12 @@
                 </a>
                 <div id="collapseTools" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
                     <div class="py-2 collapse-inner rounded">
-                        <a class="collapse-item" target="_blank" href="/api/speedtest">Internet Speed Test</a>
-                        <a class="collapse-item" target="_blank" href="/api/ssweb?url=https://google.com">Ssweb</a>
-                        <a class="collapse-item" target="_blank" href="/api/cek-kuota-axis?nomor=6281234567890">Cek Kuota Axis</a>
-                        <a class="collapse-item" target="_blank" href="/api/gits?url=">Get Gits</a>
-                        <a class="collapse-item" target="_blank" href="/api/remove-bg?url=">Remove Background</a>
-                        <a class="collapse-item" target="_blank" href="/api/remove-clothes?imageUrl=">Remove Clothes</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Internet Speed Test', '/api/speedtest', null, null, true)">Internet Speed Test</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Ssweb Screenshot', '/api/ssweb', 'url', 'Enter website URL')">Ssweb</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Cek Kuota Axis', '/api/cek-kuota-axis', 'nomor', 'Enter phone number')">Cek Kuota Axis</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Get Gits', '/api/gits', 'url', 'Enter Gits Url')">Get Gits</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Remove Background', '/api/remove-bg', 'url', 'Enter image URL')">Remove Background</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Remove Clothes', '/api/remove-clothes', 'imageUrl', 'Enter image URL')">Remove Clothes</a>
                     </div>
                 </div>
             </li>
@@ -122,6 +138,7 @@
                 </a>
                 <div id="collapseHiburan" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
                     <div class="py-2 collapse-inner rounded">
+                        <!-- Add entertainment APIs here -->
                     </div>
                 </div>
             </li>
@@ -135,7 +152,7 @@
                 </a>
                 <div id="collapseNsfw" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
                     <div class="py-2 collapse-inner rounded">
-                        <a class="collapse-item" target="_blank" href="/api/ero">Random Image</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Random Image', '/api/ero', null, null, true)">Random Image</a>
                     </div>
                 </div>
             </li>
@@ -161,7 +178,28 @@
                     <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
+                    
+                    <!-- Page Title -->
+                    <div class="d-none d-md-inline-block ml-md-3 mr-auto">
+                        <h4 class="mb-0" id="page-title">Welcome to Geraldo APIs</h4>
+                    </div>
+                    
                     <ul class="navbar-nav ml-auto">
+                        <!-- Quick Navigation -->
+                        <li class="nav-item dropdown no-arrow d-none d-sm-inline-block">
+                            <a class="nav-link" href="javascript:void(0)" onclick="navigateTo('welcome')">
+                                <i class="fas fa-home fa-fw"></i>
+                            </a>
+                        </li>
+                        
+                        <li class="nav-item dropdown no-arrow d-none d-sm-inline-block">
+                            <a class="nav-link" href="javascript:void(0)" onclick="navigateTo('apis')">
+                                <i class="fas fa-code fa-fw"></i>
+                            </a>
+                        </li>
+                        
+                        <div class="topbar-divider d-none d-sm-block"></div>
+                        
                         <!-- Dark Mode Toggle -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link" href="#" id="darkModeDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -186,26 +224,7 @@
                         </li>
                         
                         <div class="topbar-divider d-none d-sm-block"></div>
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                aria-labelledby="searchDropdown">
-                                <form class="navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                            aria-label="Search" aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
+                        
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
@@ -217,7 +236,7 @@
                                 <h6 class="dropdown-header bg-info-gradient">
                                     INFO CENTER
                                 </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                <a class="dropdown-item d-flex align-items-center" href="javascript:void(0)" onclick="navigateTo('welcome')">
                                     <div class="mr-3">
                                         <div class="icon-circle bg-danger">
                                             <i class="fas fa-info-circle text-white"></i>
@@ -245,122 +264,110 @@
                 </nav>
                 <!-- End of Topbar -->
 
-                <!-- Container Fluid-->
-                <div class="container-fluid" id="container-wrapper">
-                    <!-- S&K Card -->
-                    <div class="card mb-4 border-left-primary shadow-sm">
-                        <div class="card-body p-4">
-                            <div class="row align-items-center">
-                                <div class="col-md-11">
-                                    <h4 class="mb-3 text-gray-800">
-                                        <i class="fas fa-ruler mr-2 text-danger"></i>Syarat & Ketentuan
-                                    </h4>
-                                    <div class="card bg-light border-0 p-3">
-                                        <ol class="mb-0 pl-3">
-                                            <li class="mb-2">
-                                                <strong>Jangan flooding requests.</strong>
-                                                <p class="mb-0 text-gray-600">Mohon untuk tidak melakukan request secara berlebihan dalam waktu singkat.</p>
-                                            </li>
-                                            <li class="mb-2">
-                                                <strong>Owner dapat sewaktu-waktu mengubah ketentuan</strong>
-                                                <p class="mb-0 text-gray-600">Perubahan mungkin dilakukan untuk menjaga kualitas dan stabilitas website.</p>
-                                            </li>
-                                            <li class="mb-2">
-                                                <strong>Semua fitur free dan unlimited request</strong>
-                                                <p class="mb-0 text-gray-600">Nikmati semua layanan kami secara gratis tanpa batasan request.</p>
-                                            </li>
-                                            <li class="mb-2">
-                                                <strong>Gunakan dengan bijak</strong>
-                                                <p class="mb-0 text-gray-600">Website ini dibuat untuk membantu, mohon digunakan dengan tanggung jawab.</p>
-                                            </li>
-                                            <li class="mb-0">
-                                                <strong>Disclaimer</strong>
-                                                <p class="mb-0 text-gray-600">Owner tidak bertanggung jawab atas penggunaan website oleh pengguna.</p>
-                                            </li>
-                                        </ol>
-                                    </div>
-                                </div>
-                                <div class="col-md-1 text-center d-none d-md-block">
-                                    <i class="fas fa-file-contract fa-3x text-gray-400"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row mb-3">
-                        <!-- Stats Card: Baterai -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card h-100 border-left-primary shadow-sm">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-uppercase mb-1">Baterai</div>
-                                            <div class="h5 mb-0 font-weight-bold">
-                                                <span id="battery-level">Loading...</span>% 
-                                                <br>
-                                                <span id="charging-status" class="text-sm"></span>
+                <!-- Main Content Area (SPA Container) -->
+                <div id="spa-container" class="container-fluid">
+                    <!-- Welcome Page (Default Content) -->
+                    <div id="welcome-page" class="page-content">
+                        <!-- Hero Section -->
+                        <div class="row mb-5">
+                            <div class="col-lg-12">
+                                <div class="hero-card card shadow-lg border-0">
+                                    <div class="card-body p-5 text-center">
+                                        <div class="mb-4">
+                                            <img src="https://files.catbox.moe/240t0t.jpg" 
+                                                 alt="Geraldo APIs Logo" 
+                                                 class="rounded-circle mb-3"
+                                                 style="height: 120px; width: 120px; border: 4px solid #3f51b5;">
+                                            <h1 class="display-4 font-weight-bold text-primary mb-3">Welcome to Geraldo APIs</h1>
+                                            <p class="lead text-muted mb-4">
+                                                Your one-stop solution for free, unlimited REST API services
+                                            </p>
+                                        </div>
+                                        
+                                        <div class="row justify-content-center mb-5">
+                                            <div class="col-lg-8">
+                                                <div class="card bg-light border-0 p-4">
+                                                    <h3 class="mb-3"><i class="fas fa-rocket text-primary mr-2"></i>What is Geraldo APIs?</h3>
+                                                    <p class="mb-3">
+                                                        <strong>Geraldo APIs</strong> is a comprehensive collection of free REST API services designed to help developers, students, and hobbyists build amazing projects without worrying about API costs or limitations.
+                                                    </p>
+                                                    <p class="mb-0">
+                                                        We provide a wide range of services including AI chatbots, image processing, downloaders, utility tools, and more - all completely <span class="text-success font-weight-bold">FREE</span> with <span class="text-success font-weight-bold">UNLIMITED</span> requests!
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-battery-full fa-2x text-primary"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Stats Card: IP Address -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card h-100 border-left-info shadow-sm">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-uppercase mb-1">IP Address</div>
-                                            <div class="h5 mb-0 font-weight-bold">
-                                                <span id="ip-address">Loading...</span>
+                                        
+                                        <div class="row mb-5">
+                                            <div class="col-md-4 mb-4">
+                                                <div class="card h-100 border-left-primary shadow-sm">
+                                                    <div class="card-body text-center">
+                                                        <i class="fas fa-bolt fa-3x text-primary mb-3"></i>
+                                                        <h4 class="card-title">Fast & Reliable</h4>
+                                                        <p class="card-text">High-performance APIs with 99.9% uptime guarantee</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-4">
+                                                <div class="card h-100 border-left-success shadow-sm">
+                                                    <div class="card-body text-center">
+                                                        <i class="fas fa-infinity fa-3x text-success mb-3"></i>
+                                                        <h4 class="card-title">Unlimited Free</h4>
+                                                        <p class="card-text">No rate limits, no hidden fees, completely free forever</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-4">
+                                                <div class="card h-100 border-left-info shadow-sm">
+                                                    <div class="card-body text-center">
+                                                        <i class="fas fa-shield-alt fa-3x text-info mb-3"></i>
+                                                        <h4 class="card-title">Secure & Private</h4>
+                                                        <p class="card-text">Your data is safe with our secure API endpoints</p>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-network-wired fa-2x text-info"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Stats Card: Waktu -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card h-100 border-left-success shadow-sm">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-uppercase mb-1">Waktu Server</div>
-                                            <div class="h5 mb-0 font-weight-bold">
-                                                <span id="server-time">Loading...</span>
+                                        
+                                        <!-- Call to Action -->
+                                        <div class="mb-5">
+                                            <h2 class="mb-4">Ready to Start Testing APIs?</h2>
+                                            <p class="mb-4">Select any API from the sidebar menu to test it directly in your browser!</p>
+                                            <div class="d-flex justify-content-center flex-wrap">
+                                                <button class="btn btn-primary btn-lg mr-3 mb-3" onclick="navigateTo('apis')">
+                                                    <i class="fas fa-code mr-2"></i>Test APIs Now
+                                                </button>
+                                                <button class="btn btn-outline-primary btn-lg mb-3" onclick="navigateTo('stats')">
+                                                    <i class="fas fa-chart-bar mr-2"></i>View Statistics
+                                                </button>
                                             </div>
                                         </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-clock fa-2x text-success"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Stats Card: Status -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card h-100 border-left-warning shadow-sm">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-uppercase mb-1">Status API</div>
-                                            <div class="h5 mb-0 font-weight-bold text-success">
-                                                <i class="fas fa-circle fa-sm"></i> Online
+                                        
+                                        <!-- Quick Stats -->
+                                        <div class="row justify-content-center">
+                                            <div class="col-lg-10">
+                                                <div class="card border-0 bg-gradient-primary text-white shadow">
+                                                    <div class="card-body p-4">
+                                                        <div class="row text-center">
+                                                            <div class="col-md-3 mb-3 mb-md-0">
+                                                                <h2 class="font-weight-bold">20+</h2>
+                                                                <p class="mb-0">API Endpoints</p>
+                                                            </div>
+                                                            <div class="col-md-3 mb-3 mb-md-0">
+                                                                <h2 class="font-weight-bold">∞</h2>
+                                                                <p class="mb-0">Free Requests</p>
+                                                            </div>
+                                                            <div class="col-md-3 mb-3 mb-md-0">
+                                                                <h2 class="font-weight-bold">24/7</h2>
+                                                                <p class="mb-0">Uptime</p>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <h2 class="font-weight-bold">100%</h2>
+                                                                <p class="mb-0">No Registration</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="text-xs text-muted mt-1">All systems operational</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-server fa-2x text-warning"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -368,32 +375,218 @@
                         </div>
                     </div>
                     
-                    <!-- Donation Section -->
-                    <div class="row mb-4">
-                        <div class="col-lg-12">
-                            <div class="card shadow-sm">
-                                <div class="card-body text-center py-4">
-                                    <h5 class="card-title mb-3">
-                                        <i class="fas fa-heart text-danger mr-2"></i>Support Development
-                                    </h5>
-                                    <p class="card-text mb-4">Ingin mendukung pengembangan website ini?</p>
-                                    <div class="d-flex justify-content-center flex-wrap">
-                                        <a href="https://saweria.co/putuofc" class="btn btn-primary btn-sm mr-2 mb-2" target="_blank">
-                                            <i class="fas fa-wallet mr-1"></i> Saweria
-                                        </a>
-                                        <a href="https://github.com/siputzx" class="btn btn-dark btn-sm mr-2 mb-2" target="_blank">
-                                            <i class="fab fa-github mr-1"></i> GitHub
-                                        </a>
-                                        <a href="https://wa.me/6281916807680" class="btn btn-success btn-sm mb-2" target="_blank">
-                                            <i class="fab fa-whatsapp mr-1"></i> Contact
-                                        </a>
+                    <!-- API Testing Page (Hidden by default) -->
+                    <div id="apis-page" class="page-content" style="display: none;">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card shadow-sm border-0 mb-4">
+                                    <div class="card-header bg-white">
+                                        <h3 class="mb-0">
+                                            <i class="fas fa-flask mr-2 text-primary"></i>
+                                            API Testing Console
+                                        </h3>
+                                        <p class="text-muted mb-0">Select an API from the sidebar menu to test it here</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- API Form Container -->
+                                        <div id="api-form-container">
+                                            <div class="text-center py-5">
+                                                <i class="fas fa-code fa-4x text-muted mb-3"></i>
+                                                <h4 class="text-muted">No API Selected</h4>
+                                                <p class="text-muted">Choose an API from the sidebar menu to start testing</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- URL Preview Container -->
+                                        <div id="url-preview-container" class="mt-4" style="display: none;">
+                                            <div class="card border-left-info">
+                                                <div class="card-header bg-info text-white">
+                                                    <h5 class="mb-0">
+                                                        <i class="fas fa-link mr-2"></i>
+                                                        Generated API URL
+                                                    </h5>
+                                                </div>
+                                                <div class="card-body p-0">
+                                                    <div class="p-3 border-bottom">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <h6 class="mb-0">Click "Open API URL" to test</h6>
+                                                            <button class="btn btn-sm btn-outline-light" onclick="copyUrl()">
+                                                                <i class="fas fa-copy mr-1"></i> Copy URL
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="p-3">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" id="generated-url" readonly>
+                                                            <div class="input-group-append">
+                                                                <button class="btn btn-success" onclick="openApiUrl()">
+                                                                    <i class="fas fa-external-link-alt mr-1"></i> Open API URL
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <small class="form-text text-muted mt-2">
+                                                            This will open the API endpoint in a new tab. You will see the raw JSON response.
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Statistics Page (Hidden by default) -->
+                    <div id="stats-page" class="page-content" style="display: none;">
+                        <div class="row mb-3">
+                            <!-- Stats Card: Baterai -->
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card h-100 border-left-primary shadow-sm">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-uppercase mb-1">Baterai</div>
+                                                <div class="h5 mb-0 font-weight-bold">
+                                                    <span id="battery-level">Loading...</span>% 
+                                                    <br>
+                                                    <span id="charging-status" class="text-sm"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-battery-full fa-2x text-primary"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Stats Card: IP Address -->
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card h-100 border-left-info shadow-sm">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-uppercase mb-1">IP Address</div>
+                                                <div class="h5 mb-0 font-weight-bold">
+                                                    <span id="ip-address">Loading...</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-network-wired fa-2x text-info"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Stats Card: Waktu -->
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card h-100 border-left-success shadow-sm">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-uppercase mb-1">Waktu Server</div>
+                                                <div class="h5 mb-0 font-weight-bold">
+                                                    <span id="server-time">Loading...</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-clock fa-2x text-success"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Stats Card: Status -->
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card h-100 border-left-warning shadow-sm">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-uppercase mb-1">Status API</div>
+                                                <div class="h5 mb-0 font-weight-bold text-success">
+                                                    <i class="fas fa-circle fa-sm"></i> Online
+                                                </div>
+                                                <div class="text-xs text-muted mt-1">All systems operational</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-server fa-2x text-warning"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- S&K Card -->
+                        <div class="card mb-4 border-left-primary shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-11">
+                                        <h4 class="mb-3 text-gray-800">
+                                            <i class="fas fa-ruler mr-2 text-danger"></i>Syarat & Ketentuan
+                                        </h4>
+                                        <div class="card bg-light border-0 p-3">
+                                            <ol class="mb-0 pl-3">
+                                                <li class="mb-2">
+                                                    <strong>Jangan flooding requests.</strong>
+                                                    <p class="mb-0 text-gray-600">Mohon untuk tidak melakukan request secara berlebihan dalam waktu singkat.</p>
+                                                </li>
+                                                <li class="mb-2">
+                                                    <strong>Owner dapat sewaktu-waktu mengubah ketentuan</strong>
+                                                    <p class="mb-0 text-gray-600">Perubahan mungkin dilakukan untuk menjaga kualitas dan stabilitas website.</p>
+                                                </li>
+                                                <li class="mb-2">
+                                                    <strong>Semua fitur free dan unlimited request</strong>
+                                                    <p class="mb-0 text-gray-600">Nikmati semua layanan kami secara gratis tanpa batasan request.</p>
+                                                </li>
+                                                <li class="mb-2">
+                                                    <strong>Gunakan dengan bijak</strong>
+                                                    <p class="mb-0 text-gray-600">Website ini dibuat untuk membantu, mohon digunakan dengan tanggung jawab.</p>
+                                                </li>
+                                                <li class="mb-0">
+                                                    <strong>Disclaimer</strong>
+                                                    <p class="mb-0 text-gray-600">Owner tidak bertanggung jawab atas penggunaan website oleh pengguna.</p>
+                                                </li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 text-center d-none d-md-block">
+                                        <i class="fas fa-file-contract fa-3x text-gray-400"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Donation Section -->
+                        <div class="row mb-4">
+                            <div class="col-lg-12">
+                                <div class="card shadow-sm">
+                                    <div class="card-body text-center py-4">
+                                        <h5 class="card-title mb-3">
+                                            <i class="fas fa-heart text-danger mr-2"></i>Support Development
+                                        </h5>
+                                        <p class="card-text mb-4">Ingin mendukung pengembangan website ini?</p>
+                                        <div class="d-flex justify-content-center flex-wrap">
+                                            <a href="https://saweria.co/putuofc" class="btn btn-primary btn-sm mr-2 mb-2" target="_blank">
+                                                <i class="fas fa-wallet mr-1"></i> Saweria
+                                            </a>
+                                            <a href="https://github.com/siputzx" class="btn btn-dark btn-sm mr-2 mb-2" target="_blank">
+                                                <i class="fab fa-github mr-1"></i> GitHub
+                                            </a>
+                                            <a href="https://wa.me/6281916807680" class="btn btn-success btn-sm mb-2" target="_blank">
+                                                <i class="fab fa-whatsapp mr-1"></i> Contact
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- End Container Fluid-->
+                <!-- End SPA Container -->
                 
                 <!-- Footer -->
                 <footer class="sticky-footer">
@@ -403,6 +596,12 @@
                             <a href="https://github.com/siputzx" target="_blank" class="font-weight-bold text-dark">Geraldo Team</a>
                             <span class="mx-2">•</span>
                             <span id="current-year">© 2025</span>
+                            <span class="mx-2">•</span>
+                            <a href="javascript:void(0)" onclick="navigateTo('welcome')" class="text-muted">Home</a>
+                            <span class="mx-2">|</span>
+                            <a href="javascript:void(0)" onclick="navigateTo('apis')" class="text-muted">API Testing</a>
+                            <span class="mx-2">|</span>
+                            <a href="javascript:void(0)" onclick="navigateTo('stats')" class="text-muted">Statistics</a>
                         </div>
                     </div>
                 </footer>
@@ -423,6 +622,337 @@
     <script src="js/tampilan.js"></script>
     
     <script>
+        // ========== SPA (SINGLE PAGE APPLICATION) FUNCTIONALITY ==========
+        let currentPage = 'welcome';
+        let currentApi = null;
+        
+        // Navigation function
+        function navigateTo(page) {
+            // Hide all pages
+            document.querySelectorAll('.page-content').forEach(element => {
+                element.style.display = 'none';
+            });
+            
+            // Show selected page
+            document.getElementById(`${page}-page`).style.display = 'block';
+            
+            // Update current page
+            currentPage = page;
+            
+            // Update page title
+            updatePageTitle(page);
+            
+            // Update active nav item in sidebar
+            updateActiveNav(page);
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+            
+            // Update URL without reloading page
+            history.pushState({page: page}, '', `#${page}`);
+            
+            // If navigating to stats page, initialize stats
+            if (page === 'stats') {
+                initializeStats();
+            }
+            
+            // If navigating to API testing page, clear form if no API selected
+            if (page === 'apis' && !currentApi) {
+                clearApiForm();
+            }
+        }
+        
+        function updatePageTitle(page) {
+            const titleMap = {
+                'welcome': 'Welcome to Geraldo APIs',
+                'apis': 'API Testing Console',
+                'stats': 'Statistics & Dashboard'
+            };
+            
+            document.getElementById('page-title').textContent = titleMap[page] || 'Geraldo APIs';
+        }
+        
+        function updateActiveNav(page) {
+            // Remove active class from all nav items
+            document.querySelectorAll('#accordionSidebar .nav-item .nav-link').forEach(nav => {
+                nav.classList.remove('active');
+            });
+            
+            // Add active class to current page nav item
+            const navMap = {
+                'welcome': document.querySelector('#accordionSidebar .nav-item:nth-child(2) .nav-link'),
+                'apis': document.querySelector('#accordionSidebar .nav-item:nth-child(3) .nav-link'),
+                'stats': document.querySelector('#accordionSidebar .nav-item:nth-child(4) .nav-link')
+            };
+            
+            if (navMap[page]) {
+                navMap[page].classList.add('active');
+            }
+        }
+        
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', function(event) {
+            if (event.state && event.state.page) {
+                navigateTo(event.state.page);
+            }
+        });
+        
+        // Check URL hash on page load
+        window.addEventListener('load', function() {
+            const hash = window.location.hash.substring(1);
+            if (hash && ['welcome', 'apis', 'stats'].includes(hash)) {
+                navigateTo(hash);
+            } else {
+                navigateTo('welcome');
+            }
+        });
+        
+        // ========== API TESTING FUNCTIONALITY ==========
+        function loadApiForm(apiName, apiEndpoint, paramName, placeholder, noParams = false) {
+            // Navigate to API testing page if not already there
+            if (currentPage !== 'apis') {
+                navigateTo('apis');
+            }
+            
+            // Store current API info
+            currentApi = {
+                name: apiName,
+                endpoint: apiEndpoint,
+                paramName: paramName,
+                placeholder: placeholder,
+                noParams: noParams
+            };
+            
+            // Generate form HTML
+            let formHtml = '';
+            
+            if (noParams) {
+                // API tanpa parameter (direct call)
+                formHtml = `
+                    <div class="card border-left-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-plug mr-2"></i>
+                                ${apiName}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <h6>API Endpoint:</h6>
+                                <code class="d-block bg-light p-3 rounded mb-3">${apiEndpoint}</code>
+                            </div>
+                            <div class="mb-3">
+                                <h6>Description:</h6>
+                                <p class="mb-0">This API endpoint doesn't require any parameters. Click "Generate URL" to create the API link.</p>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-secondary" onclick="clearApiForm()">
+                                    <i class="fas fa-arrow-left mr-1"></i> Back to Selection
+                                </button>
+                                <button class="btn btn-success" onclick="generateApiUrl()">
+                                    <i class="fas fa-link mr-1"></i> Generate URL
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // API dengan parameter
+                formHtml = `
+                    <div class="card border-left-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-plug mr-2"></i>
+                                ${apiName}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <h6>API Endpoint:</h6>
+                                <code class="d-block bg-light p-3 rounded mb-3">${apiEndpoint}?${paramName}=<span id="param-value-preview">your_input</span></code>
+                            </div>
+                            <div class="mb-3">
+                                <h6>Enter ${paramName}:</h6>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">${paramName}=</span>
+                                    </div>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="api-param-input" 
+                                           placeholder="${placeholder}"
+                                           oninput="updateParamPreview(this.value)">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="fillExample()">
+                                            <i class="fas fa-lightbulb mr-1"></i> Example
+                                        </button>
+                                    </div>
+                                </div>
+                                <small class="form-text text-muted">Enter the required parameter value above</small>
+                            </div>
+                            <div class="mb-3">
+                                <h6>Description:</h6>
+                                <p class="mb-0">This API requires the <code>${paramName}</code> parameter. Fill in the input field and click "Generate URL" to create the API link.</p>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-secondary" onclick="clearApiForm()">
+                                    <i class="fas fa-arrow-left mr-1"></i> Back to Selection
+                                </button>
+                                <button class="btn btn-success" onclick="generateApiUrl()">
+                                    <i class="fas fa-link mr-1"></i> Generate URL
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Update form container
+            document.getElementById('api-form-container').innerHTML = formHtml;
+            
+            // Hide URL preview container
+            document.getElementById('url-preview-container').style.display = 'none';
+            
+            // Update page title
+            document.getElementById('page-title').textContent = `Testing: ${apiName}`;
+            
+            // Collapse sidebar on mobile
+            if (window.innerWidth < 768) {
+                document.body.classList.add('sidebar-toggled');
+                document.querySelector('.sidebar').classList.add('toggled');
+            }
+        }
+        
+        function updateParamPreview(value) {
+            const previewElement = document.getElementById('param-value-preview');
+            if (previewElement) {
+                previewElement.textContent = value || 'your_input';
+            }
+        }
+        
+        function fillExample() {
+            if (!currentApi) return;
+            
+            const inputElement = document.getElementById('api-param-input');
+            if (!inputElement) return;
+            
+            // Set example values based on API type
+            const examples = {
+                'text': 'Hello, how are you today?',
+                'message': 'Explain quantum computing in simple terms',
+                'prompt': 'A beautiful sunset over mountains',
+                'url': 'https://www.example.com/video',
+                'query': 'latest music videos 2025',
+                'nomor': '6281234567890',
+                'imageUrl': 'https://example.com/image.jpg'
+            };
+            
+            // Get example based on parameter name
+            const paramName = currentApi.paramName;
+            inputElement.value = examples[paramName] || 'Example input';
+            
+            // Update preview
+            updateParamPreview(inputElement.value);
+        }
+        
+        function clearApiForm() {
+            currentApi = null;
+            document.getElementById('api-form-container').innerHTML = `
+                <div class="text-center py-5">
+                    <i class="fas fa-code fa-4x text-muted mb-3"></i>
+                    <h4 class="text-muted">No API Selected</h4>
+                    <p class="text-muted">Choose an API from the sidebar menu to start testing</p>
+                </div>
+            `;
+            document.getElementById('url-preview-container').style.display = 'none';
+            document.getElementById('page-title').textContent = 'API Testing Console';
+        }
+        
+        function generateApiUrl() {
+            if (!currentApi) return;
+            
+            let url = currentApi.endpoint;
+            
+            // Build URL with parameters if needed
+            if (!currentApi.noParams) {
+                const inputElement = document.getElementById('api-param-input');
+                if (!inputElement || !inputElement.value.trim()) {
+                    showNotification('Please enter a value for the parameter', 'warning');
+                    return;
+                }
+                
+                const paramValue = encodeURIComponent(inputElement.value.trim());
+                url = `${currentApi.endpoint}?${currentApi.paramName}=${paramValue}`;
+            }
+            
+            // Display generated URL
+            document.getElementById('generated-url').value = url;
+            document.getElementById('url-preview-container').style.display = 'block';
+            
+            // Scroll to URL preview
+            document.getElementById('url-preview-container').scrollIntoView({ behavior: 'smooth' });
+            
+            // Show notification
+            showNotification('API URL generated successfully!', 'success');
+        }
+        
+        function openApiUrl() {
+            const url = document.getElementById('generated-url').value;
+            if (url) {
+                // Open in new tab
+                window.open(url, '_blank');
+                showNotification('Opening API URL in new tab...', 'info');
+            }
+        }
+        
+        function copyUrl() {
+            const url = document.getElementById('generated-url').value;
+            if (url) {
+                navigator.clipboard.writeText(url).then(() => {
+                    showNotification('URL copied to clipboard!', 'success');
+                }).catch(err => {
+                    showNotification('Failed to copy: ' + err, 'danger');
+                });
+            }
+        }
+        
+        function showNotification(message, type) {
+            // Remove existing notification
+            const existingNotification = document.querySelector('.mode-notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            // Create notification
+            const notification = document.createElement('div');
+            notification.className = `mode-notification alert alert-${type} animated--grow-in`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                z-index: 9999;
+                min-width: 200px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                border: none;
+                border-radius: 8px;
+            `;
+            notification.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} mr-2"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100px)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
         // ========== DARK MODE FUNCTIONALITY ==========
         document.addEventListener('DOMContentLoaded', function() {
             const darkModeToggle = document.getElementById('darkModeToggle');
@@ -510,43 +1040,6 @@
             }
         }
         
-        function showNotification(message, type) {
-            // Remove existing notification
-            const existingNotification = document.querySelector('.mode-notification');
-            if (existingNotification) {
-                existingNotification.remove();
-            }
-            
-            // Create notification
-            const notification = document.createElement('div');
-            notification.className = `mode-notification alert alert-${type} animated--grow-in`;
-            notification.style.cssText = `
-                position: fixed;
-                top: 80px;
-                right: 20px;
-                z-index: 9999;
-                min-width: 200px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                border: none;
-                border-radius: 8px;
-            `;
-            notification.innerHTML = `
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'} mr-2"></i>
-                    <span>${message}</span>
-                </div>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // Auto remove after 3 seconds
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                notification.style.transform = 'translateX(100px)';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
-        }
-        
         // Listen for system preference changes
         if (window.matchMedia) {
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
@@ -560,10 +1053,8 @@
                 }
             });
         }
-        // ========== END DARK MODE ==========
         
         // ========== UTILITY FUNCTIONS ==========
-        // Script untuk mendapatkan IP Address
         async function getIPAddress() {
             try {
                 const response = await fetch('https://api.ipify.org?format=json');
@@ -574,7 +1065,6 @@
             }
         }
         
-        // Script untuk mendapatkan status baterai
         function getBatteryStatus() {
             if ('getBattery' in navigator) {
                 navigator.getBattery().then(function(battery) {
@@ -607,7 +1097,6 @@
             }
         }
         
-        // Update server time
         function updateServerTime() {
             const now = new Date();
             const timeString = now.toLocaleTimeString('id-ID', {
@@ -622,20 +1111,21 @@
                 day: 'numeric'
             });
             
-            document.getElementById('server-time').innerHTML = `
-                ${timeString}<br>
-                <small class="text-muted">${dateString}</small>
-            `;
+            const serverTimeElement = document.getElementById('server-time');
+            if (serverTimeElement) {
+                serverTimeElement.innerHTML = `
+                    ${timeString}<br>
+                    <small class="text-muted">${dateString}</small>
+                `;
+            }
         }
         
-        // Update current year in footer
         function updateCurrentYear() {
             const year = new Date().getFullYear();
             document.getElementById('current-year').textContent = `© ${year}`;
         }
         
-        // Initialize everything
-        function initialize() {
+        function initializeStats() {
             getIPAddress();
             getBatteryStatus();
             updateServerTime();
@@ -648,12 +1138,63 @@
             setInterval(getBatteryStatus, 60000);
         }
         
-        // Run initialization when page loads
-        document.addEventListener('DOMContentLoaded', initialize);
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCurrentYear();
+            
+            // If starting on stats page, initialize stats
+            if (currentPage === 'stats') {
+                initializeStats();
+            }
+        });
     </script>
     
-    <!-- CSS untuk Dark Mode dan Switch Toggle -->
+    <!-- CSS untuk SPA dan Dark Mode -->
     <style>
+        /* SPA Transitions */
+        .page-content {
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Hero Card */
+        .hero-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        
+        .hero-card .card-body {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            margin: 20px;
+            border-radius: 15px;
+        }
+        
+        /* API Form Styling */
+        .card .card-header h5 {
+            margin-bottom: 0;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
         /* Dark Mode Toggle Switch */
         .switch {
             position: relative;
@@ -795,6 +1336,25 @@
             border-left-color: #ffc107 !important;
         }
         
+        body.dark-mode .hero-card .card-body {
+            background: rgba(45, 45, 45, 0.95) !important;
+            color: #e0e0e0 !important;
+        }
+        
+        body.dark-mode .bg-gradient-primary {
+            background: linear-gradient(135deg, #3f51b5 0%, #303f9f 100%) !important;
+        }
+        
+        /* Dark mode for code and pre elements */
+        body.dark-mode code {
+            background: #252525;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .bg-light {
+            background-color: #252525 !important;
+        }
+        
         /* Notification animation */
         .mode-notification {
             animation: slideInRight 0.3s ease;
@@ -819,9 +1379,30 @@
                 left: 10px;
                 width: calc(100% - 20px);
             }
+            
+            #page-title {
+                font-size: 1.2rem;
+            }
+            
+            .hero-card .card-body {
+                padding: 2rem 1rem !important;
+            }
+            
+            .display-4 {
+                font-size: 2.5rem;
+            }
+            
+            .input-group .btn {
+                padding: 0.375rem 0.5rem;
+                font-size: 0.875rem;
+            }
+            
+            .input-group-text {
+                font-size: 0.875rem;
+            }
         }
         
-        /* Smooth transitions for dark mode */
+        /* Smooth transitions */
         * {
             transition: background-color 0.3s ease, 
                         border-color 0.3s ease, 
@@ -846,6 +1427,74 @@
         /* Text utilities */
         .text-sm {
             font-size: 0.875rem;
+        }
+        
+        /* URL Input styling */
+        #generated-url {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        /* Footer links */
+        footer a.text-muted:hover {
+            color: #3f51b5 !important;
+            text-decoration: none;
+        }
+        
+        body.dark-mode footer a.text-muted {
+            color: #a0a0a0 !important;
+        }
+        
+        body.dark-mode footer a.text-muted:hover {
+            color: #ffffff !important;
+        }
+        
+        /* Collapse item hover */
+        .collapse-item:hover {
+            background-color: rgba(63, 81, 181, 0.1);
+            cursor: pointer;
+        }
+        
+        body.dark-mode .collapse-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Button animations */
+        .btn {
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        body.dark-mode .btn:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Form input focus */
+        .form-control:focus {
+            border-color: #3f51b5;
+            box-shadow: 0 0 0 0.2rem rgba(63, 81, 181, 0.25);
+        }
+        
+        body.dark-mode .form-control:focus {
+            border-color: #3f51b5;
+            box-shadow: 0 0 0 0.2rem rgba(63, 81, 181, 0.5);
+            background-color: #252525;
+            color: #e0e0e0;
+        }
+        
+        /* Readonly input styling */
+        .form-control[readonly] {
+            background-color: #f8f9fa;
+        }
+        
+        body.dark-mode .form-control[readonly] {
+            background-color: #252525;
+            color: #e0e0e0;
+            border-color: #404040;
         }
     </style>
 </body>
