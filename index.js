@@ -2459,6 +2459,506 @@ app.get('/api/gemini/start', async (req, res) => {
   }
 });
 
+// ==================== FEEDBACK SYSTEM ====================
+
+// Feedback endpoints
+app.get('/api/feedback/ratings', async (req, res) => {
+  try {
+    const db = await readDatabase();
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { 
+        ratings: db.ratings 
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+app.post('/api/feedback/ratings', async (req, res) => {
+  try {
+    const { name, rating, message } = req.body;
+    
+    if (!name || !rating || !message) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Nama, rating, dan pesan harus diisi' 
+      });
+    }
+    
+    if (rating < 1 || rating > 5) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Rating harus antara 1-5' 
+      });
+    }
+    
+    const db = await readDatabase();
+    const newRating = {
+      id: Date.now(),
+      name,
+      rating,
+      message,
+      timestamp: new Date().toISOString(),
+      date: new Date().toLocaleString('id-ID')
+    };
+    
+    db.ratings.unshift(newRating);
+    await writeDatabase(db);
+    
+    res.status(201).json({
+      status: 201,
+      creator: "Geraldo",
+      data: { 
+        message: 'Rating berhasil ditambahkan',
+        rating: newRating
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+app.get('/api/feedback/criticisms', async (req, res) => {
+  try {
+    const db = await readDatabase();
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { 
+        criticisms: db.criticisms 
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+app.post('/api/feedback/criticisms', async (req, res) => {
+  try {
+    const { name, criticism } = req.body;
+    
+    if (!name || !criticism) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Nama dan kritik harus diisi' 
+      });
+    }
+    
+    const db = await readDatabase();
+    const newCriticism = {
+      id: Date.now(),
+      name,
+      criticism,
+      timestamp: new Date().toISOString(),
+      date: new Date().toLocaleString('id-ID')
+    };
+    
+    db.criticisms.unshift(newCriticism);
+    await writeDatabase(db);
+    
+    res.status(201).json({
+      status: 201,
+      creator: "Geraldo",
+      data: { 
+        message: 'Kritik berhasil ditambahkan',
+        criticism: newCriticism
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+app.get('/api/feedback/suggestions', async (req, res) => {
+  try {
+    const db = await readDatabase();
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { 
+        suggestions: db.suggestions 
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+app.post('/api/feedback/suggestions', async (req, res) => {
+  try {
+    const { name, suggestion } = req.body;
+    
+    if (!name || !suggestion) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Nama dan saran harus diisi' 
+      });
+    }
+    
+    const db = await readDatabase();
+    const newSuggestion = {
+      id: Date.now(),
+      name,
+      suggestion,
+      timestamp: new Date().toISOString(),
+      date: new Date().toLocaleString('id-ID')
+    };
+    
+    db.suggestions.unshift(newSuggestion);
+    await writeDatabase(db);
+    
+    res.status(201).json({
+      status: 201,
+      creator: "Geraldo",
+      data: { 
+        message: 'Saran berhasil ditambahkan',
+        suggestion: newSuggestion
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+// Statistics endpoint
+app.get('/api/feedback/stats', async (req, res) => {
+  try {
+    const db = await readDatabase();
+    
+    const totalRatings = db.ratings.length;
+    const totalCriticisms = db.criticisms.length;
+    const totalSuggestions = db.suggestions.length;
+    const averageRating = totalRatings > 0 
+      ? (db.ratings.reduce((sum, r) => sum + r.rating, 0) / totalRatings).toFixed(1)
+      : 0;
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: {
+        total_ratings: totalRatings,
+        total_criticisms: totalCriticisms,
+        total_suggestions: totalSuggestions,
+        average_rating: parseFloat(averageRating),
+        total_feedback: totalRatings + totalCriticisms + totalSuggestions,
+        rating_distribution: {
+          1: db.ratings.filter(r => r.rating === 1).length,
+          2: db.ratings.filter(r => r.rating === 2).length,
+          3: db.ratings.filter(r => r.rating === 3).length,
+          4: db.ratings.filter(r => r.rating === 4).length,
+          5: db.ratings.filter(r => r.rating === 5).length
+        }
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+// All feedback endpoint
+app.get('/api/feedback/all', async (req, res) => {
+  try {
+    const db = await readDatabase();
+    
+    const allFeedback = [
+      ...db.ratings.map(item => ({ ...item, type: 'rating' })),
+      ...db.criticisms.map(item => ({ ...item, type: 'criticism' })),
+      ...db.suggestions.map(item => ({ ...item, type: 'suggestion' }))
+    ].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { 
+        feedback: allFeedback,
+        count: allFeedback.length
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+// Helper functions untuk database
+const fs = require('fs').promises;
+const path = require('path');
+const DB_FILE = path.join(__dirname, 'feedback-database.json');
+
+async function readDatabase() {
+  try {
+    const data = await fs.readFile(DB_FILE, 'utf8');
+    return JSON.parse(data);
+  } catch (error) {
+    // Jika file tidak ada, buat default
+    return { ratings: [], criticisms: [], suggestions: [] };
+  }
+}
+
+async function writeDatabase(data) {
+  await fs.writeFile(DB_FILE, JSON.stringify(data, null, 2), 'utf8');
+}
+
+// Initialize database file jika belum ada
+async function initializeDatabase() {
+  try {
+    await fs.access(DB_FILE);
+  } catch {
+    await writeDatabase({ ratings: [], criticisms: [], suggestions: [] });
+    console.log('Database feedback berhasil diinisialisasi');
+  }
+}
+
+// Panggil init saat server start
+initializeDatabase();
+
+// Tambahkan ke menu (Kategori baru: Feedback)
+app.get('/api/feedback/test', (req, res) => {
+  res.json({
+    status: 200,
+    creator: "Geraldo",
+    data: {
+      endpoints: [
+        { method: 'GET', path: '/api/feedback/ratings', desc: 'Get semua ratings' },
+        { method: 'POST', path: '/api/feedback/ratings', desc: 'Tambah rating baru' },
+        { method: 'GET', path: '/api/feedback/criticisms', desc: 'Get semua kritik' },
+        { method: 'POST', path: '/api/feedback/criticisms', desc: 'Tambah kritik baru' },
+        { method: 'GET', path: '/api/feedback/suggestions', desc: 'Get semua saran' },
+        { method: 'POST', path: '/api/feedback/suggestions', desc: 'Tambah saran baru' },
+        { method: 'GET', path: '/api/feedback/stats', desc: 'Get statistik feedback' },
+        { method: 'GET', path: '/api/feedback/all', desc: 'Get semua feedback' }
+      ],
+      format: {
+        rating: { name: 'string', rating: 'number (1-5)', message: 'string' },
+        criticism: { name: 'string', criticism: 'string' },
+        suggestion: { name: 'string', suggestion: 'string' }
+      }
+    }
+  });
+});
+
+// HTML interface untuk feedback
+app.get('/feedback', (req, res) => {
+  res.send(`
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Feedback System - Geraldo API</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .section { background: #f5f5f5; padding: 20px; margin: 20px 0; border-radius: 10px; }
+        input, textarea, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        .stars { font-size: 30px; color: gold; cursor: pointer; }
+        .feedback-item { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .type-rating { border-left: 5px solid #28a745; }
+        .type-criticism { border-left: 5px solid #dc3545; }
+        .type-suggestion { border-left: 5px solid #ffc107; }
+        .stats { display: flex; gap: 20px; margin: 20px 0; }
+        .stat-box { background: white; padding: 15px; border-radius: 5px; text-align: center; flex: 1; }
+    </style>
+</head>
+<body>
+    <h1>📝 Feedback System - Geraldo API</h1>
+    
+    <div class="section">
+        <h2>⭐ Beri Rating</h2>
+        <div class="stars" id="stars">
+            <span onclick="setRating(1)">☆</span>
+            <span onclick="setRating(2)">☆</span>
+            <span onclick="setRating(3)">☆</span>
+            <span onclick="setRating(4)">☆</span>
+            <span onclick="setRating(5)">☆</span>
+        </div>
+        <input type="text" id="ratingName" placeholder="Nama Anda">
+        <textarea id="ratingMessage" placeholder="Pesan Anda..." rows="3"></textarea>
+        <button onclick="submitRating()">Kirim Rating</button>
+    </div>
+    
+    <div class="section">
+        <h2>💬 Beri Kritik</h2>
+        <input type="text" id="criticismName" placeholder="Nama Anda">
+        <textarea id="criticismText" placeholder="Kritik Anda..." rows="3"></textarea>
+        <button onclick="submitCriticism()">Kirim Kritik</button>
+    </div>
+    
+    <div class="section">
+        <h2>💡 Beri Saran</h2>
+        <input type="text" id="suggestionName" placeholder="Nama Anda">
+        <textarea id="suggestionText" placeholder="Saran Anda..." rows="3"></textarea>
+        <button onclick="submitSuggestion()">Kirim Saran</button>
+    </div>
+    
+    <div class="section">
+        <h2>📊 Statistik</h2>
+        <div class="stats" id="stats"></div>
+        <button onclick="loadStats()">Refresh Statistik</button>
+    </div>
+    
+    <div class="section">
+        <h2>📋 Semua Feedback</h2>
+        <div id="allFeedback"></div>
+        <button onclick="loadAllFeedback()">Refresh Feedback</button>
+    </div>
+    
+    <script>
+        let currentRating = 0;
+        
+        function setRating(rating) {
+            currentRating = rating;
+            const stars = document.querySelectorAll('#stars span');
+            stars.forEach((star, index) => {
+                star.textContent = index < rating ? '★' : '☆';
+            });
+        }
+        
+        async function submitRating() {
+            const name = document.getElementById('ratingName').value;
+            const message = document.getElementById('ratingMessage').value;
+            
+            if (!name || !currentRating || !message) {
+                alert('Harap isi semua field untuk rating');
+                return;
+            }
+            
+            const response = await fetch('/api/feedback/ratings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, rating: currentRating, message })
+            });
+            
+            const data = await response.json();
+            alert(data.data.message);
+            loadStats();
+            loadAllFeedback();
+        }
+        
+        async function submitCriticism() {
+            const name = document.getElementById('criticismName').value;
+            const criticism = document.getElementById('criticismText').value;
+            
+            if (!name || !criticism) {
+                alert('Harap isi semua field untuk kritik');
+                return;
+            }
+            
+            const response = await fetch('/api/feedback/criticisms', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, criticism })
+            });
+            
+            const data = await response.json();
+            alert(data.data.message);
+            loadStats();
+            loadAllFeedback();
+        }
+        
+        async function submitSuggestion() {
+            const name = document.getElementById('suggestionName').value;
+            const suggestion = document.getElementById('suggestionText').value;
+            
+            if (!name || !suggestion) {
+                alert('Harap isi semua field untuk saran');
+                return;
+            }
+            
+            const response = await fetch('/api/feedback/suggestions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, suggestion })
+            });
+            
+            const data = await response.json();
+            alert(data.data.message);
+            loadStats();
+            loadAllFeedback();
+        }
+        
+        async function loadStats() {
+            const response = await fetch('/api/feedback/stats');
+            const data = await response.json();
+            
+            const stats = data.data;
+            document.getElementById('stats').innerHTML = \`
+                <div class="stat-box">
+                    <h3>⭐ Rating Rata-rata</h3>
+                    <h2>\${stats.average_rating}/5</h2>
+                </div>
+                <div class="stat-box">
+                    <h3>📊 Total Feedback</h3>
+                    <h2>\${stats.total_feedback}</h2>
+                </div>
+                <div class="stat-box">
+                    <h3>💬 Kritik & Saran</h3>
+                    <h2>\${stats.total_criticisms + stats.total_suggestions}</h2>
+                </div>
+            \`;
+        }
+        
+        async function loadAllFeedback() {
+            const response = await fetch('/api/feedback/all');
+            const data = await response.json();
+            
+            const feedbackHTML = data.data.feedback.map(item => \`
+                <div class="feedback-item type-\${item.type}">
+                    <strong>\${item.name}</strong> 
+                    <small>\${item.date}</small>
+                    <div>\${item.type === 'rating' ? '⭐'.repeat(item.rating) : ''}</div>
+                    <p>\${item.message || item.criticism || item.suggestion}</p>
+                </div>
+            \`).join('');
+            
+            document.getElementById('allFeedback').innerHTML = feedbackHTML || 'Belum ada feedback';
+        }
+        
+        // Load data saat halaman dibuka
+        loadStats();
+        loadAllFeedback();
+    </script>
+</body>
+</html>
+  `);
+});
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Ada kesalahan pada server');
