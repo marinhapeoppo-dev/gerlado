@@ -500,6 +500,37 @@ async function uploadToCatbox(imageUrl) {
   }
 }
 
+// Endpoint untuk Claude AI
+app.get('/api/claude', async (req, res) => {
+  try {
+    const message = req.query.message;
+    if (!message) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Parameter "message" tidak ditemukan',
+        example: '/api/claude?message=Siapa penemu gravitasi?'
+      });
+    }
+    
+    const response = await claudeAI(message);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { 
+        response: response
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
 // Fungsi Claude AI
 function getDataAttr(html, attr) {
   const re = new RegExp(`data-${attr}\\s*=\\s*["']([^"']+)["']`, 'i');

@@ -38,9 +38,9 @@
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0)" onclick="navigateTo('docs')">
-                    <i class="fas fa-book"></i>
-                    <span>API Documentation</span>
+                <a class="nav-link" href="javascript:void(0)" onclick="navigateTo('apis')">
+                    <i class="fas fa-code"></i>
+                    <span>API Testing</span>
                 </a>
             </li>
             
@@ -65,12 +65,12 @@
                 </a>
                 <div id="collapseSticker" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
                     <div class="py-2 collapse-inner rounded">
-                        <a class="collapse-item" target="_blank" href="/api/gpt?text=hai">Chat Gpt Ai</a>
-                        <a class="collapse-item" target="_blank" href="/api/degreeguru?message=hai">DegreeGuru Ai</a>
-                        <a class="collapse-item" target="_blank" href="/api/gpt-oss?message=hai">GPT-OSS Ai</a>
-                        <a class="collapse-item" target="_blank" href="/api/gpt-empat?message=hai">GPT-4.1 Ai</a>
-                        <a class="collapse-item" target="_blank" href="/api/perplexity?message=hai">PERPLEXITY Ai</a>
-                        <a class="collapse-item" target="_blank" href="/api/claude?message=Halo">Claude AI</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('GPT Chat', '/api/gpt', 'text', 'Enter your message')">Chat Gpt Ai</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('DegreeGuru AI', '/api/degreeguru', 'message', 'Enter your message')">DegreeGuru Ai</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('GPT-OSS AI', '/api/gpt-oss', 'message', 'Enter your message')">GPT-OSS Ai</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('GPT-4.1 AI', '/api/gpt-empat', 'message', 'Enter your message')">GPT-4.1 Ai</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('PERPLEXITY AI', '/api/perplexity', 'message', 'Enter your message')">PERPLEXITY Ai</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Claude AI', '/api/claude', 'message', 'Enter your query')">Claude AI</a>
                     </div>
                 </div>
             </li>
@@ -84,8 +84,8 @@
                 </a>
                 <div id="collapseImage" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
                     <div class="py-2 collapse-inner rounded">
-                        <a class="collapse-item" target="_blank" href="/api/image-generate?prompt=beautiful anime girl&model=dalle3">Image Generator</a>
-                        <a class="collapse-item" target="_blank" href="/api/image-models">List AI Models</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Image Generator', '/api/image-generate', 'prompt', 'Enter image prompt')">Image Generator</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('List AI Models', '/api/image-models', null, null, true)">List AI Models</a>
                     </div>
                 </div>
             </li>
@@ -99,11 +99,11 @@
                 </a>
                 <div id="collapseDownloader" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
                     <div class="py-2 collapse-inner rounded">
-                        <a class="collapse-item" target="_blank" href="/api/download-douyin?url=">Douyin Downloader</a>
-                        <a class="collapse-item" target="_blank" href="/api/aio-downloader?url=https://open.spotify.com/track/3rPtS4nfpy7PsARctAWpzd">All-in-One</a>
-                        <a class="collapse-item" target="_blank" href="/api/igdl?url=">IG Downloader</a>
-                        <a class="collapse-item" target="_blank" href="/api/tiktok?url=https://vt.tiktok.com/ZSS74ynBL/">TikTok Downloader</a>
-                        <a class="collapse-item" target="_blank" href="/api/yt-play?query=">YTPLAY</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Douyin Downloader', '/api/download-douyin', 'url', 'Enter Douyin video URL')">Douyin Downloader</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('All-in-One Downloader', '/api/aio-downloader', 'url', 'Enter content URL')">All-in-One</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Instagram Downloader', '/api/igdl', 'url', 'Enter Instagram URL')">IG Downloader</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('TikTok Downloader', '/api/tiktok', 'url', 'Enter TikTok URL')">TikTok Downloader</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('YTPLAY', '/api/yt-play', 'query', 'Enter search query')">YTPLAY</a>
                     </div>
                 </div>
             </li>
@@ -117,11 +117,11 @@
                 </a>
                 <div id="collapseTools" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
                     <div class="py-2 collapse-inner rounded">
-                        <a class="collapse-item" target="_blank" href="/api/speedtest">Internet Speed Test</a>
-                        <a class="collapse-item" target="_blank" href="/api/ssweb?url=https://google.com">Ssweb</a>
-                        <a class="collapse-item" target="_blank" href="/api/cek-kuota-axis?nomor=6281234567890">Cek Kuota Axis</a>
-                        <a class="collapse-item" target="_blank" href="/api/remove-bg?url=">Remove Background</a>
-                        <a class="collapse-item" target="_blank" href="/api/remove-clothes?imageUrl=">Remove Clothes</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Internet Speed Test', '/api/speedtest', null, null, true)">Internet Speed Test</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Ssweb Screenshot', '/api/ssweb', 'url', 'Enter website URL')">Ssweb</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Cek Kuota Axis', '/api/cek-kuota-axis', 'nomor', 'Enter phone number')">Cek Kuota Axis</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Remove Background', '/api/remove-bg', 'url', 'Enter image URL')">Remove Background</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Remove Clothes', '/api/remove-clothes', 'imageUrl', 'Enter image URL')">Remove Clothes</a>
                     </div>
                 </div>
             </li>
@@ -149,7 +149,7 @@
                 </a>
                 <div id="collapseNsfw" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
                     <div class="py-2 collapse-inner rounded">
-                        <a class="collapse-item" target="_blank" href="/api/ero">Random Image</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Random Image', '/api/ero', null, null, true)">Random Image</a>
                     </div>
                 </div>
             </li>
@@ -190,8 +190,8 @@
                         </li>
                         
                         <li class="nav-item dropdown no-arrow d-none d-sm-inline-block">
-                            <a class="nav-link" href="javascript:void(0)" onclick="navigateTo('docs')">
-                                <i class="fas fa-book fa-fw"></i>
+                            <a class="nav-link" href="javascript:void(0)" onclick="navigateTo('apis')">
+                                <i class="fas fa-code fa-fw"></i>
                             </a>
                         </li>
                         
@@ -327,11 +327,11 @@
                                         
                                         <!-- Call to Action -->
                                         <div class="mb-5">
-                                            <h2 class="mb-4">Ready to Start Building?</h2>
-                                            <p class="mb-4">Explore our comprehensive API documentation and start integrating our services into your projects today!</p>
+                                            <h2 class="mb-4">Ready to Start Testing APIs?</h2>
+                                            <p class="mb-4">Select any API from the sidebar menu to test it directly in your browser!</p>
                                             <div class="d-flex justify-content-center flex-wrap">
-                                                <button class="btn btn-primary btn-lg mr-3 mb-3" onclick="navigateTo('docs')">
-                                                    <i class="fas fa-book mr-2"></i>View API Documentation
+                                                <button class="btn btn-primary btn-lg mr-3 mb-3" onclick="navigateTo('apis')">
+                                                    <i class="fas fa-code mr-2"></i>Test APIs Now
                                                 </button>
                                                 <button class="btn btn-outline-primary btn-lg mb-3" onclick="navigateTo('stats')">
                                                     <i class="fas fa-chart-bar mr-2"></i>View Statistics
@@ -346,7 +346,7 @@
                                                     <div class="card-body p-4">
                                                         <div class="row text-center">
                                                             <div class="col-md-3 mb-3 mb-md-0">
-                                                                <h2 class="font-weight-bold">50+</h2>
+                                                                <h2 class="font-weight-bold">20+</h2>
                                                                 <p class="mb-0">API Endpoints</p>
                                                             </div>
                                                             <div class="col-md-3 mb-3 mb-md-0">
@@ -359,7 +359,7 @@
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <h2 class="font-weight-bold">100%</h2>
-                                                                <p class="mb-0">Open Source</p>
+                                                                <p class="mb-0">No Registration</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -372,197 +372,49 @@
                         </div>
                     </div>
                     
-                    <!-- Documentation Page (Hidden by default) -->
-                    <div id="docs-page" class="page-content" style="display: none;">
-                        <div class="row mb-4">
+                    <!-- API Testing Page (Hidden by default) -->
+                    <div id="apis-page" class="page-content" style="display: none;">
+                        <div class="row">
                             <div class="col-lg-12">
-                                <div class="card shadow-sm border-0">
+                                <div class="card shadow-sm border-0 mb-4">
                                     <div class="card-header bg-white">
                                         <h3 class="mb-0">
-                                            <i class="fas fa-book mr-2 text-primary"></i>
-                                            API Documentation
+                                            <i class="fas fa-flask mr-2 text-primary"></i>
+                                            API Testing Console
                                         </h3>
-                                        <p class="text-muted mb-0">Complete documentation for all available API endpoints</p>
+                                        <p class="text-muted mb-0">Select an API from the sidebar menu to test it here</p>
                                     </div>
                                     <div class="card-body">
-                                        <!-- API Categories -->
-                                        <div class="mb-5">
-                                            <h4 class="mb-4 border-bottom pb-2">API Categories</h4>
-                                            <div class="row">
-                                                <!-- AI Category -->
-                                                <div class="col-md-6 mb-4">
-                                                    <div class="card h-100">
-                                                        <div class="card-header bg-primary text-white">
-                                                            <h5 class="mb-0"><i class="fas fa-robot mr-2"></i>Artificial Intelligence</h5>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <ul class="list-unstyled mb-0">
-                                                                <li class="mb-2">
-                                                                    <strong>Chat GPT AI</strong>
-                                                                    <p class="mb-1 text-muted small">Advanced AI chatbot powered by GPT technology</p>
-                                                                    <code class="d-block bg-light p-2 rounded">GET /api/gpt?text=your_message</code>
-                                                                </li>
-                                                                <li class="mb-2">
-                                                                    <strong>DegreeGuru AI</strong>
-                                                                    <p class="mb-1 text-muted small">Educational AI assistant</p>
-                                                                    <code class="d-block bg-light p-2 rounded">GET /api/degreeguru?message=your_query</code>
-                                                                </li>
-                                                                <li class="mb-2">
-                                                                    <strong>GPT-4.1 AI</strong>
-                                                                    <p class="mb-1 text-muted small">Latest GPT-4.1 model access</p>
-                                                                    <code class="d-block bg-light p-2 rounded">GET /api/gpt-empat?message=your_query</code>
-                                                                </li>
-                                                                <li class="mb-2">
-                                                                    <strong>Claude AI</strong>
-                                                                    <p class="mb-1 text-muted small">Anthropic's Claude AI assistant</p>
-                                                                    <code class="d-block bg-light p-2 rounded">GET /api/claude?message=your_query</code>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <!-- Image Category -->
-                                                <div class="col-md-6 mb-4">
-                                                    <div class="card h-100">
-                                                        <div class="card-header bg-success text-white">
-                                                            <h5 class="mb-0"><i class="fas fa-image mr-2"></i>Image Processing</h5>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <ul class="list-unstyled mb-0">
-                                                                <li class="mb-2">
-                                                                    <strong>Image Generator</strong>
-                                                                    <p class="mb-1 text-muted small">AI-powered image generation from text prompts</p>
-                                                                    <code class="d-block bg-light p-2 rounded">GET /api/image-generate?prompt=your_prompt&model=dalle3</code>
-                                                                </li>
-                                                                <li class="mb-2">
-                                                                    <strong>Remove Background</strong>
-                                                                    <p class="mb-1 text-muted small">Remove background from images automatically</p>
-                                                                    <code class="d-block bg-light p-2 rounded">GET /api/remove-bg?url=image_url</code>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <!-- Downloader Category -->
-                                                <div class="col-md-6 mb-4">
-                                                    <div class="card h-100">
-                                                        <div class="card-header bg-info text-white">
-                                                            <h5 class="mb-0"><i class="fas fa-download mr-2"></i>Downloaders</h5>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <ul class="list-unstyled mb-0">
-                                                                <li class="mb-2">
-                                                                    <strong>TikTok Downloader</strong>
-                                                                    <p class="mb-1 text-muted small">Download TikTok videos without watermark</p>
-                                                                    <code class="d-block bg-light p-2 rounded">GET /api/tiktok?url=tiktok_url</code>
-                                                                </li>
-                                                                <li class="mb-2">
-                                                                    <strong>Instagram Downloader</strong>
-                                                                    <p class="mb-1 text-muted small">Download Instagram photos and videos</p>
-                                                                    <code class="d-block bg-light p-2 rounded">GET /api/igdl?url=instagram_url</code>
-                                                                </li>
-                                                                <li class="mb-2">
-                                                                    <strong>All-in-One Downloader</strong>
-                                                                    <p class="mb-1 text-muted small">Download from multiple platforms</p>
-                                                                    <code class="d-block bg-light p-2 rounded">GET /api/aio-downloader?url=content_url</code>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <!-- Tools Category -->
-                                                <div class="col-md-6 mb-4">
-                                                    <div class="card h-100">
-                                                        <div class="card-header bg-warning text-white">
-                                                            <h5 class="mb-0"><i class="fas fa-tools mr-2"></i>Utility Tools</h5>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <ul class="list-unstyled mb-0">
-                                                                <li class="mb-2">
-                                                                    <strong>Speed Test</strong>
-                                                                    <p class="mb-1 text-muted small">Test your internet connection speed</p>
-                                                                    <code class="d-block bg-light p-2 rounded">GET /api/speedtest</code>
-                                                                </li>
-                                                                <li class="mb-2">
-                                                                    <strong>Screenshot Web</strong>
-                                                                    <p class="mb-1 text-muted small">Take screenshots of any website</p>
-                                                                    <code class="d-block bg-light p-2 rounded">GET /api/ssweb?url=website_url</code>
-                                                                </li>
-                                                                <li class="mb-2">
-                                                                    <strong>Check Axis Quota</strong>
-                                                                    <p class="mb-1 text-muted small">Check remaining Axis mobile data quota</p>
-                                                                    <code class="d-block bg-light p-2 rounded">GET /api/cek-kuota-axis?nomor=phone_number</code>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <!-- API Form Container -->
+                                        <div id="api-form-container">
+                                            <div class="text-center py-5">
+                                                <i class="fas fa-code fa-4x text-muted mb-3"></i>
+                                                <h4 class="text-muted">No API Selected</h4>
+                                                <p class="text-muted">Choose an API from the sidebar menu to start testing</p>
                                             </div>
                                         </div>
                                         
-                                        <!-- Quick Start Guide -->
-                                        <div class="mb-5">
-                                            <h4 class="mb-4 border-bottom pb-2">Quick Start Guide</h4>
-                                            <div class="card bg-light border-0">
-                                                <div class="card-body">
-                                                    <h5>How to Use Our APIs</h5>
-                                                    <ol class="mb-0">
-                                                        <li class="mb-2">Choose an API endpoint from the categories above</li>
-                                                        <li class="mb-2">Copy the API URL format</li>
-                                                        <li class="mb-2">Replace parameters with your actual data</li>
-                                                        <li class="mb-2">Make a GET request to the API</li>
-                                                        <li class="mb-2">Handle the JSON response in your application</li>
-                                                    </ol>
+                                        <!-- API Response Container -->
+                                        <div id="api-response-container" class="mt-4" style="display: none;">
+                                            <div class="card border-left-success">
+                                                <div class="card-header bg-success text-white">
+                                                    <h5 class="mb-0">
+                                                        <i class="fas fa-server mr-2"></i>
+                                                        API Response
+                                                        <span id="response-status" class="badge badge-light ml-2"></span>
+                                                    </h5>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Example Code -->
-                                        <div class="mb-4">
-                                            <h4 class="mb-4 border-bottom pb-2">Example Usage</h4>
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <ul class="nav nav-tabs card-header-tabs" id="codeTab" role="tablist">
-                                                        <li class="nav-item">
-                                                            <a class="nav-link active" id="js-tab" data-toggle="tab" href="#js" role="tab">JavaScript</a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a class="nav-link" id="python-tab" data-toggle="tab" href="#python" role="tab">Python</a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a class="nav-link" id="curl-tab" data-toggle="tab" href="#curl" role="tab">cURL</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="tab-content" id="codeTabContent">
-                                                        <div class="tab-pane fade show active" id="js" role="tabpanel">
-                                                            <pre><code class="javascript">// JavaScript Fetch Example
-async function getAIChat() {
-    try {
-        const response = await fetch('/api/gpt?text=Hello, how are you?');
-        const data = await response.json();
-        console.log(data);
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}</code></pre>
+                                                <div class="card-body p-0">
+                                                    <div class="p-3 border-bottom">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <h6 class="mb-0">Response Data</h6>
+                                                            <button class="btn btn-sm btn-outline-secondary" onclick="copyResponse()">
+                                                                <i class="fas fa-copy mr-1"></i> Copy JSON
+                                                            </button>
                                                         </div>
-                                                        <div class="tab-pane fade" id="python" role="tabpanel">
-                                                            <pre><code class="python"># Python Requests Example
-import requests
-
-response = requests.get('https://yourdomain.com/api/gpt?text=Hello')
-data = response.json()
-print(data)</code></pre>
-                                                        </div>
-                                                        <div class="tab-pane fade" id="curl" role="tabpanel">
-                                                            <pre><code class="bash"># cURL Example
-curl "https://yourdomain.com/api/gpt?text=Hello"</code></pre>
-                                                        </div>
+                                                    </div>
+                                                    <div class="p-3">
+                                                        <pre id="api-response" class="mb-0" style="max-height: 400px; overflow-y: auto; background: #f8f9fa; padding: 15px; border-radius: 5px;"></pre>
                                                     </div>
                                                 </div>
                                             </div>
@@ -575,7 +427,6 @@ curl "https://yourdomain.com/api/gpt?text=Hello"</code></pre>
                     
                     <!-- Statistics Page (Hidden by default) -->
                     <div id="stats-page" class="page-content" style="display: none;">
-                        <!-- Original Statistics Content Here -->
                         <div class="row mb-3">
                             <!-- Stats Card: Baterai -->
                             <div class="col-xl-3 col-md-6 mb-4">
@@ -736,7 +587,7 @@ curl "https://yourdomain.com/api/gpt?text=Hello"</code></pre>
                             <span class="mx-2">•</span>
                             <a href="javascript:void(0)" onclick="navigateTo('welcome')" class="text-muted">Home</a>
                             <span class="mx-2">|</span>
-                            <a href="javascript:void(0)" onclick="navigateTo('docs')" class="text-muted">Documentation</a>
+                            <a href="javascript:void(0)" onclick="navigateTo('apis')" class="text-muted">API Testing</a>
                             <span class="mx-2">|</span>
                             <a href="javascript:void(0)" onclick="navigateTo('stats')" class="text-muted">Statistics</a>
                         </div>
@@ -761,6 +612,7 @@ curl "https://yourdomain.com/api/gpt?text=Hello"</code></pre>
     <script>
         // ========== SPA (SINGLE PAGE APPLICATION) FUNCTIONALITY ==========
         let currentPage = 'welcome';
+        let currentApi = null;
         
         // Navigation function
         function navigateTo(page) {
@@ -791,12 +643,17 @@ curl "https://yourdomain.com/api/gpt?text=Hello"</code></pre>
             if (page === 'stats') {
                 initializeStats();
             }
+            
+            // If navigating to API testing page, clear form if no API selected
+            if (page === 'apis' && !currentApi) {
+                clearApiForm();
+            }
         }
         
         function updatePageTitle(page) {
             const titleMap = {
                 'welcome': 'Welcome to Geraldo APIs',
-                'docs': 'API Documentation',
+                'apis': 'API Testing Console',
                 'stats': 'Statistics & Dashboard'
             };
             
@@ -812,7 +669,7 @@ curl "https://yourdomain.com/api/gpt?text=Hello"</code></pre>
             // Add active class to current page nav item
             const navMap = {
                 'welcome': document.querySelector('#accordionSidebar .nav-item:nth-child(2) .nav-link'),
-                'docs': document.querySelector('#accordionSidebar .nav-item:nth-child(3) .nav-link'),
+                'apis': document.querySelector('#accordionSidebar .nav-item:nth-child(3) .nav-link'),
                 'stats': document.querySelector('#accordionSidebar .nav-item:nth-child(4) .nav-link')
             };
             
@@ -831,12 +688,305 @@ curl "https://yourdomain.com/api/gpt?text=Hello"</code></pre>
         // Check URL hash on page load
         window.addEventListener('load', function() {
             const hash = window.location.hash.substring(1);
-            if (hash && ['welcome', 'docs', 'stats'].includes(hash)) {
+            if (hash && ['welcome', 'apis', 'stats'].includes(hash)) {
                 navigateTo(hash);
             } else {
                 navigateTo('welcome');
             }
         });
+        
+        // ========== API TESTING FUNCTIONALITY ==========
+        function loadApiForm(apiName, apiEndpoint, paramName, placeholder, noParams = false) {
+            // Navigate to API testing page if not already there
+            if (currentPage !== 'apis') {
+                navigateTo('apis');
+            }
+            
+            // Store current API info
+            currentApi = {
+                name: apiName,
+                endpoint: apiEndpoint,
+                paramName: paramName,
+                placeholder: placeholder,
+                noParams: noParams
+            };
+            
+            // Generate form HTML
+            let formHtml = '';
+            
+            if (noParams) {
+                // API tanpa parameter (direct call)
+                formHtml = `
+                    <div class="card border-left-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-plug mr-2"></i>
+                                ${apiName}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <h6>API Endpoint:</h6>
+                                <code class="d-block bg-light p-3 rounded mb-3">${apiEndpoint}</code>
+                            </div>
+                            <div class="mb-3">
+                                <h6>Description:</h6>
+                                <p class="mb-0">This API endpoint doesn't require any parameters. Click "Execute" to test it directly.</p>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-secondary" onclick="clearApiForm()">
+                                    <i class="fas fa-arrow-left mr-1"></i> Back to Selection
+                                </button>
+                                <button class="btn btn-success" onclick="executeApi()">
+                                    <i class="fas fa-play mr-1"></i> Execute API
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // API dengan parameter
+                formHtml = `
+                    <div class="card border-left-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-plug mr-2"></i>
+                                ${apiName}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <h6>API Endpoint:</h6>
+                                <code class="d-block bg-light p-3 rounded mb-3">${apiEndpoint}?${paramName}=<span id="param-value-preview">your_input</span></code>
+                            </div>
+                            <div class="mb-3">
+                                <h6>Enter ${paramName}:</h6>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">${paramName}=</span>
+                                    </div>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="api-param-input" 
+                                           placeholder="${placeholder}"
+                                           oninput="updateParamPreview(this.value)">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" onclick="fillExample()">
+                                            <i class="fas fa-lightbulb mr-1"></i> Example
+                                        </button>
+                                    </div>
+                                </div>
+                                <small class="form-text text-muted">Enter the required parameter value above</small>
+                            </div>
+                            <div class="mb-3">
+                                <h6>Description:</h6>
+                                <p class="mb-0">This API requires the <code>${paramName}</code> parameter. Fill in the input field and click "Execute" to test.</p>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-secondary" onclick="clearApiForm()">
+                                    <i class="fas fa-arrow-left mr-1"></i> Back to Selection
+                                </button>
+                                <button class="btn btn-success" onclick="executeApi()">
+                                    <i class="fas fa-play mr-1"></i> Execute API
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Update form container
+            document.getElementById('api-form-container').innerHTML = formHtml;
+            
+            // Hide response container
+            document.getElementById('api-response-container').style.display = 'none';
+            
+            // Update page title
+            document.getElementById('page-title').textContent = `Testing: ${apiName}`;
+            
+            // Collapse sidebar on mobile
+            if (window.innerWidth < 768) {
+                document.body.classList.add('sidebar-toggled');
+                document.querySelector('.sidebar').classList.add('toggled');
+            }
+        }
+        
+        function updateParamPreview(value) {
+            const previewElement = document.getElementById('param-value-preview');
+            if (previewElement) {
+                previewElement.textContent = value || 'your_input';
+            }
+        }
+        
+        function fillExample() {
+            if (!currentApi) return;
+            
+            const inputElement = document.getElementById('api-param-input');
+            if (!inputElement) return;
+            
+            // Set example values based on API type
+            const examples = {
+                'text': 'Hello, how are you today?',
+                'message': 'Explain quantum computing in simple terms',
+                'prompt': 'A beautiful sunset over mountains',
+                'url': 'https://www.example.com/video',
+                'query': 'latest music videos 2025',
+                'nomor': '6281234567890',
+                'imageUrl': 'https://example.com/image.jpg'
+            };
+            
+            // Get example based on parameter name
+            const paramName = currentApi.paramName;
+            inputElement.value = examples[paramName] || 'Example input';
+            
+            // Update preview
+            updateParamPreview(inputElement.value);
+        }
+        
+        function clearApiForm() {
+            currentApi = null;
+            document.getElementById('api-form-container').innerHTML = `
+                <div class="text-center py-5">
+                    <i class="fas fa-code fa-4x text-muted mb-3"></i>
+                    <h4 class="text-muted">No API Selected</h4>
+                    <p class="text-muted">Choose an API from the sidebar menu to start testing</p>
+                </div>
+            `;
+            document.getElementById('api-response-container').style.display = 'none';
+            document.getElementById('page-title').textContent = 'API Testing Console';
+        }
+        
+        async function executeApi() {
+            if (!currentApi) return;
+            
+            // Show loading state
+            const executeBtn = document.querySelector('#api-form-container .btn-success');
+            const originalText = executeBtn.innerHTML;
+            executeBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Executing...';
+            executeBtn.disabled = true;
+            
+            try {
+                let url = currentApi.endpoint;
+                
+                // Build URL with parameters if needed
+                if (!currentApi.noParams) {
+                    const inputElement = document.getElementById('api-param-input');
+                    if (!inputElement || !inputElement.value.trim()) {
+                        showNotification('Please enter a value for the parameter', 'warning');
+                        executeBtn.innerHTML = originalText;
+                        executeBtn.disabled = false;
+                        return;
+                    }
+                    
+                    const paramValue = encodeURIComponent(inputElement.value.trim());
+                    url = `${currentApi.endpoint}?${currentApi.paramName}=${paramValue}`;
+                }
+                
+                // Make API request
+                const response = await fetch(url);
+                const responseTime = new Date();
+                
+                // Parse response
+                let responseData;
+                let responseText = await response.text();
+                
+                try {
+                    responseData = JSON.parse(responseText);
+                } catch (e) {
+                    // If response is not JSON, use as plain text
+                    responseData = { 
+                        raw_response: responseText,
+                        note: 'Response is not in JSON format'
+                    };
+                }
+                
+                // Format JSON for display
+                const formattedJson = JSON.stringify(responseData, null, 2);
+                
+                // Update response container
+                document.getElementById('api-response').textContent = formattedJson;
+                document.getElementById('response-status').textContent = `Status: ${response.status} ${response.statusText}`;
+                document.getElementById('response-status').className = response.ok ? 
+                    'badge badge-success ml-2' : 'badge badge-danger ml-2';
+                
+                // Show response container
+                document.getElementById('api-response-container').style.display = 'block';
+                
+                // Show success notification
+                showNotification(`API executed successfully! Response time: ${new Date() - responseTime}ms`, 'success');
+                
+                // Scroll to response
+                document.getElementById('api-response-container').scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (error) {
+                // Show error in response container
+                document.getElementById('api-response').textContent = JSON.stringify({
+                    error: 'Failed to execute API',
+                    message: error.message,
+                    timestamp: new Date().toISOString()
+                }, null, 2);
+                
+                document.getElementById('response-status').textContent = 'Status: Error';
+                document.getElementById('response-status').className = 'badge badge-danger ml-2';
+                document.getElementById('api-response-container').style.display = 'block';
+                
+                // Show error notification
+                showNotification('Failed to execute API: ' + error.message, 'danger');
+                
+                // Scroll to response
+                document.getElementById('api-response-container').scrollIntoView({ behavior: 'smooth' });
+            } finally {
+                // Reset button state
+                executeBtn.innerHTML = originalText;
+                executeBtn.disabled = false;
+            }
+        }
+        
+        function copyResponse() {
+            const responseText = document.getElementById('api-response').textContent;
+            navigator.clipboard.writeText(responseText).then(() => {
+                showNotification('JSON copied to clipboard!', 'success');
+            }).catch(err => {
+                showNotification('Failed to copy: ' + err, 'danger');
+            });
+        }
+        
+        function showNotification(message, type) {
+            // Remove existing notification
+            const existingNotification = document.querySelector('.mode-notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            // Create notification
+            const notification = document.createElement('div');
+            notification.className = `mode-notification alert alert-${type} animated--grow-in`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                z-index: 9999;
+                min-width: 200px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                border: none;
+                border-radius: 8px;
+            `;
+            notification.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} mr-2"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100px)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
         
         // ========== DARK MODE FUNCTIONALITY ==========
         document.addEventListener('DOMContentLoaded', function() {
@@ -923,43 +1073,6 @@ curl "https://yourdomain.com/api/gpt?text=Hello"</code></pre>
                     icon.style.color = '';
                 }
             }
-        }
-        
-        function showNotification(message, type) {
-            // Remove existing notification
-            const existingNotification = document.querySelector('.mode-notification');
-            if (existingNotification) {
-                existingNotification.remove();
-            }
-            
-            // Create notification
-            const notification = document.createElement('div');
-            notification.className = `mode-notification alert alert-${type} animated--grow-in`;
-            notification.style.cssText = `
-                position: fixed;
-                top: 80px;
-                right: 20px;
-                z-index: 9999;
-                min-width: 200px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                border: none;
-                border-radius: 8px;
-            `;
-            notification.innerHTML = `
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'} mr-2"></i>
-                    <span>${message}</span>
-                </div>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // Auto remove after 3 seconds
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                notification.style.transform = 'translateX(100px)';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
         }
         
         // Listen for system preference changes
@@ -1102,6 +1215,25 @@ curl "https://yourdomain.com/api/gpt?text=Hello"</code></pre>
             color: #333;
             margin: 20px;
             border-radius: 15px;
+        }
+        
+        /* API Form Styling */
+        .card .card-header h5 {
+            margin-bottom: 0;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            line-height: 1.4;
         }
         
         /* Dark Mode Toggle Switch */
@@ -1254,6 +1386,21 @@ curl "https://yourdomain.com/api/gpt?text=Hello"</code></pre>
             background: linear-gradient(135deg, #3f51b5 0%, #303f9f 100%) !important;
         }
         
+        /* Dark mode for code and pre elements */
+        body.dark-mode code {
+            background: #252525;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode pre {
+            background: #252525;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .bg-light {
+            background-color: #252525 !important;
+        }
+        
         /* Notification animation */
         .mode-notification {
             animation: slideInRight 0.3s ease;
@@ -1290,6 +1437,11 @@ curl "https://yourdomain.com/api/gpt?text=Hello"</code></pre>
             .display-4 {
                 font-size: 2.5rem;
             }
+            
+            .input-group .btn {
+                padding: 0.375rem 0.5rem;
+                font-size: 0.875rem;
+            }
         }
         
         /* Smooth transitions */
@@ -1319,35 +1471,13 @@ curl "https://yourdomain.com/api/gpt?text=Hello"</code></pre>
             font-size: 0.875rem;
         }
         
-        /* Code styling */
-        pre code {
-            background: #f8f9fa;
-            border-radius: 5px;
-            padding: 15px;
-            display: block;
-            overflow-x: auto;
-        }
-        
-        body.dark-mode pre code {
-            background: #252525;
-            color: #e0e0e0;
-        }
-        
-        /* Tab styling */
-        .nav-tabs .nav-link.active {
-            background-color: #f8f9fa;
-            border-color: #dee2e6 #dee2e6 #f8f9fa;
-        }
-        
-        body.dark-mode .nav-tabs .nav-link.active {
-            background-color: #252525;
-            border-color: #404040 #404040 #252525;
-            color: #ffffff;
-        }
-        
-        /* API Documentation cards */
-        .card .card-header h5 {
-            margin-bottom: 0;
+        /* API Response styling */
+        #api-response {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
         
         /* Footer links */
@@ -1362,6 +1492,30 @@ curl "https://yourdomain.com/api/gpt?text=Hello"</code></pre>
         
         body.dark-mode footer a.text-muted:hover {
             color: #ffffff !important;
+        }
+        
+        /* Collapse item hover */
+        .collapse-item:hover {
+            background-color: rgba(63, 81, 181, 0.1);
+            cursor: pointer;
+        }
+        
+        body.dark-mode .collapse-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Button animations */
+        .btn {
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        body.dark-mode .btn:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
     </style>
 </body>
