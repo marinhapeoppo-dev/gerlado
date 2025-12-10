@@ -500,6 +500,115 @@ async function uploadToCatbox(imageUrl) {
   }
 }
 
+// Endpoint untuk Remove Background HD
+app.get('/api/remove-bg-hd', async (req, res) => {
+  try {
+    const imageUrl = req.query.url;
+    if (!imageUrl) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Parameter "url" tidak ditemukan'
+      });
+    }
+    
+    const result = await removeBackgroundHD(imageUrl);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { 
+        response: result
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+// Fungsi Remove Background HD
+async function removeBackgroundHD(imageUrl) {
+  try {
+    // Download gambar dari URL
+    const response = await axios.get(imageUrl, {
+      responseType: 'arraybuffer'
+    });
+    
+    const buffer = Buffer.from(response.data);
+    
+    // Upload ke ugu.se terlebih dahulu
+    const form = new FormData();
+    form.append('files[]', buffer, {
+      filename: `image_${Date.now()}.jpg`,
+      contentType: 'image/jpeg'
+    });
+    
+    const uploadResponse = await axios.post(
+      "https://uguu.se/upload.php", 
+      form,
+      {
+        headers: {
+          ...form.getHeaders(),
+        }
+      }
+    );
+    
+    if (!uploadResponse.data.files?.[0]?.url) {
+      throw new Error('Gagal upload gambar ke ugu.se');
+    }
+    
+    const uploadedUrl = uploadResponse.data.files[0].url;
+    
+    // Proses remove background HD
+    const { data } = await axios.get(
+      `https://api.offmonprst.my.id/api/removebghd?url=${uploadedUrl}`, 
+      { 
+        responseType: 'arraybuffer' 
+      }
+    );
+    
+    // Upload hasil ke telegra.ph
+    const resultUrl = await uploadToTelegraph(data);
+    
+    return resultUrl;
+    
+  } catch (error) {
+    throw new Error(`Gagal menghapus background HD: ${error.message}`);
+  }
+}
+
+// Fungsi upload ke telegra.ph
+async function uploadToTelegraph(buffer) {
+  try {
+    const form = new FormData();
+    form.append('file', Buffer.from(buffer), {
+      filename: `result_${Date.now()}.png`,
+      contentType: 'image/png'
+    });
+    
+    const response = await axios.post(
+      "https://telegra.ph/upload", 
+      form,
+      {
+        headers: {
+          ...form.getHeaders()
+        }
+      }
+    );
+    
+    if (response.data && response.data[0] && response.data[0].src) {
+      return `https://telegra.ph${response.data[0].src}`;
+    }
+    throw new Error('Upload ke telegra.ph gagal');
+  } catch (error) {
+    throw new Error(`Gagal upload: ${error.message}`);
+  }
+}
+
 // Endpoint untuk Claude AI
 app.get('/api/claude', async (req, res) => {
   try {
@@ -1263,108 +1372,6 @@ app.get('/api/gist/user', async (req, res) => {
   }
 });
 
-// Endpoint untuk Remove Background HD
-app.get('/api/remove-bg', async (req, res) => {
-  try {
-    const imageUrl = req.query.url;
-    if (!imageUrl) {
-      return res.status(400).json({ 
-        status: 400,
-        creator: "Geraldo",
-        error: 'Parameter "url" tidak ditemukan'
-      });
-    }
-    
-    const result = await removeBackgroundHD(imageUrl);
-    
-    res.status(200).json({
-      status: 200,
-      creator: "Geraldo",
-      data: { 
-        response: result
-      }
-    });
-  } catch (error) {
-    res.status(500).json({ 
-      status: 500,
-      creator: "Geraldo",
-      error: error.message 
-    });
-  }
-});
-
-async function removeBackgroundHD(imageUrl) {
-  try {
-    // Download gambar dari URL
-    const response = await axios.get(imageUrl, {
-      responseType: 'arraybuffer'
-    });
-    
-    const buffer = Buffer.from(response.data);
-    
-    // Upload ke ugu.se terlebih dahulu
-    const form = new FormData();
-    form.append('files[]', buffer, {
-      filename: `image_${Date.now()}.jpg`,
-      contentType: 'image/jpeg'
-    });
-    
-    const uploadResponse = await axios.post(
-      "https://uguu.se/upload.php", 
-      form,
-      {
-        headers: {
-          ...form.getHeaders(),
-        }
-      }
-    );
-    
-    if (!uploadResponse.data.files?.[0]?.url) {
-      throw new Error('Gagal upload gambar ke ugu.se');
-    }
-    
-    const uploadedUrl = uploadResponse.data.files[0].url;
-    
-    // Proses remove background HD
-    const { data } = await axios.get(
-      `https://api.offmonprst.my.id/api/removebghd?url=${uploadedUrl}`, 
-      { 
-        responseType: 'arraybuffer' 
-      }
-    );
-    
-    // Convert buffer ke base64
-    const base64Image = Buffer.from(data).toString('base64');
-    const dataUrl = `data:image/png;base64,${base64Image}`;
-    
-    // Upload hasil ke catbox
-    const catboxUrl = await uploadToCatboxBase64(base64Image);
-    
-    return catboxUrl;
-    
-  } catch (error) {
-    throw new Error(`Gagal menghapus background HD: ${error.message}`);
-  }
-}
-
-// Fungsi upload base64 ke catbox
-async function uploadToCatboxBase64(base64Data) {
-  try {
-    const response = await axios.post('https://catbox.moe/user/api.php', 
-      `reqtype=base64&userhash=&file=${encodeURIComponent(base64Data)}`,
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }
-    );
-    
-    return response.data;
-  } catch (error) {
-    // Jika gagal, return data URI
-    return `data:image/png;base64,${base64Data}`;
-  }
-}
 
 app.get('/api/igdl', async (req, res) => {
   try {
