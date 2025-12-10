@@ -71,6 +71,8 @@
                         <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('GPT-4.1 AI', '/api/gpt-empat', 'message', 'Enter your message')">GPT-4.1 Ai</a>
                         <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('PERPLEXITY AI', '/api/perplexity', 'message', 'Enter your message')">PERPLEXITY Ai</a>
                         <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Claude AI', '/api/claude', 'message', 'Enter your query')">Claude AI</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Gemini AI', '/api/gemini', 'message', 'Enter your query')">Gemini AI</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Webpilot AI', '/api/webpilot', 'message', 'Enter your query')">Webpilot AI</a>
                     </div>
                 </div>
             </li>
@@ -120,6 +122,7 @@
                         <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Internet Speed Test', '/api/speedtest', null, null, true)">Internet Speed Test</a>
                         <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Ssweb Screenshot', '/api/ssweb', 'url', 'Enter website URL')">Ssweb</a>
                         <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Cek Kuota Axis', '/api/cek-kuota-axis', 'nomor', 'Enter phone number')">Cek Kuota Axis</a>
+                        <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Get Gits', '/api/gits', 'imageUrl', 'Enter Gits URL')">Get Gits</a>
                         <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Remove Background', '/api/remove-bg', 'url', 'Enter image URL')">Remove Background</a>
                         <a class="collapse-item" href="javascript:void(0)" onclick="loadApiForm('Remove Clothes', '/api/remove-clothes', 'imageUrl', 'Enter image URL')">Remove Clothes</a>
                     </div>
@@ -394,27 +397,36 @@
                                             </div>
                                         </div>
                                         
-                                        <!-- API Response Container -->
-                                        <div id="api-response-container" class="mt-4" style="display: none;">
-                                            <div class="card border-left-success">
-                                                <div class="card-header bg-success text-white">
+                                        <!-- URL Preview Container -->
+                                        <div id="url-preview-container" class="mt-4" style="display: none;">
+                                            <div class="card border-left-info">
+                                                <div class="card-header bg-info text-white">
                                                     <h5 class="mb-0">
-                                                        <i class="fas fa-server mr-2"></i>
-                                                        API Response
-                                                        <span id="response-status" class="badge badge-light ml-2"></span>
+                                                        <i class="fas fa-link mr-2"></i>
+                                                        Generated API URL
                                                     </h5>
                                                 </div>
                                                 <div class="card-body p-0">
                                                     <div class="p-3 border-bottom">
                                                         <div class="d-flex justify-content-between align-items-center">
-                                                            <h6 class="mb-0">Response Data</h6>
-                                                            <button class="btn btn-sm btn-outline-secondary" onclick="copyResponse()">
-                                                                <i class="fas fa-copy mr-1"></i> Copy JSON
+                                                            <h6 class="mb-0">Click "Open API URL" to test</h6>
+                                                            <button class="btn btn-sm btn-outline-light" onclick="copyUrl()">
+                                                                <i class="fas fa-copy mr-1"></i> Copy URL
                                                             </button>
                                                         </div>
                                                     </div>
                                                     <div class="p-3">
-                                                        <pre id="api-response" class="mb-0" style="max-height: 400px; overflow-y: auto; background: #f8f9fa; padding: 15px; border-radius: 5px;"></pre>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" id="generated-url" readonly>
+                                                            <div class="input-group-append">
+                                                                <button class="btn btn-success" onclick="openApiUrl()">
+                                                                    <i class="fas fa-external-link-alt mr-1"></i> Open API URL
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <small class="form-text text-muted mt-2">
+                                                            This will open the API endpoint in a new tab. You will see the raw JSON response.
+                                                        </small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -731,14 +743,14 @@
                             </div>
                             <div class="mb-3">
                                 <h6>Description:</h6>
-                                <p class="mb-0">This API endpoint doesn't require any parameters. Click "Execute" to test it directly.</p>
+                                <p class="mb-0">This API endpoint doesn't require any parameters. Click "Generate URL" to create the API link.</p>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <button class="btn btn-secondary" onclick="clearApiForm()">
                                     <i class="fas fa-arrow-left mr-1"></i> Back to Selection
                                 </button>
-                                <button class="btn btn-success" onclick="executeApi()">
-                                    <i class="fas fa-play mr-1"></i> Execute API
+                                <button class="btn btn-success" onclick="generateApiUrl()">
+                                    <i class="fas fa-link mr-1"></i> Generate URL
                                 </button>
                             </div>
                         </div>
@@ -780,14 +792,14 @@
                             </div>
                             <div class="mb-3">
                                 <h6>Description:</h6>
-                                <p class="mb-0">This API requires the <code>${paramName}</code> parameter. Fill in the input field and click "Execute" to test.</p>
+                                <p class="mb-0">This API requires the <code>${paramName}</code> parameter. Fill in the input field and click "Generate URL" to create the API link.</p>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <button class="btn btn-secondary" onclick="clearApiForm()">
                                     <i class="fas fa-arrow-left mr-1"></i> Back to Selection
                                 </button>
-                                <button class="btn btn-success" onclick="executeApi()">
-                                    <i class="fas fa-play mr-1"></i> Execute API
+                                <button class="btn btn-success" onclick="generateApiUrl()">
+                                    <i class="fas fa-link mr-1"></i> Generate URL
                                 </button>
                             </div>
                         </div>
@@ -798,8 +810,8 @@
             // Update form container
             document.getElementById('api-form-container').innerHTML = formHtml;
             
-            // Hide response container
-            document.getElementById('api-response-container').style.display = 'none';
+            // Hide URL preview container
+            document.getElementById('url-preview-container').style.display = 'none';
             
             // Update page title
             document.getElementById('page-title').textContent = `Testing: ${apiName}`;
@@ -852,103 +864,56 @@
                     <p class="text-muted">Choose an API from the sidebar menu to start testing</p>
                 </div>
             `;
-            document.getElementById('api-response-container').style.display = 'none';
+            document.getElementById('url-preview-container').style.display = 'none';
             document.getElementById('page-title').textContent = 'API Testing Console';
         }
         
-        async function executeApi() {
+        function generateApiUrl() {
             if (!currentApi) return;
             
-            // Show loading state
-            const executeBtn = document.querySelector('#api-form-container .btn-success');
-            const originalText = executeBtn.innerHTML;
-            executeBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Executing...';
-            executeBtn.disabled = true;
+            let url = currentApi.endpoint;
             
-            try {
-                let url = currentApi.endpoint;
-                
-                // Build URL with parameters if needed
-                if (!currentApi.noParams) {
-                    const inputElement = document.getElementById('api-param-input');
-                    if (!inputElement || !inputElement.value.trim()) {
-                        showNotification('Please enter a value for the parameter', 'warning');
-                        executeBtn.innerHTML = originalText;
-                        executeBtn.disabled = false;
-                        return;
-                    }
-                    
-                    const paramValue = encodeURIComponent(inputElement.value.trim());
-                    url = `${currentApi.endpoint}?${currentApi.paramName}=${paramValue}`;
+            // Build URL with parameters if needed
+            if (!currentApi.noParams) {
+                const inputElement = document.getElementById('api-param-input');
+                if (!inputElement || !inputElement.value.trim()) {
+                    showNotification('Please enter a value for the parameter', 'warning');
+                    return;
                 }
                 
-                // Make API request
-                const response = await fetch(url);
-                const responseTime = new Date();
-                
-                // Parse response
-                let responseData;
-                let responseText = await response.text();
-                
-                try {
-                    responseData = JSON.parse(responseText);
-                } catch (e) {
-                    // If response is not JSON, use as plain text
-                    responseData = { 
-                        raw_response: responseText,
-                        note: 'Response is not in JSON format'
-                    };
-                }
-                
-                // Format JSON for display
-                const formattedJson = JSON.stringify(responseData, null, 2);
-                
-                // Update response container
-                document.getElementById('api-response').textContent = formattedJson;
-                document.getElementById('response-status').textContent = `Status: ${response.status} ${response.statusText}`;
-                document.getElementById('response-status').className = response.ok ? 
-                    'badge badge-success ml-2' : 'badge badge-danger ml-2';
-                
-                // Show response container
-                document.getElementById('api-response-container').style.display = 'block';
-                
-                // Show success notification
-                showNotification(`API executed successfully! Response time: ${new Date() - responseTime}ms`, 'success');
-                
-                // Scroll to response
-                document.getElementById('api-response-container').scrollIntoView({ behavior: 'smooth' });
-                
-            } catch (error) {
-                // Show error in response container
-                document.getElementById('api-response').textContent = JSON.stringify({
-                    error: 'Failed to execute API',
-                    message: error.message,
-                    timestamp: new Date().toISOString()
-                }, null, 2);
-                
-                document.getElementById('response-status').textContent = 'Status: Error';
-                document.getElementById('response-status').className = 'badge badge-danger ml-2';
-                document.getElementById('api-response-container').style.display = 'block';
-                
-                // Show error notification
-                showNotification('Failed to execute API: ' + error.message, 'danger');
-                
-                // Scroll to response
-                document.getElementById('api-response-container').scrollIntoView({ behavior: 'smooth' });
-            } finally {
-                // Reset button state
-                executeBtn.innerHTML = originalText;
-                executeBtn.disabled = false;
+                const paramValue = encodeURIComponent(inputElement.value.trim());
+                url = `${currentApi.endpoint}?${currentApi.paramName}=${paramValue}`;
+            }
+            
+            // Display generated URL
+            document.getElementById('generated-url').value = url;
+            document.getElementById('url-preview-container').style.display = 'block';
+            
+            // Scroll to URL preview
+            document.getElementById('url-preview-container').scrollIntoView({ behavior: 'smooth' });
+            
+            // Show notification
+            showNotification('API URL generated successfully!', 'success');
+        }
+        
+        function openApiUrl() {
+            const url = document.getElementById('generated-url').value;
+            if (url) {
+                // Open in new tab
+                window.open(url, '_blank');
+                showNotification('Opening API URL in new tab...', 'info');
             }
         }
         
-        function copyResponse() {
-            const responseText = document.getElementById('api-response').textContent;
-            navigator.clipboard.writeText(responseText).then(() => {
-                showNotification('JSON copied to clipboard!', 'success');
-            }).catch(err => {
-                showNotification('Failed to copy: ' + err, 'danger');
-            });
+        function copyUrl() {
+            const url = document.getElementById('generated-url').value;
+            if (url) {
+                navigator.clipboard.writeText(url).then(() => {
+                    showNotification('URL copied to clipboard!', 'success');
+                }).catch(err => {
+                    showNotification('Failed to copy: ' + err, 'danger');
+                });
+            }
         }
         
         function showNotification(message, type) {
@@ -1230,12 +1195,6 @@
             font-size: 0.9em;
         }
         
-        pre {
-            font-family: 'Courier New', monospace;
-            font-size: 0.85em;
-            line-height: 1.4;
-        }
-        
         /* Dark Mode Toggle Switch */
         .switch {
             position: relative;
@@ -1392,11 +1351,6 @@
             color: #e0e0e0;
         }
         
-        body.dark-mode pre {
-            background: #252525;
-            color: #e0e0e0;
-        }
-        
         body.dark-mode .bg-light {
             background-color: #252525 !important;
         }
@@ -1442,6 +1396,10 @@
                 padding: 0.375rem 0.5rem;
                 font-size: 0.875rem;
             }
+            
+            .input-group-text {
+                font-size: 0.875rem;
+            }
         }
         
         /* Smooth transitions */
@@ -1471,13 +1429,10 @@
             font-size: 0.875rem;
         }
         
-        /* API Response styling */
-        #api-response {
+        /* URL Input styling */
+        #generated-url {
             font-family: 'Courier New', monospace;
-            font-size: 0.85em;
-            line-height: 1.4;
-            white-space: pre-wrap;
-            word-wrap: break-word;
+            font-size: 0.9em;
         }
         
         /* Footer links */
@@ -1516,6 +1471,30 @@
         
         body.dark-mode .btn:hover {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Form input focus */
+        .form-control:focus {
+            border-color: #3f51b5;
+            box-shadow: 0 0 0 0.2rem rgba(63, 81, 181, 0.25);
+        }
+        
+        body.dark-mode .form-control:focus {
+            border-color: #3f51b5;
+            box-shadow: 0 0 0 0.2rem rgba(63, 81, 181, 0.5);
+            background-color: #252525;
+            color: #e0e0e0;
+        }
+        
+        /* Readonly input styling */
+        .form-control[readonly] {
+            background-color: #f8f9fa;
+        }
+        
+        body.dark-mode .form-control[readonly] {
+            background-color: #252525;
+            color: #e0e0e0;
+            border-color: #404040;
         }
     </style>
 </body>

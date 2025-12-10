@@ -1066,6 +1066,204 @@ async function getDownloadToken() {
     }
 }
 
+// Endpoint untuk GitHub Gist
+app.get('/api/gist', async (req, res) => {
+  try {
+    const gistUrl = req.query.url;
+    if (!gistUrl) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Parameter "url" tidak ditemukan',
+        example: '/api/gist?url=https://gist.github.com/username/abc123'
+      });
+    }
+    
+    const files = await getGistFiles(gistUrl);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { 
+        response: files
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+// Endpoint untuk get gist content langsung
+app.get('/api/gist/content', async (req, res) => {
+  try {
+    const gistUrl = req.query.url;
+    if (!gistUrl) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Parameter "url" tidak ditemukan'
+      });
+    }
+    
+    const files = await getGistFiles(gistUrl);
+    
+    // Format response dengan konten
+    const result = files.map(file => ({
+      fileName: file.fileName,
+      language: file.language,
+      fileSize: file.fileSize,
+      formattedSize: formatUkuranMedia(file.fileSize),
+      content: file.content,
+      rawUrl: file.url,
+      type: file.filesType
+    }));
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { 
+        files: result,
+        total_files: result.length
+      }
+    });
+    
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+// Fungsi Get Gist Files
+async function getGistFiles(input) {
+  const match = input.match(/([0-9a-f]{20,40})/i);
+  if (!match) throw new Error('ID Gist tidak valid!');
+  
+  const gistId = match[1];
+  const apiUrl = `https://api.github.com/gists/${gistId}`;
+  
+  try {
+    const res = await axios.get(apiUrl, {
+      headers: { 
+        'User-Agent': 'Gist-API-Client',
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    });
+
+    const files = res.data.files;
+    const result = [];
+
+    for (const fname of Object.keys(files)) {
+      const rawUrl = files[fname].raw_url;
+      const type = files[fname].type;
+      const bahasa = files[fname].language;
+      const isi = files[fname].content;
+      const size = files[fname].size;
+      
+      result.push({
+        fileName: fname,
+        url: rawUrl,
+        filesType: type,
+        language: bahasa,
+        fileSize: size,
+        content: isi,
+        gistId: gistId,
+        owner: res.data.owner?.login || 'unknown'
+      });
+    }
+    
+    return result;
+    
+  } catch (error) {
+    if (error.response?.status === 404) {
+      throw new Error('Gist tidak ditemukan');
+    } else if (error.response?.status === 403) {
+      throw new Error('Rate limit exceeded. Coba lagi nanti.');
+    }
+    throw new Error(`Gagal mengambil gist: ${error.message}`);
+  }
+}
+
+// Fungsi format ukuran file
+function formatUkuranMedia(angka) {
+  if (angka >= 1024 * 1024 * 1024) {
+    return (angka / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
+  } else if (angka >= 1024 * 1024) {
+    return (angka / (1024 * 1024)).toFixed(2) + ' MB';
+  } else if (angka >= 1024) {
+    return (angka / 1024).toFixed(2) + ' KB';
+  } else {
+    return angka + ' B';
+  }
+}
+
+// Endpoint untuk search gist by user
+app.get('/api/gist/user', async (req, res) => {
+  try {
+    const username = req.query.username;
+    if (!username) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Parameter "username" tidak ditemukan'
+      });
+    }
+    
+    const page = req.query.page || 1;
+    const perPage = req.query.per_page || 10;
+    
+    const response = await axios.get(
+      `https://api.github.com/users/${username}/gists`,
+      {
+        headers: { 
+          'User-Agent': 'Gist-API-Client',
+          'Accept': 'application/vnd.github.v3+json'
+        },
+        params: {
+          page: page,
+          per_page: perPage
+        }
+      }
+    );
+    
+    const gists = response.data.map(gist => ({
+      id: gist.id,
+      url: gist.html_url,
+      description: gist.description,
+      files: Object.keys(gist.files),
+      created_at: gist.created_at,
+      updated_at: gist.updated_at,
+      owner: gist.owner?.login
+    }));
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: {
+        username: username,
+        page: parseInt(page),
+        per_page: parseInt(perPage),
+        gists: gists,
+        total: gists.length
+      }
+    });
+    
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+// Endpoint untuk Remove Background HD
 app.get('/api/remove-bg', async (req, res) => {
   try {
     const imageUrl = req.query.url;
@@ -1073,12 +1271,11 @@ app.get('/api/remove-bg', async (req, res) => {
       return res.status(400).json({ 
         status: 400,
         creator: "Geraldo",
-        error: 'Parameter "url" tidak ditemukan',
-        example: '/api/remove-bg?url=https://example.com/image.jpg'
+        error: 'Parameter "url" tidak ditemukan'
       });
     }
     
-    const result = await removeBackground(imageUrl);
+    const result = await removeBackgroundHD(imageUrl);
     
     res.status(200).json({
       status: 200,
@@ -1096,67 +1293,61 @@ app.get('/api/remove-bg', async (req, res) => {
   }
 });
 
-async function removeBackground(imageUrl) {
+// Fungsi Remove Background HD
+const FormData = require('form-data');
+
+async function removeBackgroundHD(imageUrl) {
   try {
     // Download gambar dari URL
     const response = await axios.get(imageUrl, {
       responseType: 'arraybuffer'
     });
     
-    const imgBuffer = Buffer.from(response.data);
-    const imgPath = path.join(tmpdir(), `ori_${Date.now()}_${path.basename(imageUrl)}`);
-    fs.writeFileSync(imgPath, imgBuffer);
+    const buffer = Buffer.from(response.data);
     
-    // Convert ke base64 data URI
-    const b64img = imgBuffer.toString('base64');
-    const mimtype = getImageType(imageUrl);
-    const datauri = `data:${mimtype};base64,${b64img}`;
-    
-    // Kirim ke API
-    const apiResponse = await axios({
-      method: 'post',
-      url: 'https://background-remover.com/removeImageBackground',
-      headers: {
-        'accept': '*/*',
-        'content-type': 'application/json',
-        'origin': 'https://background-remover.com',
-        'referer': 'https://background-remover.com/upload',
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
-      },
-      data: {
-        encodedImage: datauri
-      }
+    // Upload ke ugu.se terlebih dahulu
+    const form = new FormData();
+    form.append('files[]', buffer, {
+      filename: `image_${Date.now()}.jpg`,
+      contentType: 'image/jpeg'
     });
     
-    const hasil = apiResponse.data;
-    if (hasil?.encodedImageWithoutBackground) {
-      // Ekstrak base64 dari data URI
-      const b64data = hasil.encodedImageWithoutBackground.replace(/^data:image\/\w+;base64,/, '');
-      const resultBuffer = Buffer.from(b64data, 'base64');
-      
-      // Upload ke catbox
-      const catboxUrl = await uploadToCatboxBase64(b64data);
-      
-      // Hapus file temporary
-      fs.unlinkSync(imgPath);
-      
-      return catboxUrl;
-    } else {
-      throw new Error('Gagal menghapus background');
+    const uploadResponse = await axios.post(
+      "https://uguu.se/upload.php", 
+      form,
+      {
+        headers: {
+          ...form.getHeaders(),
+        }
+      }
+    );
+    
+    if (!uploadResponse.data.files?.[0]?.url) {
+      throw new Error('Gagal upload gambar ke ugu.se');
     }
+    
+    const uploadedUrl = uploadResponse.data.files[0].url;
+    
+    // Proses remove background HD
+    const { data } = await axios.get(
+      `https://api.offmonprst.my.id/api/removebghd?url=${uploadedUrl}`, 
+      { 
+        responseType: 'arraybuffer' 
+      }
+    );
+    
+    // Convert buffer ke base64
+    const base64Image = Buffer.from(data).toString('base64');
+    const dataUrl = `data:image/png;base64,${base64Image}`;
+    
+    // Upload hasil ke catbox
+    const catboxUrl = await uploadToCatboxBase64(base64Image);
+    
+    return catboxUrl;
+    
   } catch (error) {
-    throw new Error(error.message || 'Terjadi kesalahan saat menghapus background');
+    throw new Error(`Gagal menghapus background HD: ${error.message}`);
   }
-}
-
-// Fungsi untuk menentukan tipe gambar dari URL
-function getImageType(imageUrl) {
-  const url = imageUrl.toLowerCase();
-  if (url.includes('.jpg') || url.includes('.jpeg')) return 'image/jpeg';
-  if (url.includes('.png')) return 'image/png';
-  if (url.includes('.gif')) return 'image/gif';
-  if (url.includes('.webp')) return 'image/webp';
-  return 'image/jpeg'; // default
 }
 
 // Fungsi upload base64 ke catbox
@@ -1173,7 +1364,7 @@ async function uploadToCatboxBase64(base64Data) {
     
     return response.data;
   } catch (error) {
-    // Jika gagal, convert base64 ke data URI
+    // Jika gagal, return data URI
     return `data:image/png;base64,${base64Data}`;
   }
 }
@@ -1991,6 +2182,268 @@ app.get('/api/yt-download', async (req, res) => {
         download_url: downloadResult.downloadUrl,
         format: format,
         original_url: url
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+// Endpoint untuk WebPilot AI
+app.get('/api/webpilot', async (req, res) => {
+  try {
+    const query = req.query.query;
+    if (!query) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Parameter "query" tidak ditemukan'
+      });
+    }
+    
+    const response = await webpilotAI(query);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { 
+        response: response
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+// Fungsi WebPilot AI
+async function webpilotAI(query) {
+  try {
+    const response = await axios.post(
+      'https://api.webpilotai.com/rupee/v1/search',
+      {
+        q: query,
+        threadId: ''
+      },
+      {
+        responseType: 'stream',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Linux; Android 10)',
+          'Accept': 'application/json,text/plain,*/*,text/event-stream',
+          'Content-Type': 'application/json',
+          'authorization': 'Bearer null',
+          'origin': 'https://www.webpilot.ai'
+        }
+      }
+    );
+    
+    let text = '';
+    let sources = [];
+    
+    return new Promise((resolve, reject) => {
+      response.data.on('data', (chunk) => {
+        const lines = chunk.toString().split('\n');
+        for (let i = 0; i < lines.length; i++) {
+          if (lines[i].startsWith('data:')) {
+            try {
+              const data = JSON.parse(lines[i].slice(5).trim());
+              if (data.type === 'data' && data.data && data.data.content && !data.data.section_id) {
+                text = text + data.data.content;
+              }
+              if (data.action === 'using_internet' && data.data) {
+                sources.push(data.data);
+              }
+            } catch (e) {
+              // Skip invalid JSON
+            }
+          }
+        }
+      });
+      
+      response.data.on('end', () => {
+        resolve({
+          text: text.trim(),
+          sources: sources
+        });
+      });
+      
+      response.data.on('error', reject);
+    });
+    
+  } catch (error) {
+    throw new Error(`Gagal menghubungi WebPilot AI: ${error.message}`);
+  }
+}
+
+// Endpoint untuk Gemini AI
+app.get('/api/gemini', async (req, res) => {
+  try {
+    const message = req.query.message;
+    const chatId = req.query.chat_id;
+    
+    if (!message) {
+      return res.status(400).json({ 
+        status: 400,
+        creator: "Geraldo",
+        error: 'Parameter "message" tidak ditemukan'
+      });
+    }
+    
+    const response = await geminiAI(message, chatId);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { 
+        response: response
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 500,
+      creator: "Geraldo",
+      error: error.message 
+    });
+  }
+});
+
+// Fungsi Gemini AI
+const gemini = {
+    getNewCookie: async function () {
+        try {
+            const response = await axios.post(
+                "https://gemini.google.com/_/BardChatUi/data/batchexecute?rpcids=maGuAc&source-path=%2F&bl=boq_assistant-bard-web-server_20250814.06_p1&f.sid=-7816331052118000090&hl=en-US&_reqid=173780&rt=c",
+                "f.req=%5B%5B%5B%22maGuAc%22%2C%22%5B0%5D%22%2Cnull%2C%22generic%22%5D%5D%5D&",
+                {
+                    headers: {
+                        "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+                    }
+                }
+            );
+            
+            const cookies = response.headers['set-cookie'];
+            if (cookies && cookies[0]) {
+                return cookies[0].split("; ")[0];
+            }
+            throw new Error('Cookie not found');
+        } catch (error) {
+            throw new Error(`Gagal mendapatkan cookie: ${error.message}`);
+        }
+    },
+
+    ask: async function (prompt, previousId = null) {
+        try {
+            if (typeof (prompt) !== "string" || !prompt?.trim()?.length) {
+                throw new Error('Prompt tidak boleh kosong');
+            }
+            
+            let resumeArray = null;
+            let cookie = null;
+            
+            if (previousId) {
+                try {
+                    const s = Buffer.from(previousId, 'base64').toString('utf8');
+                    const j = JSON.parse(s);
+                    resumeArray = j.newResumeArray;
+                    cookie = j.cookie;
+                } catch (e) {
+                    console.error('Error parsing previousId:', e.message);
+                }
+            }
+            
+            const headers = {
+                "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+                "x-goog-ext-525001261-jspb": "[1,null,null,null,\"9ec249fc9ad08861\",null,null,null,[4]]",
+                "cookie": cookie || await this.getNewCookie(),
+                "User-Agent": "Mozilla/5.0"
+            };
+            
+            const b = [[prompt], ["en-US"], resumeArray];
+            const a = [null, JSON.stringify(b)];
+            const obj = { "f.req": JSON.stringify(a) };
+            const body = new URLSearchParams(obj).toString();
+            
+            const response = await axios.post(
+                `https://gemini.google.com/_/BardChatUi/data/assistant.lamda.BardFrontendService/StreamGenerate?bl=boq_assistant-bard-web-server_20250729.06_p0&f.sid=4206607810970164620&hl=en-US&_reqid=2813378&rt=c`,
+                body,
+                { headers: headers }
+            );
+            
+            if (!response.data) {
+                throw new Error('Response data kosong');
+            }
+            
+            const data = response.data;
+            const lines = data.split('\n');
+            
+            // Cari JSON yang valid
+            let selectedArray = null;
+            for (let i = lines.length - 1; i >= 0; i--) {
+                const line = lines[i].trim();
+                if (line.startsWith('[') && line.endsWith(']')) {
+                    try {
+                        JSON.parse(line);
+                        selectedArray = line;
+                        break;
+                    } catch (e) {
+                        continue;
+                    }
+                }
+            }
+            
+            if (!selectedArray) {
+                throw new Error('Tidak dapat parse response');
+            }
+            
+            const realArray = JSON.parse(selectedArray);
+            const parse1 = JSON.parse(realArray[0][2]);
+            
+            if (!parse1 || !parse1[4] || !parse1[4][0] || !parse1[4][0][1]) {
+                throw new Error('Format response tidak sesuai');
+            }
+            
+            const newResumeArray = [...parse1[1], parse1[4][0][0]];
+            const text = parse1[4][0][1][0].replace(/\*\*(.+?)\*\*/g, `*$1*`);
+            const id = Buffer.from(JSON.stringify({ newResumeArray, cookie: headers.cookie })).toString('base64');
+            
+            return { text, id };
+            
+        } catch (error) {
+            throw new Error(`Gagal memproses: ${error.message}`);
+        }
+    }
+};
+
+// Fungsi utama Gemini AI
+async function geminiAI(message, chatId = null) {
+    try {
+        const result = await gemini.ask(message, chatId);
+        return result;
+    } catch (error) {
+        throw new Error(`Gemini AI error: ${error.message}`);
+    }
+}
+
+// Endpoint untuk membuat chat baru
+app.get('/api/gemini/start', async (req, res) => {
+  try {
+    const message = req.query.message || 'Halo';
+    const result = await geminiAI(message, null);
+    
+    res.status(200).json({
+      status: 200,
+      creator: "Geraldo",
+      data: { 
+        response: result.text,
+        chat_id: result.id,
+        message: "Chat berhasil dimulai. Gunakan chat_id untuk melanjutkan percakapan."
       }
     });
   } catch (error) {
